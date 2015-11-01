@@ -1,3 +1,5 @@
 Toast-Swift
 =============
-In progress
+A Swift port of [Toast for iOS](https://github.com/scalessec/Toast "Toast").
+
+In progress.
