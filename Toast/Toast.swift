@@ -134,20 +134,20 @@ struct ToastStyle {
     var shadowRadius = 6.0
     
     /**
-    The shadow offset. The default is `CGSizeMake(4.0, 4.0)`.
+    The shadow offset. The default is 4 x 4.
     */
     var shadowOffset = CGSize(width: 4.0, height: 4.0)
     
     /**
-    The image size. The default is `CGSizeMake(80.0, 80.0)`.
+    The image size. The default is 80 x 80.
     */
     var imageSize = CGSize(width: 80.0, height: 80.0)
     
     /**
     The size of the toast activity view when `makeToastActivity:` is called.
-    Default is `CGSizeMake(100.0, 100.0)`.
+    Default is 100 x 100.
     */
-    var activitySize = CGSize(width: 80.0, height: 80.0)
+    var activitySize = CGSize(width: 100.0, height: 100.0)
     
 }
 
