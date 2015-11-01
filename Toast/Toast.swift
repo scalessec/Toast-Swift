@@ -8,22 +8,78 @@
 
 import UIKit
 
+enum ToastPosition {
+    case Top
+    case Center
+    case Bottom
+}
+
 enum ToastError: ErrorType {
     case InsufficientData
 }
 
 extension UIView {
     
-/*
+    func makeToast(message: String) {
+        
+    }
+    
+    func makeToast(message: String, duration: NSTimeInterval, position: ToastPosition) {
+        
+    }
+    
+    func makeToast(message: String, duration: NSTimeInterval, position: CGPoint) {
+        
+    }
+    
+    func makeToast(message: String, duration: NSTimeInterval, position: ToastPosition, style: ToastStyle?) {
+        
+    }
+    
+    func makeToast(message: String, duration: NSTimeInterval, position: CGPoint, style: ToastStyle?) {
+        
+    }
+    
+    func makeToast(message: String?, duration: NSTimeInterval, position: ToastPosition, title: String?, image: UIImage?, style: ToastStyle?, completion: ((didTap: Bool) -> Void)?) {
+        
+    }
+    
+    func makeToast(message: String?, duration: NSTimeInterval, position: CGPoint, title: String?, image: UIImage?, style: ToastStyle?, completion: ((didTap: Bool) -> Void)?) {
+        
+    }
+    
+    func makeToastActivity(position: ToastPosition) {
+    
+    }
+    
+    func makeToastActivity(position: CGPoint) {
+        
+    }
+    
+    func hideToastActivity() {
+        
+    }
+  
+    func showToast(toast: UIView) {
+        
+    }
+    
+    func showToast(toast: UIView, duration: NSTimeInterval, position: ToastPosition, completion: ((didTap: Bool) -> Void)?) {
+        
+    }
+    
+    func showToast(toast: UIView, duration: NSTimeInterval, position: CGPoint, completion: ((didTap: Bool) -> Void)?) {
+        
+    }
+    
     func createToastView(message: String?, title: String?, image: UIImage?) throws -> UIView {
         // sanity
         if message == nil && title == nil && image == nil {
             throw ToastError.InsufficientData
         }
         
-        
+        return UIView()
     }
-*/
     
 }
 
