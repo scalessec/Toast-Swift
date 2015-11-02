@@ -128,20 +128,78 @@ extension UIView {
         } catch {}
     }
     
-    func makeToastActivity(position: ToastPosition) {
+    // MARK: - Activity Methods
     
+    func makeToastActivity(position: ToastPosition) {
+        // sanity
+        if let _ = objc_getAssociatedObject(self, &ToastKeys.ActiveToast) as? UIView {
+            return
+        }
+        
+        let toast = self.createToastActivityView()
+        let point = self.centerPointForPosition(position, toast: toast)
+        self.makeToastActivity(toast, position: point)
     }
     
     func makeToastActivity(position: CGPoint) {
+        // sanity
+        if let _ = objc_getAssociatedObject(self, &ToastKeys.ActiveToast) as? UIView {
+            return
+        }
         
+        let toast = self.createToastActivityView()
+        self.makeToastActivity(toast, position: position)
     }
     
     func hideToastActivity() {
-        
+        if let toast = objc_getAssociatedObject(self, &ToastKeys.ActivityView) as? UIView {
+            UIView.animateWithDuration(ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.CurveEaseIn, .BeginFromCurrentState], animations: { () -> Void in
+                toast.alpha = 0.0
+            }, completion: { (finished: Bool) -> Void in
+                toast.removeFromSuperview()
+                objc_setAssociatedObject (self, &ToastKeys.ActivityView, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            })
+        }
     }
-  
-    // MARK: - Show Toast Methods
     
+    private func makeToastActivity(toast: UIView, position: CGPoint) {
+        toast.alpha = 0.0
+        toast.center = position
+        
+        objc_setAssociatedObject (self, &ToastKeys.ActivityView, toast, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        
+        self.addSubview(toast)
+        
+        UIView.animateWithDuration(ToastManager.shared.style.fadeDuration, delay: 0.0, options: .CurveEaseOut, animations: { () -> Void in
+            toast.alpha = 1.0
+        }, completion: nil)
+    }
+    
+    private func createToastActivityView() -> UIView {
+        let style = ToastManager.shared.style
+        
+        let activityView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: style.activitySize.width, height: style.activitySize.height))
+        activityView.backgroundColor = style.backgroundColor
+        activityView.autoresizingMask = [.FlexibleLeftMargin, .FlexibleRightMargin, .FlexibleTopMargin, .FlexibleBottomMargin]
+        activityView.layer.cornerRadius = style.cornerRadius
+        
+        if style.displayShadow {
+            activityView.layer.shadowColor = style.shadowColor.CGColor
+            activityView.layer.shadowOpacity = style.shadowOpacity
+            activityView.layer.shadowRadius = style.shadowRadius
+            activityView.layer.shadowOffset = style.shadowOffset
+        }
+        
+        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+        activityIndicatorView.center = CGPoint(x: activityView.bounds.size.width / 2.0, y: activityView.bounds.size.height / 2.0)
+        activityView.addSubview(activityIndicatorView)
+        activityIndicatorView.startAnimating()
+        
+        return activityView
+    }
+
+    // MARK: - Show Toast Methods
+
     func showToast(toast: UIView) {
         self.showToast(toast, duration: ToastManager.shared.duration, position: ToastManager.shared.position, completion: nil)
     }
