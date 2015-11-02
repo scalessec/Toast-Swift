@@ -33,31 +33,33 @@ extension UIView {
     // MARK: - Make Toast Methods
     
     func makeToast(message: String) {
-        
+        self.makeToast(message, duration: ToastManager.shared.duration, position: ToastManager.shared.position)
     }
     
     func makeToast(message: String, duration: NSTimeInterval, position: ToastPosition) {
-        
+        self.makeToast(message, duration: duration, position: position, style: nil)
     }
     
     func makeToast(message: String, duration: NSTimeInterval, position: CGPoint) {
-        
+        self.makeToast(message, duration: duration, position: position, style: nil)
     }
     
     func makeToast(message: String, duration: NSTimeInterval, position: ToastPosition, style: ToastStyle?) {
-        
+        try! self.makeToast(message, duration: duration, position: position, title: nil, image: nil, style: style, completion: nil)
     }
     
     func makeToast(message: String, duration: NSTimeInterval, position: CGPoint, style: ToastStyle?) {
-        
+        try! self.makeToast(message, duration: duration, position: position, title: nil, image: nil, style: style, completion: nil)
     }
     
-    func makeToast(message: String?, duration: NSTimeInterval, position: ToastPosition, title: String?, image: UIImage?, style: ToastStyle?, completion: ((didTap: Bool) -> Void)?) {
-        
+    func makeToast(message: String?, duration: NSTimeInterval, position: ToastPosition, title: String?, image: UIImage?, style: ToastStyle?, completion: ((didTap: Bool) -> Void)?) throws {
+        let toast = try self.createToastView(message, title: title, image: image)
+        self.showToast(toast, duration: duration, position: position, completion: completion)
     }
     
     func makeToast(message: String?, duration: NSTimeInterval, position: CGPoint, title: String?, image: UIImage?, style: ToastStyle?, completion: ((didTap: Bool) -> Void)?) throws {
-        
+        let toast = try self.createToastView(message, title: title, image: image)
+        self.showToast(toast, duration: duration, position: position, completion: completion)
     }
     
     func makeToastActivity(position: ToastPosition) {
@@ -243,5 +245,17 @@ struct ToastStyle {
  notifications. Backed by a singleton instance.
 */
 class ToastManager {
+    
+    static let shared = ToastManager()
+    
+    var style = ToastStyle()
+    
+    var tapToDismissEnabled = true
+    
+    var queueEnabled = true
+    
+    var duration: NSTimeInterval = 3.0
+    
+    var position = ToastPosition.Bottom
     
 }
