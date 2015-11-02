@@ -155,6 +155,104 @@ extension ViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.section == 0 {
+            return
+        }
         
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        if indexPath.row == 0 {
+            
+            // Make Toast
+            self.navigationController?.view.makeToast("This is a piece of toast")
+            
+        } else if indexPath.row == 1 {
+            
+            // Make toast with a duration and position
+            self.navigationController?.view.makeToast("This is a piece of toast on top for 3 seconds", duration: 3.0, position: .Top)
+            
+        } else if indexPath.row == 2 {
+            
+            // Make toast with a title
+            self.navigationController?.view.makeToast("This is a piece of toast with a title", duration: 2.0, position: .Top, title: "Toast Title", image: nil, style: nil, completion: nil)
+            
+        } else if indexPath.row == 3 {
+            
+            // Make toast with an image
+            self.navigationController?.view.makeToast("This is a piece of toast with an image", duration: 2.0, position: .Center, title: nil, image: UIImage(named: "toast.png"), style: nil, completion: nil)
+            
+        } else if indexPath.row == 4 {
+            
+            // Make toast with an image, title, and completion closure
+            self.navigationController?.view.makeToast("This is a piece of toast with a title, image, and completion closure", duration: 2.0, position: .Bottom, title: "Toast Title", image: UIImage(named: "toast.png"), style:nil) { (didTap: Bool) -> Void in
+                if didTap {
+                    print("completion from tap")
+                } else {
+                    print("completion without tap")
+                }
+            }
+        
+        } else if indexPath.row == 5 {
+            
+        } else if indexPath.row == 6 {
+            
+        } else if indexPath.row == 7 {
+            
+        } else if indexPath.row == 8 {
+            
+        }
+        
+        /*
+        } else if (indexPath.row == 5) {
+            
+            // Make toast with a custom style
+            CSToastStyle *style = [[CSToastStyle alloc] initWithDefaultStyle];
+            style.messageFont = [UIFont fontWithName:@"Zapfino" size:14.0];
+            style.messageColor = [UIColor redColor];
+            style.messageAlignment = NSTextAlignmentCenter;
+            style.backgroundColor = [UIColor yellowColor];
+            
+            [self.navigationController.view makeToast:@"This is a piece of toast with a custom style"
+            duration:3.0
+            position:CSToastPositionBottom
+            style:style];
+            
+            // @NOTE: Uncommenting the line below will set the shared style for all toast methods:
+            // [CSToastManager setSharedStyle:style];
+            
+        } else if (indexPath.row == 6) {
+            
+            // Show a custom view as toast
+            UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 400)];
+            [customView setAutoresizingMask:(UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin)]; // autoresizing masks are respected on custom views
+            [customView setBackgroundColor:[UIColor orangeColor]];
+            
+            [self.navigationController.view showToast:customView
+                duration:2.0
+                position:CSToastPositionCenter
+                completion:nil];
+            
+        } else if (indexPath.row == 7) {
+            
+            // Show an imageView as toast, on center at point (110,110)
+            UIImageView *toastView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"toast.png"]];
+            
+            [self.navigationController.view showToast:toastView
+                duration:2.0
+                position:[NSValue valueWithCGPoint:CGPointMake(110, 110)] // wrap CGPoint in an NSValue object
+                completion:nil];
+            
+        } else if (indexPath.row == 8) {
+            
+            // Make toast activity
+            if (!self.isShowingActivity) {
+                [self.navigationController.view makeToastActivity:CSToastPositionCenter];
+            } else {
+                [self.navigationController.view hideToastActivity];
+            }
+            _showingActivity = !self.isShowingActivity;
+            
+            [tableView reloadData];
+        }*/
     }
 }

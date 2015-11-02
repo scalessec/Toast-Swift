@@ -93,31 +93,39 @@ extension UIView {
     }
     
     func makeToast(message: String, duration: NSTimeInterval, position: ToastPosition, style: ToastStyle?) {
-        try! self.makeToast(message, duration: duration, position: position, title: nil, image: nil, style: style, completion: nil)
+        self.makeToast(message, duration: duration, position: position, title: nil, image: nil, style: style, completion: nil)
     }
     
     func makeToast(message: String, duration: NSTimeInterval, position: CGPoint, style: ToastStyle?) {
-        try! self.makeToast(message, duration: duration, position: position, title: nil, image: nil, style: style, completion: nil)
+        self.makeToast(message, duration: duration, position: position, title: nil, image: nil, style: style, completion: nil)
     }
     
-    func makeToast(message: String?, duration: NSTimeInterval, position: ToastPosition, title: String?, image: UIImage?, style: ToastStyle?, completion: ((didTap: Bool) -> Void)?) throws {
+    func makeToast(message: String?, duration: NSTimeInterval, position: ToastPosition, title: String?, image: UIImage?, style: ToastStyle?, completion: ((didTap: Bool) -> Void)?) {
         var toastStyle = ToastManager.shared.style
         if let style = style {
            toastStyle = style
         }
         
-        let toast = try self.toastViewForMessage(message, title: title, image: image, style: toastStyle)
-        self.showToast(toast, duration: duration, position: position, completion: completion)
+        do {
+            let toast = try self.toastViewForMessage(message, title: title, image: image, style: toastStyle)
+            self.showToast(toast, duration: duration, position: position, completion: completion)
+        } catch ToastError.InsufficientData {
+            print("Error: message, title, and image are all nil")
+        } catch {}
     }
     
-    func makeToast(message: String?, duration: NSTimeInterval, position: CGPoint, title: String?, image: UIImage?, style: ToastStyle?, completion: ((didTap: Bool) -> Void)?) throws {
+    func makeToast(message: String?, duration: NSTimeInterval, position: CGPoint, title: String?, image: UIImage?, style: ToastStyle?, completion: ((didTap: Bool) -> Void)?) {
         var toastStyle = ToastManager.shared.style
         if let style = style {
             toastStyle = style
         }
         
-        let toast = try self.toastViewForMessage(message, title: title, image: image, style: toastStyle)
-        self.showToast(toast, duration: duration, position: position, completion: completion)
+        do {
+            let toast = try self.toastViewForMessage(message, title: title, image: image, style: toastStyle)
+            self.showToast(toast, duration: duration, position: position, completion: completion)
+        } catch ToastError.InsufficientData {
+            print("Error: message, title, and image are all nil")
+        } catch {}
     }
     
     func makeToastActivity(position: ToastPosition) {
