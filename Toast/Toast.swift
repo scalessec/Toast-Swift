@@ -100,6 +100,17 @@ extension UIView {
     }
     
     // MARK: - Helpers
+
+    private func centerPointForPosition(position: ToastPosition, toast: UIView, style: ToastStyle) -> CGPoint {
+        switch(position) {
+        case .Top:
+            return CGPoint(x: self.bounds.size.width / 2.0, y: (toast.frame.size.height / 2.0) + CGFloat(style.verticalPadding))
+        case .Center:
+            return CGPoint(x: self.bounds.size.width / 2.0, y: self.bounds.size.height / 2.0)
+        case .Bottom:
+            return CGPoint(x: self.bounds.size.width / 2.0, y: (self.bounds.size.height - (toast.frame.size.height / 2.0)) - CGFloat(style.verticalPadding))
+        }
+    }
 }
 
 // MARK: - Toast Style
