@@ -30,6 +30,8 @@ class ViewController: UITableViewController {
     private let switchCellId = "ToastSwitchCellId"
     private let demoCellId = "ToastDemoCellId"
     
+    private var showingActivity = false
+    
     // MARK: - Constructors
     
     override init(style: UITableViewStyle) {
@@ -194,65 +196,42 @@ extension ViewController {
         
         } else if indexPath.row == 5 {
             
+            var style = ToastStyle()
+            style.messageFont = UIFont(name: "Zapfino", size: 14.0)!
+            style.messageColor = UIColor.redColor()
+            style.messageAlignment = .Center
+            style.backgroundColor = UIColor.yellowColor()
+            
+            self.navigationController?.view.makeToast("This is a piece of toast with a custom style", duration: 3.0, position: .Bottom, style: style)
+            
         } else if indexPath.row == 6 {
+            
+            // Show a custom view as toast
+            let customView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 80.0, height: 400.0))
+            customView.autoresizingMask = [.FlexibleLeftMargin, .FlexibleRightMargin, .FlexibleTopMargin, .FlexibleBottomMargin]
+            customView.backgroundColor = UIColor.blueColor()
+            
+            self.navigationController?.view.showToast(customView, duration: 2.0, position: .Center, completion:nil)
             
         } else if indexPath.row == 7 {
             
+            // Show an imageView as toast, on center at point (110,110)
+            let toastView = UIImageView(image: UIImage(named: "toast.png"))
+            
+            self.navigationController?.view.showToast(toastView, duration: 2.0, position: CGPoint(x: 110.0, y: 110.0), completion: nil)
+            
         } else if indexPath.row == 8 {
             
-        }
-        
-        /*
-        } else if (indexPath.row == 5) {
-            
-            // Make toast with a custom style
-            CSToastStyle *style = [[CSToastStyle alloc] initWithDefaultStyle];
-            style.messageFont = [UIFont fontWithName:@"Zapfino" size:14.0];
-            style.messageColor = [UIColor redColor];
-            style.messageAlignment = NSTextAlignmentCenter;
-            style.backgroundColor = [UIColor yellowColor];
-            
-            [self.navigationController.view makeToast:@"This is a piece of toast with a custom style"
-            duration:3.0
-            position:CSToastPositionBottom
-            style:style];
-            
-            // @NOTE: Uncommenting the line below will set the shared style for all toast methods:
-            // [CSToastManager setSharedStyle:style];
-            
-        } else if (indexPath.row == 6) {
-            
-            // Show a custom view as toast
-            UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 400)];
-            [customView setAutoresizingMask:(UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin)]; // autoresizing masks are respected on custom views
-            [customView setBackgroundColor:[UIColor orangeColor]];
-            
-            [self.navigationController.view showToast:customView
-                duration:2.0
-                position:CSToastPositionCenter
-                completion:nil];
-            
-        } else if (indexPath.row == 7) {
-            
-            // Show an imageView as toast, on center at point (110,110)
-            UIImageView *toastView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"toast.png"]];
-            
-            [self.navigationController.view showToast:toastView
-                duration:2.0
-                position:[NSValue valueWithCGPoint:CGPointMake(110, 110)] // wrap CGPoint in an NSValue object
-                completion:nil];
-            
-        } else if (indexPath.row == 8) {
-            
             // Make toast activity
-            if (!self.isShowingActivity) {
-                [self.navigationController.view makeToastActivity:CSToastPositionCenter];
+            if !self.showingActivity {
+                self.navigationController?.view.makeToastActivity(.Center)
             } else {
-                [self.navigationController.view hideToastActivity];
+                self.navigationController?.view.hideToastActivity()
             }
-            _showingActivity = !self.isShowingActivity;
             
-            [tableView reloadData];
-        }*/
+            self.showingActivity = !self.showingActivity
+            
+            tableView.reloadData()
+        }
     }
 }
