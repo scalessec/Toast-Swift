@@ -53,15 +53,15 @@ class ViewController: UITableViewController {
     // MARK: - Events
     
     func handleTapToDismissToggled() {
-        print("tap to dismiss toggled")
+        ToastManager.shared.tapToDismissEnabled = !ToastManager.shared.tapToDismissEnabled
     }
     
     func handleQueueToggled() {
-        print("queue toast toggled")
+        ToastManager.shared.queueEnabled = !ToastManager.shared.queueEnabled
     }
 }
 
-// MARK: - UITableViewDelegate & Datasource Methods
+// MARK: - UITableViewDelegate & DataSource Methods
 
 extension ViewController {
     
@@ -103,6 +103,7 @@ extension ViewController {
                     cell = UITableViewCell(style: .Default, reuseIdentifier: switchCellId)
                     let tapToDismissSwitch = UISwitch()
                     tapToDismissSwitch.onTintColor = UIColor.blueColor()
+                    tapToDismissSwitch.on = ToastManager.shared.tapToDismissEnabled
                     tapToDismissSwitch.addTarget(self, action: "handleTapToDismissToggled", forControlEvents: .ValueChanged)
                     cell?.accessoryView = tapToDismissSwitch
                     cell?.selectionStyle = .None
@@ -114,6 +115,7 @@ extension ViewController {
                     cell = UITableViewCell(style: .Default, reuseIdentifier: switchCellId)
                     let queueSwitch = UISwitch()
                     queueSwitch.onTintColor = UIColor.blueColor()
+                    queueSwitch.on = ToastManager.shared.queueEnabled
                     queueSwitch.addTarget(self, action: "handleQueueToggled", forControlEvents: .ValueChanged)
                     cell?.accessoryView = queueSwitch
                     cell?.selectionStyle = .None
@@ -148,7 +150,7 @@ extension ViewController {
             } else if indexPath.row == 7 {
                 cell.textLabel?.text = "Show an image as toast at point\n(110, 110)"
             } else if indexPath.row == 8 {
-                cell.textLabel?.text = "Show toast activity"
+                cell.textLabel?.text = (self.showingActivity) ? "Hide toast activity" : "Show toast activity"
             }
             
             return cell
