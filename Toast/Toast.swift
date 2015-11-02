@@ -2,11 +2,29 @@
 //  Toast.swift
 //  Toast-Swift
 //
-//  Created by Charles Scalesse on 11/1/15.
-//  Copyright © 2015 Charles Scalesse. All rights reserved.
+//  Copyright (c) 2015 Charles Scalesse.
 //
+//  Permission is hereby granted, free of charge, to any person obtaining a
+//  copy of this software and associated documentation files (the
+//  "Software"), to deal in the Software without restriction, including
+//  without limitation the rights to use, copy, modify, merge, publish,
+//  distribute, sublicense, and/or sell copies of the Software, and to
+//  permit persons to whom the Software is furnished to do so, subject to
+//  the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included
+//  in all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+//  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+//  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+//  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import UIKit
+import ObjectiveC
 
 enum ToastPosition {
     case Top
@@ -14,12 +32,8 @@ enum ToastPosition {
     case Bottom
 }
 
-enum ToastError: ErrorType {
-    case InsufficientData
-}
-
 /**
- Toast is Swift extension that adds toast notifications to the UIView object class. 
+ Toast is Swift extension that adds toast notifications to the UIView object class.
  It is intended to be simple, lightweight, and easy to use. Most toast notifications 
  can be triggered with a single line of code.
  
@@ -29,6 +43,40 @@ enum ToastError: ErrorType {
  
  */
 extension UIView {
+    
+    private struct ToastKeys {
+        static var Timer        = "CSToastTimerKey"
+        static var Duration     = "CSToastDurationKey"
+        static var Position     = "CSToastPositionKey"
+        static var Completion   = "CSToastCompletionKey"
+        static var ActiveToast  = "CSToastActiveToastKey"
+        static var ActivityView = "CSToastActivityViewKey"
+        static var Queue        = "CSToastQueueKey"
+    }
+    
+    private class ToastCompletionWrapper {
+        var completion: ((Bool) -> Void)?
+        
+        init(_ completion: ((Bool) -> Void)?) {
+            self.completion = completion
+        }
+    }
+    
+    private enum ToastError: ErrorType {
+        case InsufficientData
+    }
+    
+    private var queue: NSMutableArray {
+        get {
+            if let queue = objc_getAssociatedObject(self, &ToastKeys.Queue) as? NSMutableArray {
+                return queue
+            } else {
+                let queue = NSMutableArray()
+                objc_setAssociatedObject(self, &ToastKeys.Queue, queue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                return queue
+            }
+        }
+    }
     
     // MARK: - Make Toast Methods
     
@@ -87,15 +135,90 @@ extension UIView {
     // MARK: - Show Toast Methods
     
     func showToast(toast: UIView) {
-        
+        self.showToast(toast, duration: ToastManager.shared.duration, position: ToastManager.shared.position, completion: nil)
     }
     
     func showToast(toast: UIView, duration: NSTimeInterval, position: ToastPosition, completion: ((didTap: Bool) -> Void)?) {
-        
+        let point = self.centerPointForPosition(position, toast: toast)
+        self.showToast(toast, duration: duration, position: point, completion: completion)
     }
     
     func showToast(toast: UIView, duration: NSTimeInterval, position: CGPoint, completion: ((didTap: Bool) -> Void)?) {
+        objc_setAssociatedObject(toast, &ToastKeys.Completion, ToastCompletionWrapper(completion), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         
+        if let _ = objc_getAssociatedObject(self, &ToastKeys.Queue) where ToastManager.shared.queueEnabled {
+            objc_setAssociatedObject(toast, &ToastKeys.Duration, NSNumber(double: duration), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            objc_setAssociatedObject(toast, &ToastKeys.Position, NSValue(CGPoint: position), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            
+            self.queue.addObject(toast)
+        } else {
+            self.showToast(toast, duration: duration, position: position)
+        }
+    }
+    
+    // MARK: - Private Show/Hide Methods
+    
+    private func showToast(toast: UIView, duration: NSTimeInterval, position: CGPoint) {
+        toast.center = position
+        toast.alpha = 0.0
+        
+        if ToastManager.shared.tapToDismissEnabled {
+            let recognizer = UITapGestureRecognizer(target: self, action: "handleToastTapped:")
+            toast.addGestureRecognizer(recognizer)
+            toast.userInteractionEnabled = true
+            toast.exclusiveTouch = true
+        }
+        
+        objc_setAssociatedObject(self, &ToastKeys.ActiveToast, toast, .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        
+        self.addSubview(toast)
+        
+        UIView.animateWithDuration(ToastManager.shared.duration, delay: 0.0, options: [.CurveEaseOut, .AllowUserInteraction], animations: { () -> Void in
+            toast.alpha = 1.0
+        }) { (Bool finished) -> Void in
+            let timer = NSTimer(timeInterval: duration, target: self, selector: "toastTimerDidFinish:", userInfo: toast, repeats: false)
+            NSRunLoop.mainRunLoop().addTimer(timer, forMode: NSRunLoopCommonModes)
+            objc_setAssociatedObject(toast, &ToastKeys.Timer, timer, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
+    private func hideToast(toast: UIView) {
+        self.hideToast(toast, fromTap: false)
+    }
+    
+    private func hideToast(toast: UIView, fromTap: Bool) {
+        
+        UIView.animateWithDuration(ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.CurveEaseIn, .BeginFromCurrentState], animations: { () -> Void in
+            toast.alpha = 0.0
+        }) { (didFinish: Bool) -> Void in
+            toast.removeFromSuperview()
+            
+            objc_setAssociatedObject(self, &ToastKeys.ActiveToast, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            
+            if let wrapper = objc_getAssociatedObject(toast, &ToastKeys.Completion) as? ToastCompletionWrapper, completion = wrapper.completion {
+                completion(fromTap)
+            }
+            
+            if let nextToast = self.queue.firstObject as? UIView, duration = objc_getAssociatedObject(nextToast, &ToastKeys.Duration) as? NSNumber, position = objc_getAssociatedObject(nextToast, &ToastKeys.Position) as? NSValue {
+                self.queue.removeObjectAtIndex(0)
+                self.showToast(nextToast, duration: duration.doubleValue, position: position.CGPointValue())
+            }
+        }
+    }
+    
+    // MARK: - Events
+    
+    func handleToastTapped(recognizer: UITapGestureRecognizer) {
+        if let toast = recognizer.view, timer = objc_getAssociatedObject(toast, &ToastKeys.Timer) as? NSTimer {
+            timer.invalidate()
+            self.hideToast(toast, fromTap: true)
+        }
+    }
+    
+    func toastTimerDidFinish(timer: NSTimer) {
+        if let toast = timer.userInfo as? UIView {
+            self.hideToast(toast)
+        }
     }
     
     // MARK: - Toast Construction
@@ -222,14 +345,16 @@ extension UIView {
     
     // MARK: - Helpers
 
-    private func centerPointForPosition(position: ToastPosition, toast: UIView, style: ToastStyle) -> CGPoint {
+    private func centerPointForPosition(position: ToastPosition, toast: UIView) -> CGPoint {
+        let padding: CGFloat = ToastManager.shared.style.verticalPadding
+        
         switch(position) {
         case .Top:
-            return CGPoint(x: self.bounds.size.width / 2.0, y: (toast.frame.size.height / 2.0) + style.verticalPadding)
+            return CGPoint(x: self.bounds.size.width / 2.0, y: (toast.frame.size.height / 2.0) + padding)
         case .Center:
             return CGPoint(x: self.bounds.size.width / 2.0, y: self.bounds.size.height / 2.0)
         case .Bottom:
-            return CGPoint(x: self.bounds.size.width / 2.0, y: (self.bounds.size.height - (toast.frame.size.height / 2.0)) - style.verticalPadding)
+            return CGPoint(x: self.bounds.size.width / 2.0, y: (self.bounds.size.height - (toast.frame.size.height / 2.0)) - padding)
         }
     }
 }
@@ -372,6 +497,11 @@ struct ToastStyle {
      Default is 100 x 100.
     */
     var activitySize = CGSize(width: 100.0, height: 100.0)
+    
+    /**
+     The fade in/out animation duration. Default is 0.2.
+     */
+    var fadeDuration: NSTimeInterval = 0.2
     
 }
 
