@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "1AE4A4A0564E38992EFB0E8F9258432F89681A15",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "1AE4A4A0564E38992EFB0E8F9258432F89681A15" : 0,
+    "775E195363DA268E1E1924859088052B9B8BE981" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "332B5743-ED98-44EA-BC62-A34924B1B90B",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "1AE4A4A0564E38992EFB0E8F9258432F89681A15" : "Toast-Swift\/",
+    "775E195363DA268E1E1924859088052B9B8BE981" : "Toast\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Toast-Swift",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Toast-Swift.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:scalessec\/Toast-Swift.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "1AE4A4A0564E38992EFB0E8F9258432F89681A15"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/scalessec\/Toast.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "775E195363DA268E1E1924859088052B9B8BE981"
+    }
+  ]
+}
