@@ -124,7 +124,7 @@ extension UIView {
             let toast = try self.toastViewForMessage(message, title: title, image: image, style: toastStyle)
             self.showToast(toast, duration: duration, position: position, completion: completion)
         } catch ToastError.InsufficientData {
-            print("Error: message, title, and image are all nil")
+            print("Error: message, title, and image cannot all be nil")
         } catch {}
     }
     
