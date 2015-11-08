@@ -332,7 +332,7 @@ extension UIView {
             titleLabel?.numberOfLines = style.titleNumberOfLines
             titleLabel?.font = style.titleFont
             titleLabel?.textAlignment = style.titleAlignment
-            titleLabel?.lineBreakMode = .ByWordWrapping
+            titleLabel?.lineBreakMode = .ByTruncatingTail
             titleLabel?.textColor = style.titleColor
             titleLabel?.backgroundColor = UIColor.clearColor();
             titleLabel?.text = title;
@@ -350,7 +350,7 @@ extension UIView {
             messageLabel?.numberOfLines = style.messageNumberOfLines
             messageLabel?.font = style.messageFont
             messageLabel?.textAlignment = style.messageAlignment
-            messageLabel?.lineBreakMode = .ByWordWrapping;
+            messageLabel?.lineBreakMode = .ByTruncatingTail;
             messageLabel?.textColor = style.messageColor
             messageLabel?.backgroundColor = UIColor.clearColor()
             
