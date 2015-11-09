@@ -44,6 +44,9 @@ enum ToastPosition {
  */
 extension UIView {
     
+    /**
+     Private struct of keys used for associated objects.
+     */
     private struct ToastKeys {
         static var Timer        = "CSToastTimerKey"
         static var Duration     = "CSToastDurationKey"
@@ -54,6 +57,11 @@ extension UIView {
         static var Queue        = "CSToastQueueKey"
     }
     
+    /**
+     Swift closures can't be directly associated with objects via the
+     Objective-C runtime, so the (ugly) solution is to wrap them in a
+     class that can be used with associated objects.
+     */
     private class ToastCompletionWrapper {
         var completion: ((Bool) -> Void)?
         
@@ -80,26 +88,81 @@ extension UIView {
     
     // MARK: - Make Toast Methods
     
+    /**
+     Creates and presents a new toast view with a message and displays it with the
+     default duration and position. Styled using the shared style.
+    
+     @param message The message to be displayed
+    */
     func makeToast(message: String) {
         self.makeToast(message, duration: ToastManager.shared.duration, position: ToastManager.shared.position)
     }
     
+    /**
+     Creates and presents a new toast view with a message. Duration and position
+     can be set explicitly. Styled using the shared style.
+     
+     @param message The message to be displayed
+     @param duration The toast duration
+     @param position The toast's position
+     */
     func makeToast(message: String, duration: NSTimeInterval, position: ToastPosition) {
         self.makeToast(message, duration: duration, position: position, style: nil)
     }
     
+    /**
+     Creates and presents a new toast view with a message. Duration and position
+     can be set explicitly. Styled using the shared style.
+     
+     @param message The message to be displayed
+     @param duration The toast duration
+     @param position The toast's center point
+     */
     func makeToast(message: String, duration: NSTimeInterval, position: CGPoint) {
         self.makeToast(message, duration: duration, position: position, style: nil)
     }
     
+    /**
+     Creates and presents a new toast view with a message. Duration, position, and
+     style can be set explicitly.
+     
+     @param message The message to be displayed
+     @param duration The toast duration
+     @param position The toast's position
+     @param style The style. The shared style will be used when nil
+     */
     func makeToast(message: String, duration: NSTimeInterval, position: ToastPosition, style: ToastStyle?) {
         self.makeToast(message, duration: duration, position: position, title: nil, image: nil, style: style, completion: nil)
     }
     
+    /**
+     Creates and presents a new toast view with a message. Duration, position, and
+     style can be set explicitly.
+     
+     @param message The message to be displayed
+     @param duration The toast duration
+     @param position The toast's center point
+     @param style The style. The shared style will be used when nil
+     */
     func makeToast(message: String, duration: NSTimeInterval, position: CGPoint, style: ToastStyle?) {
         self.makeToast(message, duration: duration, position: position, title: nil, image: nil, style: style, completion: nil)
     }
     
+    /**
+     Creates and presents a new toast view with a message, title, and image. Duration,
+     position, and style can be set explicitly. The completion closure executes when the
+     toast completes presentation. `didTap` will be `true` if the toast view was dismissed
+     from a tap.
+     
+     @param message The message to be displayed
+     @param duration The toast duration
+     @param position The toast's position
+     @param title The title
+     @param image The image
+     @param style The style. The shared style will be used when nil
+     @param completion The completion closure, executed after the toast view disappears.
+            didTap will be `true` if the toast view was dismissed from a tap.
+     */
     func makeToast(message: String?, duration: NSTimeInterval, position: ToastPosition, title: String?, image: UIImage?, style: ToastStyle?, completion: ((didTap: Bool) -> Void)?) {
         var toastStyle = ToastManager.shared.style
         if let style = style {
@@ -114,6 +177,21 @@ extension UIView {
         } catch {}
     }
     
+    /**
+     Creates and presents a new toast view with a message, title, and image. Duration,
+     position, and style can be set explicitly. The completion closure executes when the
+     toast completes presentation. `didTap` will be `true` if the toast view was dismissed
+     from a tap.
+     
+     @param message The message to be displayed
+     @param duration The toast duration
+     @param position The toast's center point
+     @param title The title
+     @param image The image
+     @param style The style. The shared style will be used when nil
+     @param completion The completion closure, executed after the toast view disappears.
+            didTap will be `true` if the toast view was dismissed from a tap.
+     */
     func makeToast(message: String?, duration: NSTimeInterval, position: CGPoint, title: String?, image: UIImage?, style: ToastStyle?, completion: ((didTap: Bool) -> Void)?) {
         var toastStyle = ToastManager.shared.style
         if let style = style {
@@ -128,8 +206,71 @@ extension UIView {
         } catch {}
     }
     
+    // MARK: - Show Toast Methods
+    
+    /**
+    Displays any view as toast using the default duration and position.
+    
+    @param toast The view to be displayed as toast
+    */
+    func showToast(toast: UIView) {
+        self.showToast(toast, duration: ToastManager.shared.duration, position: ToastManager.shared.position, completion: nil)
+    }
+    
+    /**
+     Displays any view as toast at a provided position and duration. The completion closure
+     executes when the toast view completes. `didTap` will be `true` if the toast view was
+     dismissed from a tap.
+     
+     @param toast The view to be displayed as toast
+     @param duration The notification duration
+     @param position The toast's position
+     @param completion The completion block, executed after the toast view disappears.
+     didTap will be `true` if the toast view was dismissed from a tap.
+     */
+    func showToast(toast: UIView, duration: NSTimeInterval, position: ToastPosition, completion: ((didTap: Bool) -> Void)?) {
+        let point = self.centerPointForPosition(position, toast: toast)
+        self.showToast(toast, duration: duration, position: point, completion: completion)
+    }
+    
+    /**
+     Displays any view as toast at a provided position and duration. The completion closure
+     executes when the toast view completes. `didTap` will be `true` if the toast view was
+     dismissed from a tap.
+     
+     @param toast The view to be displayed as toast
+     @param duration The notification duration
+     @param position The toast's center point
+     @param completion The completion block, executed after the toast view disappears.
+     didTap will be `true` if the toast view was dismissed from a tap.
+     */
+    func showToast(toast: UIView, duration: NSTimeInterval, position: CGPoint, completion: ((didTap: Bool) -> Void)?) {
+        objc_setAssociatedObject(toast, &ToastKeys.Completion, ToastCompletionWrapper(completion), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        
+        if let _ = objc_getAssociatedObject(self, &ToastKeys.ActiveToast) as? UIView where ToastManager.shared.queueEnabled {
+            objc_setAssociatedObject(toast, &ToastKeys.Duration, NSNumber(double: duration), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            objc_setAssociatedObject(toast, &ToastKeys.Position, NSValue(CGPoint: position), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            
+            self.queue.addObject(toast)
+        } else {
+            self.showToast(toast, duration: duration, position: position)
+        }
+    }
+    
     // MARK: - Activity Methods
     
+    /**
+     Creates and displays a new toast activity indicator view at a specified position.
+    
+     @warning Only one toast activity indicator view can be presented per superview. Subsequent
+     calls to `makeToastActivity` will be ignored until hideToastActivity is called.
+    
+     @warning `makeToastActivity` works independently of the `showToast` methods. Toast activity
+     views can be presented and dismissed while toast views are being displayed. `makeToastActivity`
+     has no effect on the queueing behavior of the `showToast` methods.
+    
+     @param position The toast's position
+     */
     func makeToastActivity(position: ToastPosition) {
         // sanity
         if let _ = objc_getAssociatedObject(self, &ToastKeys.ActiveToast) as? UIView {
@@ -141,6 +282,18 @@ extension UIView {
         self.makeToastActivity(toast, position: point)
     }
     
+    /**
+     Creates and displays a new toast activity indicator view at a specified position.
+     
+     @warning Only one toast activity indicator view can be presented per superview. Subsequent
+     calls to `makeToastActivity` will be ignored until hideToastActivity is called.
+     
+     @warning `makeToastActivity` works independently of the `showToast` methods. Toast activity
+     views can be presented and dismissed while toast views are being displayed. `makeToastActivity`
+     has no effect on the queueing behavior of the `showToast` methods.
+     
+     @param position The toast's center point
+     */
     func makeToastActivity(position: CGPoint) {
         // sanity
         if let _ = objc_getAssociatedObject(self, &ToastKeys.ActiveToast) as? UIView {
@@ -151,6 +304,9 @@ extension UIView {
         self.makeToastActivity(toast, position: position)
     }
     
+    /**
+     Dismisses the active toast activity indicator view.
+     */
     func hideToastActivity() {
         if let toast = objc_getAssociatedObject(self, &ToastKeys.ActivityView) as? UIView {
             UIView.animateWithDuration(ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.CurveEaseIn, .BeginFromCurrentState], animations: { () -> Void in
@@ -161,6 +317,8 @@ extension UIView {
             })
         }
     }
+    
+    // MARK: - Private Activity Methods
     
     private func makeToastActivity(toast: UIView, position: CGPoint) {
         toast.alpha = 0.0
@@ -196,30 +354,6 @@ extension UIView {
         activityIndicatorView.startAnimating()
         
         return activityView
-    }
-
-    // MARK: - Show Toast Methods
-
-    func showToast(toast: UIView) {
-        self.showToast(toast, duration: ToastManager.shared.duration, position: ToastManager.shared.position, completion: nil)
-    }
-    
-    func showToast(toast: UIView, duration: NSTimeInterval, position: ToastPosition, completion: ((didTap: Bool) -> Void)?) {
-        let point = self.centerPointForPosition(position, toast: toast)
-        self.showToast(toast, duration: duration, position: point, completion: completion)
-    }
-    
-    func showToast(toast: UIView, duration: NSTimeInterval, position: CGPoint, completion: ((didTap: Bool) -> Void)?) {
-        objc_setAssociatedObject(toast, &ToastKeys.Completion, ToastCompletionWrapper(completion), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        
-        if let _ = objc_getAssociatedObject(self, &ToastKeys.ActiveToast) as? UIView where ToastManager.shared.queueEnabled {
-            objc_setAssociatedObject(toast, &ToastKeys.Duration, NSNumber(double: duration), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-            objc_setAssociatedObject(toast, &ToastKeys.Position, NSValue(CGPoint: position), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-            
-            self.queue.addObject(toast)
-        } else {
-            self.showToast(toast, duration: duration, position: position)
-        }
     }
     
     // MARK: - Private Show/Hide Methods
