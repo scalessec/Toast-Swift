@@ -7,7 +7,7 @@ Toast-Swift
 Toast-Swift is a Swift extension that adds toast notifications to the `UIView` object class. It is intended to be simple, lightweight, and easy to use. Most toast notifications can be triggered with a single line of code.
 
 
-Screenshotsg
+Screenshots
 ---------
 ![Toast-Swift Screenshots](toast_swift_screenshot.jpg)
 
