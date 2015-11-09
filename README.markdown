@@ -4,8 +4,7 @@ Toast-Swift
 [![Build Status](https://travis-ci.org/scalessec/Toast-Swift.svg?branch=2.4)](https://travis-ci.org/scalessec/Toast-Swift)
 [![CocoaPods Version](https://img.shields.io/cocoapods/v/Toast-Swift.svg)](http://cocoadocs.org/docsets/Toast-Swift)
 
-Toast is an Objective-C category that adds toast notifications to the `UIView` object class. It is intended to be simple, lightweight, and easy to use. Most
- toast notifications can be triggered with a single line of code.
+Toast is a Swift extension that adds toast notifications to the `UIView` object class. It is intended to be simple, lightweight, and easy to use. Most toast notifications can be triggered with a single line of code.
 
 
 Screenshots
