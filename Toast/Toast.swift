@@ -33,7 +33,7 @@ enum ToastPosition {
 }
 
 /**
- Toast is a Swift extension that adds toast notifications to the UIView object class.
+ Toast is a Swift extension that adds toast notifications to the `UIView` object class.
  It is intended to be simple, lightweight, and easy to use. Most toast notifications 
  can be triggered with a single line of code.
  
@@ -45,7 +45,7 @@ enum ToastPosition {
 extension UIView {
     
     /**
-     Private struct of keys used for associated objects.
+     Keys used for associated objects.
      */
     private struct ToastKeys {
         static var Timer        = "CSToastTimerKey"
@@ -263,11 +263,11 @@ extension UIView {
      Creates and displays a new toast activity indicator view at a specified position.
     
      @warning Only one toast activity indicator view can be presented per superview. Subsequent
-     calls to `makeToastActivity` will be ignored until hideToastActivity is called.
+     calls to `makeToastActivity(position:)` will be ignored until `hideToastActivity()` is called.
     
-     @warning `makeToastActivity` works independently of the `showToast` methods. Toast activity
-     views can be presented and dismissed while toast views are being displayed. `makeToastActivity`
-     has no effect on the queueing behavior of the `showToast` methods.
+     @warning `makeToastActivity(position:)` works independently of the `showToast` methods. Toast
+     activity views can be presented and dismissed while toast views are being displayed.
+     `makeToastActivity(position:)` has no effect on the queueing behavior of the `showToast` methods.
     
      @param position The toast's position
      */
@@ -286,11 +286,11 @@ extension UIView {
      Creates and displays a new toast activity indicator view at a specified position.
      
      @warning Only one toast activity indicator view can be presented per superview. Subsequent
-     calls to `makeToastActivity` will be ignored until hideToastActivity is called.
+     calls to `makeToastActivity(position:)` will be ignored until `hideToastActivity()` is called.
      
-     @warning `makeToastActivity` works independently of the `showToast` methods. Toast activity
-     views can be presented and dismissed while toast views are being displayed. `makeToastActivity`
-     has no effect on the queueing behavior of the `showToast` methods.
+     @warning `makeToastActivity(position:)` works independently of the `showToast` methods. Toast
+     activity views can be presented and dismissed while toast views are being displayed.
+     `makeToastActivity(position:)` has no effect on the queueing behavior of the `showToast` methods.
      
      @param position The toast's center point
      */
@@ -573,7 +573,7 @@ extension UIView {
 /**
  `ToastStyle` instances define the look and feel for toast views created via the
  `makeToast` methods as well for toast views created directly with
- `createToast(message:title:image:style:)`.
+ `toastViewForMessage(message:title:image:style:)`.
 
  @warning `ToastStyle` offers relatively simple styling options for the default
  toast view. If you require a toast view with more complex UI, it probably makes more
@@ -702,7 +702,7 @@ struct ToastStyle {
     var imageSize = CGSize(width: 80.0, height: 80.0)
     
     /**
-     The size of the toast activity view when `makeToastActivity` is called.
+     The size of the toast activity view when `makeToastActivity(position:)` is called.
      Default is 100 x 100.
     */
     var activitySize = CGSize(width: 100.0, height: 100.0)
@@ -722,16 +722,43 @@ struct ToastStyle {
 */
 class ToastManager {
     
+    /**
+     The `ToastManager` singleton instance.
+     */
     static let shared = ToastManager()
     
+    /**
+     The shared style. Used whenever toastViewForMessage(message:title:image:style:) is called
+     with with a nil style.
+     */
     var style = ToastStyle()
     
+    /**
+     Enables or disables tap to dismiss on toast views. Default is `true`.
+     */
     var tapToDismissEnabled = true
     
+    /**
+     Enables or disables queueing behavior for toast views. When `true`,
+     toast views will appear one after the other. When `false`, multiple toast
+     views will appear at the same time (potentially overlapping depending
+     on their positions). This has no effect on the toast activity view,
+     which operates independently of normal toast views. Default is `true`.
+     */
     var queueEnabled = true
     
+    /**
+     The default duration. Used for the `makeToast` and
+     `showToast` methods that don't require an explicit duration.
+     Default is 3.0.
+     */
     var duration: NSTimeInterval = 3.0
     
+    /**
+     Sets the default position. Used for the `makeToast` and
+     `showToast` methods that don't require an explicit position.
+     Default is `ToastPosition.Bottom`.
+     */
     var position = ToastPosition.Bottom
     
 }
