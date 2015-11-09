@@ -313,7 +313,7 @@ extension UIView {
                 toast.alpha = 0.0
             }, completion: { (finished: Bool) -> Void in
                 toast.removeFromSuperview()
-                objc_setAssociatedObject (self, &ToastKeys.ActivityView, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                objc_setAssociatedObject(self, &ToastKeys.ActivityView, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             })
         }
     }
@@ -324,7 +324,7 @@ extension UIView {
         toast.alpha = 0.0
         toast.center = position
         
-        objc_setAssociatedObject (self, &ToastKeys.ActivityView, toast, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        objc_setAssociatedObject(self, &ToastKeys.ActivityView, toast, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         
         self.addSubview(toast)
         
