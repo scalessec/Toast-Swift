@@ -4,10 +4,10 @@ Toast-Swift
 [![Build Status](https://travis-ci.org/scalessec/Toast-Swift.svg?branch=2.4)](https://travis-ci.org/scalessec/Toast-Swift)
 [![CocoaPods Version](https://img.shields.io/cocoapods/v/Toast-Swift.svg)](http://cocoadocs.org/docsets/Toast-Swift)
 
-Toast is a Swift extension that adds toast notifications to the `UIView` object class. It is intended to be simple, lightweight, and easy to use. Most toast notifications can be triggered with a single line of code.
+Toast-Swift is a Swift extension that adds toast notifications to the `UIView` object class. It is intended to be simple, lightweight, and easy to use. Most toast notifications can be triggered with a single line of code.
 
 
-Screenshots
+Screenshotsg
 ---------
 ![Toast-Swift Screenshots](toast_swift_screenshot.jpg)
 
@@ -23,11 +23,11 @@ self.view.makeToast("This is a piece of toast", duration: 3.0, position: .Top)
 
 // toast with all possible options
 self.view.makeToast("This is a piece of toast", duration: 2.0, position: CGPoint(x: 110.0, y: 110.0), title: "Toast Title", image: UIImage(named: "toast.png"), style:nil) { (didTap: Bool) -> Void in
-  if didTap {
-    print("completion from tap")
-  } else {
-    print("completion without tap")
-  }
+    if didTap {
+        print("completion from tap")
+    } else {
+        print("completion without tap")
+    }
 }
                 
 // display toast with an activity spinner
