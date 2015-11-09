@@ -33,7 +33,7 @@ enum ToastPosition {
 }
 
 /**
- Toast is Swift extension that adds toast notifications to the UIView object class.
+ Toast is a Swift extension that adds toast notifications to the UIView object class.
  It is intended to be simple, lightweight, and easy to use. Most toast notifications 
  can be triggered with a single line of code.
  
