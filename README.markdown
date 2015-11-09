@@ -69,7 +69,7 @@ Setup Instructions
 Install with [CocoaPods](http://cocoapods.org) by adding the following to your Podfile:
 
 ``` ruby
-platform :ios, '7.0'
+platform :ios, '8.0'
 pod 'Toast-Swift', '~> 1.0.0'
 ```
 
