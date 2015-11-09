@@ -423,6 +423,22 @@ extension UIView {
     
     // MARK: - Toast Construction
     
+    /**
+     Creates a new toast view with any combination of message, title, and image.
+     The look and feel is configured via the style. Unlike the `makeToast` methods,
+     this method does not present the toast view automatically. One of the `showToast`
+     methods must be used to present the resulting view.
+    
+     @warning if message, title, and image are all nil, this method will throw
+     `ToastError.InsufficientData`
+    
+     @param message The message to be displayed
+     @param title The title
+     @param image The image
+     @param style The style. The shared style will be used when nil
+     @throws `ToastError.InsufficientData` when message, title, and image are all nil
+     @return The newly created toast view
+    */
     func toastViewForMessage(message: String?, title: String?, image: UIImage?, style: ToastStyle) throws -> UIView {
         // sanity
         if message == nil && title == nil && image == nil {
