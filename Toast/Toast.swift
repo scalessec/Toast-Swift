@@ -26,7 +26,7 @@
 import UIKit
 import ObjectiveC
 
-enum ToastPosition {
+public enum ToastPosition {
     case Top
     case Center
     case Bottom
@@ -42,7 +42,7 @@ enum ToastPosition {
  The `showToast` methods display any view as toast.
  
  */
-extension UIView {
+public extension UIView {
     
     /**
      Keys used for associated objects.
@@ -580,7 +580,7 @@ extension UIView {
  sense to create your own custom UIView subclass and present it with the `showToast`
  methods.
 */
-struct ToastStyle {
+public struct ToastStyle {
     
     /**
      The background color. Default is `UIColor.blackColor()` at 80% opacity.
@@ -720,7 +720,7 @@ struct ToastStyle {
  `ToastManager` provides general configuration options for all toast
  notifications. Backed by a singleton instance.
 */
-class ToastManager {
+public class ToastManager {
     
     /**
      The `ToastManager` singleton instance.
