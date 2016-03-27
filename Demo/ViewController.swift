@@ -104,7 +104,7 @@ extension ViewController {
                     let tapToDismissSwitch = UISwitch()
                     tapToDismissSwitch.onTintColor = UIColor.blueColor()
                     tapToDismissSwitch.on = ToastManager.shared.tapToDismissEnabled
-                    tapToDismissSwitch.addTarget(self, action: "handleTapToDismissToggled", forControlEvents: .ValueChanged)
+                    tapToDismissSwitch.addTarget(self, action: #selector(ViewController.handleTapToDismissToggled), forControlEvents: .ValueChanged)
                     cell?.accessoryView = tapToDismissSwitch
                     cell?.selectionStyle = .None
                     cell?.textLabel?.font = UIFont.systemFontOfSize(16.0)
@@ -116,7 +116,7 @@ extension ViewController {
                     let queueSwitch = UISwitch()
                     queueSwitch.onTintColor = UIColor.blueColor()
                     queueSwitch.on = ToastManager.shared.queueEnabled
-                    queueSwitch.addTarget(self, action: "handleQueueToggled", forControlEvents: .ValueChanged)
+                    queueSwitch.addTarget(self, action: #selector(ViewController.handleQueueToggled), forControlEvents: .ValueChanged)
                     cell?.accessoryView = queueSwitch
                     cell?.selectionStyle = .None
                     cell?.textLabel?.font = UIFont.systemFontOfSize(16.0)
