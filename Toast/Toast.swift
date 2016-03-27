@@ -363,7 +363,7 @@ public extension UIView {
         toast.alpha = 0.0
         
         if ToastManager.shared.tapToDismissEnabled {
-            let recognizer = UITapGestureRecognizer(target: self, action: "handleToastTapped:")
+            let recognizer = UITapGestureRecognizer(target: self, action: #selector(UIView.handleToastTapped(_:)))
             toast.addGestureRecognizer(recognizer)
             toast.userInteractionEnabled = true
             toast.exclusiveTouch = true
@@ -375,8 +375,8 @@ public extension UIView {
         
         UIView.animateWithDuration(ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.CurveEaseOut, .AllowUserInteraction], animations: { () -> Void in
             toast.alpha = 1.0
-        }) { (finished: Bool) -> Void in
-            let timer = NSTimer(timeInterval: duration, target: self, selector: "toastTimerDidFinish:", userInfo: toast, repeats: false)
+        }) { (finished) -> Void in
+            let timer = NSTimer(timeInterval: duration, target: self, selector: #selector(UIView.toastTimerDidFinish(_:)), userInfo: toast, repeats: false)
             NSRunLoop.mainRunLoop().addTimer(timer, forMode: NSRunLoopCommonModes)
             objc_setAssociatedObject(toast, &ToastKeys.Timer, timer, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
