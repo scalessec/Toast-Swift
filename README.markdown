@@ -73,7 +73,9 @@ platform :ios, '8.0'
 pod 'Toast-Swift', '~> 1.0.0'
 ```
 
-or add manually: 
+and in your code add import statement `import Toast_Swift`
+
+or add manually:
 
 1. Add `Toast.swift` to your project.
 2. Link against QuartzCore.
