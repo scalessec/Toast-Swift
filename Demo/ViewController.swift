@@ -173,17 +173,17 @@ extension ViewController {
         } else if indexPath.row == 1 {
             
             // Make toast with a duration and position
-            self.navigationController?.view.makeToast("This is a piece of toast on top for 3 seconds", duration: 3.0, position: .Top)
+            self.navigationController?.view.makeToast("This is a piece of toast on top for 3 seconds", duration: 3.0, position: .LowerCenter)
             
         } else if indexPath.row == 2 {
             
             // Make toast with a title
-            self.navigationController?.view.makeToast("This is a piece of toast with a title", duration: 2.0, position: .Top, title: "Toast Title", image: nil, style: nil, completion: nil)
+            self.navigationController?.view.makeToast("This is a piece of toast with a title", duration: 2.0, position: .Center, title: "Toast Title", image: nil, style: nil, completion: nil)
             
         } else if indexPath.row == 3 {
             
             // Make toast with an image
-            self.navigationController?.view.makeToast("This is a piece of toast with an image", duration: 2.0, position: .Center, title: nil, image: UIImage(named: "toast.png"), style: nil, completion: nil)
+            self.navigationController?.view.makeToast("This is a piece of toast with an image", duration: 2.0, position: .UpperCenter, title: nil, image: UIImage(named: "toast.png"), style: nil, completion: nil)
             
         } else if indexPath.row == 4 {
             

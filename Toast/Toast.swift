@@ -28,7 +28,9 @@ import ObjectiveC
 
 public enum ToastPosition {
     case Top
+    case UpperCenter
     case Center
+    case LowerCenter
     case Bottom
 }
 
@@ -560,8 +562,12 @@ public extension UIView {
         switch(position) {
         case .Top:
             return CGPoint(x: self.bounds.size.width / 2.0, y: (toast.frame.size.height / 2.0) + padding)
+        case .UpperCenter:
+            return CGPoint(x: self.bounds.size.width / 2.0, y: (0.25 * self.bounds.size.height + 0.25 * toast.frame.size.height + 0.5 * padding))
         case .Center:
             return CGPoint(x: self.bounds.size.width / 2.0, y: self.bounds.size.height / 2.0)
+        case .LowerCenter:
+            return CGPoint(x: self.bounds.size.width / 2.0, y: (0.75 * self.bounds.size.height - 0.25 * toast.frame.size.height - 0.5 * padding))
         case .Bottom:
             return CGPoint(x: self.bounds.size.width / 2.0, y: (self.bounds.size.height - (toast.frame.size.height / 2.0)) - padding)
         }
