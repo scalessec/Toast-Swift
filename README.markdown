@@ -70,7 +70,7 @@ Install with [CocoaPods](http://cocoapods.org) by adding the following to your P
 
 ``` ruby
 platform :ios, '8.0'
-pod 'Toast-Swift', '~> 1.0.0'
+pod 'Toast-Swift', '~> 1.1.0'
 ```
 
 and in your code add import statement `import Toast_Swift`
