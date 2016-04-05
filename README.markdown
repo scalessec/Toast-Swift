@@ -80,6 +80,9 @@ or add manually:
 1. Add `Toast.swift` to your project.
 2. Link against QuartzCore.
 
+Compatibility
+------------------
+Version `1.1.0` and later requires Swift 2.2 and Xcode 7.3. `1.0.0` can be used with Swift 2.1 and earlier version of Xcode.
 
 MIT License
 -----------
