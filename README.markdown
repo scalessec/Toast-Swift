@@ -42,7 +42,7 @@ But wait, there's more!
 ---------
 ```swift
 // create a new style
-var style = ToastStyle()
+let style = ToastStyle()
 
 // this is just one of many style options
 style.messageColor = UIColor.blueColor()
