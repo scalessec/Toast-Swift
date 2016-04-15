@@ -583,10 +583,6 @@ public extension UIView {
  methods.
 */
 public struct ToastStyle {
-    
-    public init() {
-        // allow creating style object
-    }
 
     /**
      The background color. Default is `UIColor.blackColor()` at 80% opacity.
