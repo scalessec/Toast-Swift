@@ -78,7 +78,7 @@ platform :ios, '8.0'
 pod 'Toast-Swift', '~> 1.2.0'
 ```
 
-and in your code add the import statement `import Toast_Swift`
+and in your code add `import Toast_Swift`.
 
 [Carthage](https://github.com/Carthage/Carthage)
 ------------------
@@ -86,12 +86,12 @@ and in your code add the import statement `import Toast_Swift`
 To integrate Toast-Swift into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "scalessec/Toast-Swift" ~> 1.2
+github "scalessec/Toast-Swift" ~> 1.2.0
 ```
 
 Run `carthage update` to build the framework and drag the built `ToastSwiftFramework.framework` into your Xcode project.
 
-In your code add the import statement `import ToastSwiftFramework`
+and in your code add `import ToastSwiftFramework`.
 
 Manually
 ------------------
