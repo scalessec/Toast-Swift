@@ -584,7 +584,7 @@ public extension UIView {
 */
 public struct ToastStyle {
 
-    public init() {}T
+    public init() {}
     
     /**
      The background color. Default is `UIColor.blackColor()` at 80% opacity.
