@@ -75,7 +75,7 @@ To integrate Toast-Swift into your Xcode project using CocoaPods, specify it in 
 
 ``` ruby
 platform :ios, '8.0'
-pod 'Toast-Swift', '~> 1.2.0'
+pod 'Toast-Swift', '~> 1.3.0'
 ```
 
 and in your code add `import Toast_Swift`.
@@ -86,7 +86,7 @@ and in your code add `import Toast_Swift`.
 To integrate Toast-Swift into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "scalessec/Toast-Swift" ~> 1.2.0
+github "scalessec/Toast-Swift" ~> 1.3.0
 ```
 
 Run `carthage update` to build the framework and drag the built `ToastSwiftFramework.framework` into your Xcode project.
