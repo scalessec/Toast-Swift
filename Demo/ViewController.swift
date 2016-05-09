@@ -187,8 +187,12 @@ extension ViewController {
             
         } else if indexPath.row == 4 {
             
+            var style = ToastStyle()
+            style.imageSize = CGSize(width: 100, height: 100)
+            style.roundedImageStyle = RoundedImageStyle(cornerRadius: style.imageSize.height / 4, borderWidth: 2, borderColor: UIColor.whiteColor())
+            
             // Make toast with an image, title, and completion closure
-            self.navigationController?.view.makeToast("This is a piece of toast with a title, image, and completion closure", duration: 2.0, position: .Bottom, title: "Toast Title", image: UIImage(named: "toast.png"), style:nil) { (didTap: Bool) -> Void in
+            self.navigationController?.view.makeToast("This is a piece of toast with a title, image, and completion closure", duration: 2.0, position: .Bottom, title: "Toast Title", image: UIImage(named: "toast.png"), style: style) { (didTap: Bool) -> Void in
                 if didTap {
                     print("completion from tap")
                 } else {
