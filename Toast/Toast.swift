@@ -296,7 +296,7 @@ public extension UIView {
      */
     public func makeToastActivity(position: CGPoint) {
         // sanity
-        if let _ = objc_getAssociatedObject(self, &ToastKeys.ActiveToast) as? UIView {
+        if let _ = objc_getAssociatedObject(self, &ToastKeys.ActivityView) as? UIView {
             return
         }
         
