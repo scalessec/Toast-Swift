@@ -561,11 +561,13 @@ public extension UIView {
         
         switch(position) {
         case .Top:
-            return CGPoint(x: self.bounds.size.width / 2.0, y: (toast.frame.size.height / 2.0) + padding)
+			let offset: CGFloat = ToastManager.shared.style.topOffset
+			return CGPoint(x: self.bounds.size.width / 2.0, y: (toast.frame.size.height / 2.0) + padding + offset)
         case .Center:
             return CGPoint(x: self.bounds.size.width / 2.0, y: self.bounds.size.height / 2.0)
         case .Bottom:
-            return CGPoint(x: self.bounds.size.width / 2.0, y: (self.bounds.size.height - (toast.frame.size.height / 2.0)) - padding)
+            let offset: CGFloat = ToastManager.shared.style.bottomOffset
+			return CGPoint(x: self.bounds.size.width / 2.0, y: (self.bounds.size.height - (toast.frame.size.height / 2.0)) - padding - offset)
         }
     }
 }
@@ -634,7 +636,19 @@ public struct ToastStyle {
      Default is 10.0.
     */
     public var verticalPadding: CGFloat = 10.0
-    
+
+	/**
+	The spacing from the top vertical edge of the toast view to the bottom or top position.
+	Default is 0.0.
+	*/
+	public var topOffset: CGFloat = 0.0
+
+	/**
+	The spacing from the bottom vertical edge of the toast view to the bottom or top position.
+	Default is 0.0.
+	*/
+	public var bottomOffset: CGFloat = 0.0
+
     /**
      The corner radius. Default is 10.0.
     */
