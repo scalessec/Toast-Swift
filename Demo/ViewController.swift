@@ -27,10 +27,10 @@ import UIKit
 
 class ViewController: UITableViewController {
 
-    private let switchCellId = "ToastSwitchCellId"
-    private let demoCellId = "ToastDemoCellId"
+    fileprivate let switchCellId = "ToastSwitchCellId"
+    fileprivate let demoCellId = "ToastDemoCellId"
     
-    private var showingActivity = false
+    fileprivate var showingActivity = false
     
     // MARK: - Constructors
     
@@ -102,7 +102,7 @@ extension ViewController {
                 if cell == nil {
                     cell = UITableViewCell(style: .default, reuseIdentifier: switchCellId)
                     let tapToDismissSwitch = UISwitch()
-                    tapToDismissSwitch.onTintColor = UIColor.blue()
+                    tapToDismissSwitch.onTintColor = UIColor.blue
                     tapToDismissSwitch.isOn = ToastManager.shared.tapToDismissEnabled
                     tapToDismissSwitch.addTarget(self, action: #selector(ViewController.handleTapToDismissToggled), for: .valueChanged)
                     cell?.accessoryView = tapToDismissSwitch
@@ -114,7 +114,7 @@ extension ViewController {
                 if cell == nil {
                     cell = UITableViewCell(style: .default, reuseIdentifier: switchCellId)
                     let queueSwitch = UISwitch()
-                    queueSwitch.onTintColor = UIColor.blue()
+                    queueSwitch.onTintColor = UIColor.blue
                     queueSwitch.isOn = ToastManager.shared.queueEnabled
                     queueSwitch.addTarget(self, action: #selector(ViewController.handleQueueToggled), for: .valueChanged)
                     cell?.accessoryView = queueSwitch
@@ -200,9 +200,9 @@ extension ViewController {
             
             var style = ToastStyle()
             style.messageFont = UIFont(name: "Zapfino", size: 14.0)!
-            style.messageColor = UIColor.red()
+            style.messageColor = UIColor.red
             style.messageAlignment = .center
-            style.backgroundColor = UIColor.yellow()
+            style.backgroundColor = UIColor.yellow
             
             self.navigationController?.view.makeToast("This is a piece of toast with a custom style", duration: 3.0, position: .bottom, style: style)
             
@@ -211,7 +211,7 @@ extension ViewController {
             // Show a custom view as toast
             let customView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 80.0, height: 400.0))
             customView.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin, .flexibleTopMargin, .flexibleBottomMargin]
-            customView.backgroundColor = UIColor.blue()
+            customView.backgroundColor = UIColor.blue
             
             self.navigationController?.view.showToast(customView, duration: 2.0, position: .center, completion:nil)
             
