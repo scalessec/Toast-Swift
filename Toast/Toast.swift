@@ -70,7 +70,7 @@ public extension UIView {
         }
     }
     
-    private enum ToastError: ErrorProtocol {
+    private enum ToastError: Error {
         case insufficientData
     }
     
@@ -163,7 +163,7 @@ public extension UIView {
      @param completion The completion closure, executed after the toast view disappears.
             didTap will be `true` if the toast view was dismissed from a tap.
      */
-    public func makeToast(_ message: String?, duration: TimeInterval, position: ToastPosition, title: String?, image: UIImage?, style: ToastStyle?, completion: ((didTap: Bool) -> Void)?) {
+    public func makeToast(_ message: String?, duration: TimeInterval, position: ToastPosition, title: String?, image: UIImage?, style: ToastStyle?, completion: ((_ didTap: Bool) -> Void)?) {
         var toastStyle = ToastManager.shared.style
         if let style = style {
            toastStyle = style
@@ -192,7 +192,7 @@ public extension UIView {
      @param completion The completion closure, executed after the toast view disappears.
             didTap will be `true` if the toast view was dismissed from a tap.
      */
-    public func makeToast(_ message: String?, duration: TimeInterval, position: CGPoint, title: String?, image: UIImage?, style: ToastStyle?, completion: ((didTap: Bool) -> Void)?) {
+    public func makeToast(_ message: String?, duration: TimeInterval, position: CGPoint, title: String?, image: UIImage?, style: ToastStyle?, completion: ((_ didTap: Bool) -> Void)?) {
         var toastStyle = ToastManager.shared.style
         if let style = style {
             toastStyle = style
@@ -228,7 +228,7 @@ public extension UIView {
      @param completion The completion block, executed after the toast view disappears.
      didTap will be `true` if the toast view was dismissed from a tap.
      */
-    public func showToast(_ toast: UIView, duration: TimeInterval, position: ToastPosition, completion: ((didTap: Bool) -> Void)?) {
+    public func showToast(_ toast: UIView, duration: TimeInterval, position: ToastPosition, completion: ((_ didTap: Bool) -> Void)?) {
         let point = self.centerPointForPosition(position, toast: toast)
         self.showToast(toast, duration: duration, position: point, completion: completion)
     }
@@ -244,10 +244,10 @@ public extension UIView {
      @param completion The completion block, executed after the toast view disappears.
      didTap will be `true` if the toast view was dismissed from a tap.
      */
-    public func showToast(_ toast: UIView, duration: TimeInterval, position: CGPoint, completion: ((didTap: Bool) -> Void)?) {
+    public func showToast(_ toast: UIView, duration: TimeInterval, position: CGPoint, completion: ((_ didTap: Bool) -> Void)?) {
         objc_setAssociatedObject(toast, &ToastKeys.Completion, ToastCompletionWrapper(completion), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         
-        if let _ = objc_getAssociatedObject(self, &ToastKeys.ActiveToast) as? UIView where ToastManager.shared.queueEnabled {
+        if let _ = objc_getAssociatedObject(self, &ToastKeys.ActiveToast) as? UIView, ToastManager.shared.queueEnabled {
             objc_setAssociatedObject(toast, &ToastKeys.Duration, NSNumber(value: duration), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
             objc_setAssociatedObject(toast, &ToastKeys.Position, NSValue(cgPoint: position), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
             
@@ -377,7 +377,7 @@ public extension UIView {
             toast.alpha = 1.0
         }) { (finished) -> Void in
             let timer = Timer(timeInterval: duration, target: self, selector: #selector(UIView.toastTimerDidFinish(_:)), userInfo: toast, repeats: false)
-            RunLoop.main().add(timer, forMode: RunLoopMode.commonModes)
+            RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
             objc_setAssociatedObject(toast, &ToastKeys.Timer, timer, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
@@ -395,13 +395,13 @@ public extension UIView {
             
             objc_setAssociatedObject(self, &ToastKeys.ActiveToast, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
             
-            if let wrapper = objc_getAssociatedObject(toast, &ToastKeys.Completion) as? ToastCompletionWrapper, completion = wrapper.completion {
+            if let wrapper = objc_getAssociatedObject(toast, &ToastKeys.Completion) as? ToastCompletionWrapper, let completion = wrapper.completion {
                 completion(fromTap)
             }
             
-            if let nextToast = self.queue.firstObject as? UIView, duration = objc_getAssociatedObject(nextToast, &ToastKeys.Duration) as? NSNumber, position = objc_getAssociatedObject(nextToast, &ToastKeys.Position) as? NSValue {
+            if let nextToast = self.queue.firstObject as? UIView, let duration = objc_getAssociatedObject(nextToast, &ToastKeys.Duration) as? NSNumber, let position = objc_getAssociatedObject(nextToast, &ToastKeys.Position) as? NSValue {
                 self.queue.removeObject(at: 0)
-                self.showToast(nextToast, duration: duration.doubleValue, position: position.cgPointValue())
+                self.showToast(nextToast, duration: duration.doubleValue, position: position.cgPointValue)
             }
         }
     }
@@ -409,7 +409,7 @@ public extension UIView {
     // MARK: - Events
     
     func handleToastTapped(_ recognizer: UITapGestureRecognizer) {
-        if let toast = recognizer.view, timer = objc_getAssociatedObject(toast, &ToastKeys.Timer) as? Timer {
+        if let toast = recognizer.view, let timer = objc_getAssociatedObject(toast, &ToastKeys.Timer) as? Timer {
             timer.invalidate()
             self.hideToast(toast, fromTap: true)
         }
@@ -455,7 +455,7 @@ public extension UIView {
         wrapperView.layer.cornerRadius = style.cornerRadius
         
         if style.displayShadow {
-            wrapperView.layer.shadowColor = UIColor.black().cgColor
+            wrapperView.layer.shadowColor = UIColor.black.cgColor
             wrapperView.layer.shadowOpacity = style.shadowOpacity
             wrapperView.layer.shadowRadius = style.shadowRadius
             wrapperView.layer.shadowOffset = style.shadowOffset
@@ -483,7 +483,7 @@ public extension UIView {
             titleLabel?.textAlignment = style.titleAlignment
             titleLabel?.lineBreakMode = .byTruncatingTail
             titleLabel?.textColor = style.titleColor
-            titleLabel?.backgroundColor = UIColor.clear();
+            titleLabel?.backgroundColor = UIColor.clear
             titleLabel?.text = title;
             
             let maxTitleSize = CGSize(width: (self.bounds.size.width * style.maxWidthPercentage) - imageRect.size.width, height: self.bounds.size.height * style.maxHeightPercentage)
@@ -501,7 +501,7 @@ public extension UIView {
             messageLabel?.textAlignment = style.messageAlignment
             messageLabel?.lineBreakMode = .byTruncatingTail;
             messageLabel?.textColor = style.messageColor
-            messageLabel?.backgroundColor = UIColor.clear()
+            messageLabel?.backgroundColor = UIColor.clear
             
             let maxMessageSize = CGSize(width: (self.bounds.size.width * style.maxWidthPercentage) - imageRect.size.width, height: self.bounds.size.height * style.maxHeightPercentage)
             let messageSize = messageLabel?.sizeThatFits(maxMessageSize)
@@ -589,17 +589,17 @@ public struct ToastStyle {
     /**
      The background color. Default is `UIColor.blackColor()` at 80% opacity.
     */
-    public var backgroundColor = UIColor.black().withAlphaComponent(0.8)
+    public var backgroundColor = UIColor.black.withAlphaComponent(0.8)
     
     /**
      The title color. Default is `UIColor.whiteColor()`.
     */
-    public var titleColor = UIColor.white()
+    public var titleColor = UIColor.white
     
     /**
      The message color. Default is `UIColor.whiteColor()`.
     */
-    public var messageColor = UIColor.white()
+    public var messageColor = UIColor.white
     
     /**
      A percentage value from 0.0 to 1.0, representing the maximum width of the toast
@@ -663,22 +663,22 @@ public struct ToastStyle {
     /**
      The maximum number of lines for the title. The default is 0 (no limit).
     */
-    public var titleNumberOfLines = 0;
+    public var titleNumberOfLines = 0
     
     /**
      The maximum number of lines for the message. The default is 0 (no limit).
     */
-    public var messageNumberOfLines = 0;
+    public var messageNumberOfLines = 0
     
     /**
      Enable or disable a shadow on the toast view. Default is `false`.
     */
-    public var displayShadow = false;
+    public var displayShadow = false
     
     /**
      The shadow color. Default is `UIColor.blackColor()`.
      */
-    public var shadowColor = UIColor.black()
+    public var shadowColor = UIColor.black
     
     /**
      A value from 0.0 to 1.0, representing the opacity of the shadow.
