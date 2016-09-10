@@ -1,4 +1,2 @@
 language: objective-c
 osx_image: xcode8
-xcode_project: Toast-Swift.xcodeproj
-xcode_scheme: Toast-Swift
