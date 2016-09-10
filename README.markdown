@@ -102,7 +102,7 @@ Manually
 Compatibility
 ------------------
 * Version `2.0.0` and later requires Swift 3 and Xcode 8.
-* Versions `1.1.0` - `1.5.0` require Swift 2.2 and Xcode 7.3. 
+* Version `1.4.0` requires Swift 2.2 and Xcode 7.3. 
 * Version `1.0.0` can be used with Swift 2.1 and earlier versions of Xcode.
 
 MIT License
