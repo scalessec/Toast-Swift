@@ -465,6 +465,12 @@ public extension UIView {
             imageView = UIImageView(image: image)
             imageView?.contentMode = .ScaleAspectFit
             imageView?.frame = CGRect(x: style.horizontalPadding, y: style.verticalPadding, width: style.imageSize.width, height: style.imageSize.height)
+            if let roundedImageStyle = style.roundedImageStyle {
+                imageView?.layer.cornerRadius = roundedImageStyle.cornerRadius
+                imageView?.layer.masksToBounds = true
+                imageView?.layer.borderWidth = roundedImageStyle.borderWidth
+                imageView?.layer.borderColor = roundedImageStyle.borderColor.CGColor
+            }
         }
         
         var imageRect = CGRectZero
@@ -706,6 +712,11 @@ public struct ToastStyle {
     public var imageSize = CGSize(width: 80.0, height: 80.0)
     
     /**
+     Styles for rounded image.
+    */
+    public var roundedImageStyle: RoundedImageStyle? = nil
+    
+    /**
      The size of the toast activity view when `makeToastActivity(position:)` is called.
      Default is 100 x 100.
     */
@@ -716,6 +727,23 @@ public struct ToastStyle {
      */
     public var fadeDuration: NSTimeInterval = 0.2
     
+}
+
+public struct RoundedImageStyle {
+    /**
+     The corner radius of the image. The image will be clipped. Default is 0.0.
+     */
+    public var cornerRadius: CGFloat = 0.0
+    
+    /**
+     The width of the image’s border. Default is 0.0.
+     */
+    public var borderWidth: CGFloat = 0.0
+    
+    /**
+     The color of the image’s border. Default is clearColor.
+     */
+    public var borderColor: UIColor = UIColor.clearColor()
 }
 
 // MARK: - Toast Manager
