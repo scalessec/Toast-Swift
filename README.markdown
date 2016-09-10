@@ -21,7 +21,7 @@ Basic Examples
 self.view.makeToast("This is a piece of toast")
 
 // toast with a specific duration and position
-self.view.makeToast("This is a piece of toast", duration: 3.0, position: .Top)
+self.view.makeToast("This is a piece of toast", duration: 3.0, position: .top)
 
 // toast with all possible options
 self.view.makeToast("This is a piece of toast", duration: 2.0, position: CGPoint(x: 110.0, y: 110.0), title: "Toast Title", image: UIImage(named: "toast.png"), style:nil) { (didTap: Bool) -> Void in
@@ -33,7 +33,7 @@ self.view.makeToast("This is a piece of toast", duration: 2.0, position: CGPoint
 }
 
 // display toast with an activity spinner
-self.view.makeToastActivity(.Center)
+self.view.makeToastActivity(.center)
 
 // display any view as toast
 self.view.showToast(myView)
@@ -46,10 +46,10 @@ But wait, there's more!
 let style = ToastStyle()
 
 // this is just one of many style options
-style.messageColor = UIColor.blueColor()
+style.messageColor = UIColor.blue
 
 // present the toast with the new style
-self.view.makeToast("This is a piece of toast", duration: 3.0, position: .Bottom, style: style)
+self.view.makeToast("This is a piece of toast", duration: 3.0, position: .bottom, style: style)
 
 // or perhaps you want to use this style for all toasts going forward?
 // just set the shared style and there's no need to provide the style again
@@ -75,7 +75,7 @@ To integrate Toast-Swift into your Xcode project using CocoaPods, specify it in 
 
 ``` ruby
 platform :ios, '8.0'
-pod 'Toast-Swift', '~> 1.3.0'
+pod 'Toast-Swift', '~> 2.0.0'
 ```
 
 and in your code add `import Toast_Swift`.
@@ -86,7 +86,7 @@ and in your code add `import Toast_Swift`.
 To integrate Toast-Swift into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "scalessec/Toast-Swift" ~> 1.3.0
+github "scalessec/Toast-Swift" ~> 2.0.0
 ```
 
 Run `carthage update` to build the framework and drag the built `ToastSwiftFramework.framework` into your Xcode project.
@@ -101,11 +101,13 @@ Manually
 
 Compatibility
 ------------------
-Version `1.1.0` and later requires Swift 2.2 and Xcode 7.3. `1.0.0` can be used with Swift 2.1 and earlier versions of Xcode.
+Version `2.0.0` and later requires Swift 3 and Xcode 8.
+Versions `1.1.0` - `1.5.0` require Swift 2.2 and Xcode 7.3. 
+Version `1.0.0` can be used with Swift 2.1 and earlier versions of Xcode.
 
 MIT License
 -----------
-    Copyright (c) 2015 Charles Scalesse.
+    Copyright (c) 2016 Charles Scalesse.
 
     Permission is hereby granted, free of charge, to any person obtaining a
     copy of this software and associated documentation files (the
