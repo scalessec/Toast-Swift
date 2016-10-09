@@ -43,7 +43,7 @@ But wait, there's more!
 ---------
 ```swift
 // create a new style
-let style = ToastStyle()
+let style = ToastManager.shared.style
 
 // this is just one of many style options
 style.messageColor = UIColor.blue
