@@ -279,7 +279,7 @@ public extension UIView {
         
         let toast = self.createToastActivityView()
         let point = self.centerPointForPosition(position, toast: toast)
-        self.makeToastActivity(toast, position: point)
+        self.makeToastActivity(toast, point: point)
     }
     
     /**
@@ -294,14 +294,14 @@ public extension UIView {
      
      @param position The toast's center point
      */
-    public func makeToastActivity(_ position: CGPoint) {
+    public func makeToastActivity(_ point: CGPoint) {
         // sanity
         if let _ = objc_getAssociatedObject(self, &ToastKeys.ActivityView) as? UIView {
             return
         }
         
         let toast = self.createToastActivityView()
-        self.makeToastActivity(toast, position: position)
+        self.makeToastActivity(toast, point: point)
     }
     
     /**
@@ -320,9 +320,9 @@ public extension UIView {
     
     // MARK: - Private Activity Methods
     
-    private func makeToastActivity(_ toast: UIView, position: CGPoint) {
+    private func makeToastActivity(_ toast: UIView, point: CGPoint) {
         toast.alpha = 0.0
-        toast.center = position
+        toast.center = point
         
         objc_setAssociatedObject(self, &ToastKeys.ActivityView, toast, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         
