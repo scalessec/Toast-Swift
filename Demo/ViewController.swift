@@ -226,7 +226,7 @@ extension ViewController {
             
             // Make toast activity
             if !self.showingActivity {
-                self.navigationController?.view.makeToastActivity(.center)
+                self.navigationController?.view.makeToastActivity(.center, fullScreen: false)
             } else {
                 self.navigationController?.view.hideToastActivity()
             }

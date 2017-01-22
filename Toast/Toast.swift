@@ -271,13 +271,13 @@ public extension UIView {
     
      @param position The toast's position
      */
-    public func makeToastActivity(_ position: ToastPosition) {
+    public func makeToastActivity(_ position: ToastPosition, fullScreen: Bool) {
         // sanity
         if let _ = objc_getAssociatedObject(self, &ToastKeys.ActivityView) as? UIView {
             return
         }
-        
-        let toast = self.createToastActivityView()
+        var toast: UIView!
+        toast = self.createToastActivityView(fullScreen)
         let point = self.centerPointForPosition(position, toast: toast)
         self.makeToastActivity(toast, position: point)
     }
@@ -300,7 +300,7 @@ public extension UIView {
             return
         }
         
-        let toast = self.createToastActivityView()
+        let toast = self.createToastActivityView(false)
         self.makeToastActivity(toast, position: position)
     }
     
@@ -333,10 +333,10 @@ public extension UIView {
         }, completion: nil)
     }
     
-    private func createToastActivityView() -> UIView {
+    private func createToastActivityView(_ fullScreen: Bool) -> UIView {
         let style = ToastManager.shared.style
         
-        let activityView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: style.activitySize.width, height: style.activitySize.height))
+        let activityView = UIView(frame: UIScreen.main.bounds)
         activityView.backgroundColor = style.backgroundColor
         activityView.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin, .flexibleTopMargin, .flexibleBottomMargin]
         activityView.layer.cornerRadius = style.cornerRadius
