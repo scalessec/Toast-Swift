@@ -386,6 +386,14 @@ public extension UIView {
         self.hideToast(toast, fromTap: false)
     }
     
+    public func hideAllToasts() {
+        queue.removeAllObjects()
+        
+        if let activeToast = objc_getAssociatedObject(self, &ToastKeys.ActiveToast) as? UIView {
+            hideToast(activeToast)
+        }
+    }
+    
     private func hideToast(_ toast: UIView, fromTap: Bool) {
         
         UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: { () -> Void in
