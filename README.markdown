@@ -58,6 +58,9 @@ ToastManager.shared.style = style
 // toggle "tap to dismiss" functionality
 ToastManager.shared.tapToDismissEnabled = true
 
+// dismiss current toast and all queued toasts
+self.view.hideAllToasts()
+
 // toggle queueing behavior
 ToastManager.shared.queueEnabled = true
 ```
