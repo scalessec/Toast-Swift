@@ -178,17 +178,17 @@ extension ViewController {
         } else if (indexPath as NSIndexPath).row == 2 {
             
             // Make toast with a title
-            self.navigationController?.view.makeToast("This is a piece of toast with a title", duration: 2.0, position: .top, title: "Toast Title", image: nil, style: nil, completion: nil)
+            self.navigationController?.view.makeToast("This is a piece of toast with a title", duration: 2.0, position: .top, title: "Toast Title", image: nil)
             
         } else if (indexPath as NSIndexPath).row == 3 {
             
             // Make toast with an image
-            self.navigationController?.view.makeToast("This is a piece of toast with an image", duration: 2.0, position: .center, title: nil, image: UIImage(named: "toast.png"), style: nil, completion: nil)
+            self.navigationController?.view.makeToast("This is a piece of toast with an image", duration: 2.0, position: .center, title: nil, image: UIImage(named: "toast.png"))
             
         } else if (indexPath as NSIndexPath).row == 4 {
             
             // Make toast with an image, title, and completion closure
-            self.navigationController?.view.makeToast("This is a piece of toast with a title, image, and completion closure", duration: 2.0, position: .bottom, title: "Toast Title", image: UIImage(named: "toast.png"), style:nil) { (didTap: Bool) -> Void in
+            self.navigationController?.view.makeToast("This is a piece of toast with a title, image, and completion closure", duration: 2.0, position: .bottom, title: "Toast Title", image: UIImage(named: "toast.png")) { (didTap: Bool) -> Void in
                 if didTap {
                     print("completion from tap")
                 } else {
@@ -220,7 +220,7 @@ extension ViewController {
             // Show an imageView as toast, on center at point (110,110)
             let toastView = UIImageView(image: UIImage(named: "toast.png"))
             
-            self.navigationController?.view.showToast(toastView, duration: 2.0, center: CGPoint(x: 110.0, y: 110.0), completion: nil)
+            self.navigationController?.view.showToast(toastView, duration: 2.0, center: CGPoint(x: 110.0, y: 110.0))
             
         } else if (indexPath as NSIndexPath).row == 8 {
             
