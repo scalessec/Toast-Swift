@@ -220,7 +220,7 @@ extension ViewController {
             // Show an imageView as toast, on center at point (110,110)
             let toastView = UIImageView(image: UIImage(named: "toast.png"))
             
-            self.navigationController?.view.showToast(toastView, duration: 2.0, position: CGPoint(x: 110.0, y: 110.0), completion: nil)
+            self.navigationController?.view.showToast(toastView, duration: 2.0, center: CGPoint(x: 110.0, y: 110.0), completion: nil)
             
         } else if (indexPath as NSIndexPath).row == 8 {
             
