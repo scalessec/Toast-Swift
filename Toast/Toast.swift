@@ -2,7 +2,7 @@
 //  Toast.swift
 //  Toast-Swift
 //
-//  Copyright (c) 2015 Charles Scalesse.
+//  Copyright (c) 2017 Charles Scalesse.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the
@@ -25,12 +25,6 @@
 
 import UIKit
 import ObjectiveC
-
-public enum ToastPosition {
-    case top
-    case center
-    case bottom
-}
 
 /**
  Toast is a Swift extension that adds toast notifications to the `UIView` object class.
@@ -154,7 +148,7 @@ public extension UIView {
      didTap will be `true` if the toast view was dismissed from a tap.
      */
     public func showToast(_ toast: UIView, duration: TimeInterval = ToastManager.shared.duration, position: ToastPosition = ToastManager.shared.position, completion: ((_ didTap: Bool) -> Void)? = nil) {
-        let center = self.centerPointForPosition(position, toast: toast)
+        let center = position.centerPoint(forToast: toast, inSuperview: self)
         self.showToast(toast, duration: duration, center: center, completion: completion)
     }
     
@@ -203,7 +197,7 @@ public extension UIView {
         }
         
         let toast = self.createToastActivityView()
-        let center = self.centerPointForPosition(position, toast: toast)
+        let center = position.centerPoint(forToast: toast, inSuperview: self)
         self.makeToastActivity(toast, center: center)
     }
     
@@ -479,20 +473,6 @@ public extension UIView {
         return wrapperView
     }
     
-    // MARK: - Helpers
-
-    private func centerPointForPosition(_ position: ToastPosition, toast: UIView) -> CGPoint {
-        let padding: CGFloat = ToastManager.shared.style.verticalPadding
-        
-        switch(position) {
-        case .top:
-            return CGPoint(x: self.bounds.size.width / 2.0, y: (toast.frame.size.height / 2.0) + padding)
-        case .center:
-            return CGPoint(x: self.bounds.size.width / 2.0, y: self.bounds.size.height / 2.0)
-        case .bottom:
-            return CGPoint(x: self.bounds.size.width / 2.0, y: (self.bounds.size.height - (toast.frame.size.height / 2.0)) - padding)
-        }
-    }
 }
 
 // MARK: - Toast Style
@@ -653,17 +633,20 @@ public class ToastManager {
     
     /**
      The `ToastManager` singleton instance.
+     
      */
     public static let shared = ToastManager()
     
     /**
      The shared style. Used whenever toastViewForMessage(message:title:image:style:) is called
      with with a nil style.
+     
      */
     public var style = ToastStyle()
     
     /**
      Enables or disables tap to dismiss on toast views. Default is `true`.
+     
      */
     public var tapToDismissEnabled = true
     
@@ -673,6 +656,7 @@ public class ToastManager {
      views will appear at the same time (potentially overlapping depending
      on their positions). This has no effect on the toast activity view,
      which operates independently of normal toast views. Default is `true`.
+     
      */
     public var queueEnabled = true
     
@@ -680,6 +664,7 @@ public class ToastManager {
      The default duration. Used for the `makeToast` and
      `showToast` methods that don't require an explicit duration.
      Default is 3.0.
+     
      */
     public var duration: TimeInterval = 3.0
     
@@ -687,7 +672,29 @@ public class ToastManager {
      Sets the default position. Used for the `makeToast` and
      `showToast` methods that don't require an explicit position.
      Default is `ToastPosition.Bottom`.
+     
      */
     public var position = ToastPosition.bottom
     
+}
+
+// MARK: - ToastPosition
+
+public enum ToastPosition {
+    case top
+    case center
+    case bottom
+    
+    fileprivate func centerPoint(forToast toast: UIView, inSuperview superview: UIView) -> CGPoint {
+        let padding: CGFloat = ToastManager.shared.style.verticalPadding
+        
+        switch self {
+        case .top:
+            return CGPoint(x: superview.bounds.size.width / 2.0, y: (toast.frame.size.height / 2.0) + padding)
+        case .center:
+            return CGPoint(x: superview.bounds.size.width / 2.0, y: superview.bounds.size.height / 2.0)
+        case .bottom:
+            return CGPoint(x: superview.bounds.size.width / 2.0, y: (superview.bounds.size.height - (toast.frame.size.height / 2.0)) - padding)
+        }
+    }
 }
