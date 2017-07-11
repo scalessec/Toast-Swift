@@ -43,7 +43,7 @@ But wait, there's more!
 ---------
 ```swift
 // create a new style
-let style = ToastStyle()
+var style = ToastStyle()
 
 // this is just one of many style options
 style.messageColor = UIColor.blue
@@ -74,7 +74,7 @@ Setup Instructions
 To integrate Toast-Swift into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ``` ruby
-platform :ios, '8.0'
+platform :ios, '10.0'
 pod 'Toast-Swift', '~> 2.0.0'
 ```
 
@@ -97,17 +97,18 @@ Manually
 ------------------
 
 1. Add `Toast.swift` to your project.
-2. Link against QuartzCore.
+2. Grab yourself a cold 🍺.
 
 Compatibility
 ------------------
-* Version `2.0.0` and later requires Swift 3 and Xcode 8.
+* Version `3.0.0` and later requires Swift 4 and Xcode 9 *(coming soon)*.
+* Version `2.x.x` requires Swift 3 and Xcode 8.
 * Version `1.4.0` requires Swift 2.2 and Xcode 7.3. 
 * Version `1.0.0` can be used with Swift 2.1 and earlier versions of Xcode.
  
 MIT License
 -----------
-    Copyright (c) 2016 Charles Scalesse.
+    Copyright (c) 2017 Charles Scalesse.
 
     Permission is hereby granted, free of charge, to any person obtaining a
     copy of this software and associated documentation files (the
