@@ -27,10 +27,12 @@ import UIKit
 
 class ViewController: UITableViewController {
 
-    fileprivate let switchCellId = "ToastSwitchCellId"
-    fileprivate let demoCellId = "ToastDemoCellId"
-    
     fileprivate var showingActivity = false
+    
+    fileprivate struct ReuseIdentifiers {
+        static let switchCellId = "toastSwitchCell"
+        static let demoCellId = "toastDemoCell"
+    }
     
     // MARK: - Constructors
     
@@ -47,17 +49,17 @@ class ViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: demoCellId)
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: ReuseIdentifiers.demoCellId)
     }
     
     // MARK: - Events
     
     func handleTapToDismissToggled() {
-        ToastManager.shared.tapToDismissEnabled = !ToastManager.shared.tapToDismissEnabled
+        ToastManager.shared.isTapToDismissEnabled = !ToastManager.shared.isTapToDismissEnabled
     }
     
     func handleQueueToggled() {
-        ToastManager.shared.queueEnabled = !ToastManager.shared.queueEnabled
+        ToastManager.shared.isQueueEnabled = !ToastManager.shared.isQueueEnabled
     }
 }
 
@@ -94,16 +96,16 @@ extension ViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if (indexPath as NSIndexPath).section == 0 {
+        if indexPath.section == 0 {
+
+            var cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifiers.switchCellId)
             
-            var cell = tableView.dequeueReusableCell(withIdentifier: switchCellId)
-            
-            if (indexPath as NSIndexPath).row == 0 {
+            if indexPath.row == 0 {
                 if cell == nil {
-                    cell = UITableViewCell(style: .default, reuseIdentifier: switchCellId)
+                    cell = UITableViewCell(style: .default, reuseIdentifier: ReuseIdentifiers.switchCellId)
                     let tapToDismissSwitch = UISwitch()
                     tapToDismissSwitch.onTintColor = UIColor.blue
-                    tapToDismissSwitch.isOn = ToastManager.shared.tapToDismissEnabled
+                    tapToDismissSwitch.isOn = ToastManager.shared.isTapToDismissEnabled
                     tapToDismissSwitch.addTarget(self, action: #selector(ViewController.handleTapToDismissToggled), for: .valueChanged)
                     cell?.accessoryView = tapToDismissSwitch
                     cell?.selectionStyle = .none
@@ -112,10 +114,10 @@ extension ViewController {
                 cell?.textLabel?.text = "Tap to dismiss"
             } else {
                 if cell == nil {
-                    cell = UITableViewCell(style: .default, reuseIdentifier: switchCellId)
+                    cell = UITableViewCell(style: .default, reuseIdentifier: ReuseIdentifiers.switchCellId)
                     let queueSwitch = UISwitch()
                     queueSwitch.onTintColor = UIColor.blue
-                    queueSwitch.isOn = ToastManager.shared.queueEnabled
+                    queueSwitch.isOn = ToastManager.shared.isQueueEnabled
                     queueSwitch.addTarget(self, action: #selector(ViewController.handleQueueToggled), for: .valueChanged)
                     cell?.accessoryView = queueSwitch
                     cell?.selectionStyle = .none
@@ -128,29 +130,22 @@ extension ViewController {
             
         } else {
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: demoCellId, for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifiers.demoCellId, for: indexPath)
             cell.textLabel?.numberOfLines = 2
             cell.textLabel?.font = UIFont.systemFont(ofSize: 16.0)
             cell.accessoryType = .disclosureIndicator
             
-            if (indexPath as NSIndexPath).row == 0 {
-                cell.textLabel?.text = "Make toast"
-            } else if (indexPath as NSIndexPath).row == 1 {
-                cell.textLabel?.text = "Make toast on top for 3 seconds"
-            } else if (indexPath as NSIndexPath).row == 2 {
-                cell.textLabel?.text = "Make toast with a title"
-            } else if (indexPath as NSIndexPath).row == 3 {
-                cell.textLabel?.text = "Make toast with an image"
-            } else if (indexPath as NSIndexPath).row == 4 {
-                cell.textLabel?.text = "Make toast with a title, image, and completion block"
-            } else if (indexPath as NSIndexPath).row == 5 {
-                cell.textLabel?.text = "Make toast with a custom style"
-            } else if (indexPath as NSIndexPath).row == 6 {
-                cell.textLabel?.text = "Show a custom view as toast"
-            } else if (indexPath as NSIndexPath).row == 7 {
-                cell.textLabel?.text = "Show an image as toast at point\n(110, 110)"
-            } else if (indexPath as NSIndexPath).row == 8 {
-                cell.textLabel?.text = (self.showingActivity) ? "Hide toast activity" : "Show toast activity"
+            switch indexPath.row {
+            case 0: cell.textLabel?.text = "Make toast"
+            case 1: cell.textLabel?.text = "Make toast on top for 3 seconds"
+            case 2: cell.textLabel?.text = "Make toast with a title"
+            case 3: cell.textLabel?.text = "Make toast with an image"
+            case 4: cell.textLabel?.text = "Make toast with a title, image, and completion closure"
+            case 5: cell.textLabel?.text = "Make toast with a custom style"
+            case 6: cell.textLabel?.text = "Show a custom view as toast"
+            case 7: cell.textLabel?.text = "Show an image as toast at point\n(110, 110)"
+            case 8: cell.textLabel?.text = showingActivity ? "Hide toast activity" : "Show toast activity"
+            default: cell.textLabel?.text = nil
             }
             
             return cell
@@ -159,81 +154,63 @@ extension ViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (indexPath as NSIndexPath).section == 0 {
-            return
-        }
+        guard indexPath.section > 0 else { return }
         
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if (indexPath as NSIndexPath).row == 0 {
-            
+        switch indexPath.row {
+        case 0:
             // Make Toast
             self.navigationController?.view.makeToast("This is a piece of toast")
-            
-        } else if (indexPath as NSIndexPath).row == 1 {
-            
+        case 1:
             // Make toast with a duration and position
             self.navigationController?.view.makeToast("This is a piece of toast on top for 3 seconds", duration: 3.0, position: .top)
-            
-        } else if (indexPath as NSIndexPath).row == 2 {
-            
+        case 2:
             // Make toast with a title
             self.navigationController?.view.makeToast("This is a piece of toast with a title", duration: 2.0, position: .top, title: "Toast Title", image: nil)
-            
-        } else if (indexPath as NSIndexPath).row == 3 {
-            
+        case 3:
             // Make toast with an image
             self.navigationController?.view.makeToast("This is a piece of toast with an image", duration: 2.0, position: .center, title: nil, image: UIImage(named: "toast.png"))
-            
-        } else if (indexPath as NSIndexPath).row == 4 {
-            
+        case 4:
             // Make toast with an image, title, and completion closure
-            self.navigationController?.view.makeToast("This is a piece of toast with a title, image, and completion closure", duration: 2.0, position: .bottom, title: "Toast Title", image: UIImage(named: "toast.png")) { (didTap: Bool) -> Void in
+            self.navigationController?.view.makeToast("This is a piece of toast with a title, image, and completion closure", duration: 2.0, position: .bottom, title: "Toast Title", image: UIImage(named: "toast.png")) { didTap in
                 if didTap {
                     print("completion from tap")
                 } else {
                     print("completion without tap")
                 }
             }
-        
-        } else if (indexPath as NSIndexPath).row == 5 {
-            
+        case 5:
+            // Make toast with a custom style
             var style = ToastStyle()
             style.messageFont = UIFont(name: "Zapfino", size: 14.0)!
             style.messageColor = UIColor.red
             style.messageAlignment = .center
             style.backgroundColor = UIColor.yellow
-            
             self.navigationController?.view.makeToast("This is a piece of toast with a custom style", duration: 3.0, position: .bottom, style: style)
-            
-        } else if (indexPath as NSIndexPath).row == 6 {
-            
+        case 6:
             // Show a custom view as toast
             let customView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 80.0, height: 400.0))
             customView.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin, .flexibleTopMargin, .flexibleBottomMargin]
             customView.backgroundColor = UIColor.blue
-            
-            self.navigationController?.view.showToast(customView, duration: 2.0, position: .center, completion:nil)
-            
-        } else if (indexPath as NSIndexPath).row == 7 {
-            
-            // Show an imageView as toast, on center at point (110,110)
+            self.navigationController?.view.showToast(customView, duration: 2.0, position: .center)
+        case 7:
+            // Show an image view as toast, on center at point (110,110)
             let toastView = UIImageView(image: UIImage(named: "toast.png"))
-            
             self.navigationController?.view.showToast(toastView, duration: 2.0, center: CGPoint(x: 110.0, y: 110.0))
-            
-        } else if (indexPath as NSIndexPath).row == 8 {
-            
+        case 8:
             // Make toast activity
-            if !self.showingActivity {
+            if !showingActivity {
                 self.navigationController?.view.makeToastActivity(.center)
             } else {
                 self.navigationController?.view.hideToastActivity()
             }
             
-            self.showingActivity = !self.showingActivity
+            showingActivity = !showingActivity
             
             tableView.reloadData()
+        default:
+            break
         }
     }
 }

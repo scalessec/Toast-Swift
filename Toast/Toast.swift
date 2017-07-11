@@ -156,7 +156,7 @@ public extension UIView {
     public func showToast(_ toast: UIView, duration: TimeInterval = ToastManager.shared.duration, center: CGPoint, completion: ((_ didTap: Bool) -> Void)? = nil) {
         objc_setAssociatedObject(toast, &ToastKeys.completion, ToastCompletionWrapper(completion), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         
-        if let _ = objc_getAssociatedObject(self, &ToastKeys.activeToast) as? UIView, ToastManager.shared.queueEnabled {
+        if let _ = objc_getAssociatedObject(self, &ToastKeys.activeToast) as? UIView, ToastManager.shared.isQueueEnabled {
             objc_setAssociatedObject(toast, &ToastKeys.duration, NSNumber(value: duration), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
             objc_setAssociatedObject(toast, &ToastKeys.center, NSValue(cgPoint: center), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
             
@@ -271,7 +271,7 @@ public extension UIView {
         toast.center = center
         toast.alpha = 0.0
         
-        if ToastManager.shared.tapToDismissEnabled {
+        if ToastManager.shared.isTapToDismissEnabled {
             let recognizer = UITapGestureRecognizer(target: self, action: #selector(UIView.handleToastTapped(_:)))
             toast.addGestureRecognizer(recognizer)
             toast.isUserInteractionEnabled = true
@@ -638,7 +638,7 @@ public class ToastManager {
      Enables or disables tap to dismiss on toast views. Default is `true`.
      
      */
-    public var tapToDismissEnabled = true
+    public var isTapToDismissEnabled = true
     
     /**
      Enables or disables queueing behavior for toast views. When `true`,
@@ -648,7 +648,7 @@ public class ToastManager {
      which operates independently of normal toast views. Default is `true`.
      
      */
-    public var queueEnabled = true
+    public var isQueueEnabled = true
     
     /**
      The default duration. Used for the `makeToast` and
