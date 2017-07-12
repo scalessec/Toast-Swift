@@ -96,8 +96,8 @@ public extension UIView {
      */
     public func makeToast(_ message: String?, duration: TimeInterval = ToastManager.shared.duration, position: ToastPosition = ToastManager.shared.position, title: String? = nil, image: UIImage? = nil, style: ToastStyle = ToastManager.shared.style, completion: ((_ didTap: Bool) -> Void)? = nil) {
         do {
-            let toast = try self.toastViewForMessage(message, title: title, image: image, style: style)
-            self.showToast(toast, duration: duration, position: position, completion: completion)
+            let toast = try toastViewForMessage(message, title: title, image: image, style: style)
+            showToast(toast, duration: duration, position: position, completion: completion)
         } catch ToastError.insufficientData {
             print("Error: message, title, and image are all nil")
         } catch {}
@@ -117,8 +117,8 @@ public extension UIView {
      */
     public func makeToast(_ message: String?, duration: TimeInterval = ToastManager.shared.duration, point: CGPoint, title: String?, image: UIImage?, style: ToastStyle = ToastManager.shared.style, completion: ((_ didTap: Bool) -> Void)?) {
         do {
-            let toast = try self.toastViewForMessage(message, title: title, image: image, style: style)
-            self.showToast(toast, duration: duration, point: point, completion: completion)
+            let toast = try toastViewForMessage(message, title: title, image: image, style: style)
+            showToast(toast, duration: duration, point: point, completion: completion)
         } catch ToastError.insufficientData {
             print("Error: message, title, and image cannot all be nil")
         } catch {}
@@ -139,7 +139,7 @@ public extension UIView {
      */
     public func showToast(_ toast: UIView, duration: TimeInterval = ToastManager.shared.duration, position: ToastPosition = ToastManager.shared.position, completion: ((_ didTap: Bool) -> Void)? = nil) {
         let point = position.centerPoint(forToast: toast, inSuperview: self)
-        self.showToast(toast, duration: duration, point: point, completion: completion)
+        showToast(toast, duration: duration, point: point, completion: completion)
     }
     
     /**
@@ -160,9 +160,9 @@ public extension UIView {
             objc_setAssociatedObject(toast, &ToastKeys.duration, NSNumber(value: duration), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
             objc_setAssociatedObject(toast, &ToastKeys.point, NSValue(cgPoint: point), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
             
-            self.queue.add(toast)
+            queue.add(toast)
         } else {
-            self.showToast(toast, duration: duration, point: point)
+            showToast(toast, duration: duration, point: point)
         }
     }
     
@@ -202,9 +202,9 @@ public extension UIView {
             return
         }
         
-        let toast = self.createToastActivityView()
+        let toast = createToastActivityView()
         let point = position.centerPoint(forToast: toast, inSuperview: self)
-        self.makeToastActivity(toast, point: point)
+        makeToastActivity(toast, point: point)
     }
     
     /**
@@ -225,8 +225,8 @@ public extension UIView {
             return
         }
         
-        let toast = self.createToastActivityView()
-        self.makeToastActivity(toast, point: point)
+        let toast = createToastActivityView()
+        makeToastActivity(toast, point: point)
     }
     
     /**
@@ -308,14 +308,14 @@ public extension UIView {
     }
     
     private func hideToast(_ toast: UIView) {
-        self.hideToast(toast, fromTap: false)
+        hideToast(toast, fromTap: false)
     }
     
     private func hideToast(_ toast: UIView, fromTap: Bool) {
         
         UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: { () -> Void in
             toast.alpha = 0.0
-        }) { (didFinish: Bool) -> Void in
+        }) { didFinish in
             toast.removeFromSuperview()
             
             objc_setAssociatedObject(self, &ToastKeys.activeToast, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -336,13 +336,13 @@ public extension UIView {
     func handleToastTapped(_ recognizer: UITapGestureRecognizer) {
         if let toast = recognizer.view, let timer = objc_getAssociatedObject(toast, &ToastKeys.timer) as? Timer {
             timer.invalidate()
-            self.hideToast(toast, fromTap: true)
+            hideToast(toast, fromTap: true)
         }
     }
     
     func toastTimerDidFinish(_ timer: Timer) {
         if let toast = timer.userInfo as? UIView {
-            self.hideToast(toast)
+            hideToast(toast)
         }
     }
     
