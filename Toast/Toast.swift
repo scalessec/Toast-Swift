@@ -104,7 +104,7 @@ public extension UIView {
     }
     
     /**
-     Creates a new toast view and presents it at a given point.
+     Creates a new toast view and presents it at a given center point.
      
      @param message The message to be displayed
      @param duration The toast duration
@@ -143,7 +143,7 @@ public extension UIView {
     }
     
     /**
-     Displays any view as toast at a provided position and duration. The completion closure
+     Displays any view as toast at a provided center point and duration. The completion closure
      executes when the toast view completes. `didTap` will be `true` if the toast view was
      dismissed from a tap.
      
@@ -170,6 +170,8 @@ public extension UIView {
     
     /**
      Hides all toast views and clears the queue.
+     
+     // @TODO: FIXME: this doesn't work then there's more than 1 active toast in the view
      
     */
     public func hideAllToasts() {
