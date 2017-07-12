@@ -54,11 +54,11 @@ class ViewController: UITableViewController {
     
     // MARK: - Events
     
-    func handleTapToDismissToggled() {
+    @objc func handleTapToDismissToggled() {
         ToastManager.shared.isTapToDismissEnabled = !ToastManager.shared.isTapToDismissEnabled
     }
     
-    func handleQueueToggled() {
+    @objc func handleQueueToggled() {
         ToastManager.shared.isQueueEnabled = !ToastManager.shared.isQueueEnabled
     }
 }
