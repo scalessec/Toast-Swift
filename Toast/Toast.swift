@@ -166,6 +166,20 @@ public extension UIView {
         }
     }
     
+    // MARK: - Hide Toast Methods
+    
+    /**
+     Hides all toast views and clears the queue.
+     
+    */
+    public func hideAllToasts() {
+        queue.removeAllObjects()
+        
+        if let activeToast = objc_getAssociatedObject(self, &ToastKeys.activeToast) as? UIView {
+            hideToast(activeToast)
+        }
+    }
+    
     // MARK: - Activity Methods
     
     /**
@@ -293,14 +307,6 @@ public extension UIView {
     
     private func hideToast(_ toast: UIView) {
         self.hideToast(toast, fromTap: false)
-    }
-    
-    public func hideAllToasts() {
-        queue.removeAllObjects()
-        
-        if let activeToast = objc_getAssociatedObject(self, &ToastKeys.ActiveToast) as? UIView {
-            hideToast(activeToast)
-        }
     }
     
     private func hideToast(_ toast: UIView, fromTap: Bool) {
