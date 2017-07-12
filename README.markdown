@@ -24,7 +24,7 @@ self.view.makeToast("This is a piece of toast")
 self.view.makeToast("This is a piece of toast", duration: 3.0, position: .top)
 
 // toast presented at a specific point and with a completion closure
-self.view.makeToast("This is a piece of toast", duration: 2.0, position: CGPoint(x: 110.0, y: 110.0), title: "Toast Title", image: UIImage(named: "toast.png")) { didTap in
+self.view.makeToast("This is a piece of toast", duration: 2.0, point: CGPoint(x: 110.0, y: 110.0), title: "Toast Title", image: UIImage(named: "toast.png")) { didTap in
     if didTap {
         print("completion from tap")
     } else {
