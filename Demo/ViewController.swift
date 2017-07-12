@@ -197,7 +197,7 @@ extension ViewController {
         case 7:
             // Show an image view as toast, on center at point (110,110)
             let toastView = UIImageView(image: UIImage(named: "toast.png"))
-            self.navigationController?.view.showToast(toastView, duration: 2.0, center: CGPoint(x: 110.0, y: 110.0))
+            self.navigationController?.view.showToast(toastView, duration: 2.0, point: CGPoint(x: 110.0, y: 110.0))
         case 8:
             // Make toast activity
             if !showingActivity {
