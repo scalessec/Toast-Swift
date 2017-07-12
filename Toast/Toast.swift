@@ -329,13 +329,15 @@ public extension UIView {
     
     // MARK: - Events
     
-    @objc func handleToastTapped(_ recognizer: UITapGestureRecognizer) {
+    @objc
+    private func handleToastTapped(_ recognizer: UITapGestureRecognizer) {
         guard let toast = recognizer.view, let timer = objc_getAssociatedObject(toast, &ToastKeys.timer) as? Timer else { return }
         timer.invalidate()
         hideToast(toast, fromTap: true)
     }
     
-    @objc func toastTimerDidFinish(_ timer: Timer) {
+    @objc
+    private func toastTimerDidFinish(_ timer: Timer) {
         guard let toast = timer.userInfo as? UIView else { return }
         hideToast(toast)
     }
