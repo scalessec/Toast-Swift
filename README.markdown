@@ -54,6 +54,7 @@ self.view.makeToast("This is a piece of toast", duration: 3.0, position: .bottom
 // or perhaps you want to use this style for all toasts going forward?
 // just set the shared style and there's no need to provide the style again
 ToastManager.shared.style = style
+self.view.makeToast("This is a piece of toast") // now uses the shared style
 
 // toggle "tap to dismiss" functionality
 ToastManager.shared.tapToDismissEnabled = true
