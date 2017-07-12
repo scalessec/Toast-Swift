@@ -59,6 +59,9 @@ self.view.makeToast("This is a piece of toast") // now uses the shared style
 // toggle "tap to dismiss" functionality
 ToastManager.shared.tapToDismissEnabled = true
 
+// dismiss current toast and all queued toasts
+self.view.hideAllToasts()
+
 // toggle queueing behavior
 ToastManager.shared.queueEnabled = true
 ```
