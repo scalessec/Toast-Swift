@@ -42,13 +42,13 @@ public extension UIView {
      Keys used for associated objects.
      */
     private struct ToastKeys {
-        static var timer        = "CSToastTimerKey"
-        static var duration     = "CSToastDurationKey"
-        static var point        = "CSToastPointKey"
-        static var completion   = "CSToastCompletionKey"
-        static var activeToast  = "CSToastActiveToastKey"
-        static var activityView = "CSToastActivityViewKey"
-        static var queue        = "CSToastQueueKey"
+        static var timer        = "com.toast-swift.timer"
+        static var duration     = "com.toast-swift.duration"
+        static var point        = "com.toast-swift.point"
+        static var completion   = "com.toast-swift.completion"
+        static var activeToast  = "com.toast-swift.activeToast"
+        static var activityView = "com.toast-swift.activityView"
+        static var queue        = "com.toast-swift.queue"
     }
     
     /**
