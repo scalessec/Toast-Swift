@@ -46,7 +46,7 @@ But wait, there's more!
 var style = ToastStyle()
 
 // this is just one of many style options
-style.messageColor = UIColor.blue
+style.messageColor = .blue
 
 // present the toast with the new style
 self.view.makeToast("This is a piece of toast", duration: 3.0, position: .bottom, style: style)
