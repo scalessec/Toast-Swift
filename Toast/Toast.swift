@@ -408,7 +408,8 @@ public extension UIView {
             let maxTitleSize = CGSize(width: (self.bounds.size.width * style.maxWidthPercentage) - imageRect.size.width, height: self.bounds.size.height * style.maxHeightPercentage)
             let titleSize = titleLabel?.sizeThatFits(maxTitleSize)
             if let titleSize = titleSize {
-                titleLabel?.frame = CGRect(x: 0.0, y: 0.0, width: titleSize.width, height: titleSize.height)
+                let actualHeight = min(titleSize.height, maxTitleSize.height)
+                titleLabel?.frame = CGRect(x: 0.0, y: 0.0, width: maxTitleSize.width, height: actualHeight)     
             }
         }
         
@@ -425,9 +426,8 @@ public extension UIView {
             let maxMessageSize = CGSize(width: (self.bounds.size.width * style.maxWidthPercentage) - imageRect.size.width, height: self.bounds.size.height * style.maxHeightPercentage)
             let messageSize = messageLabel?.sizeThatFits(maxMessageSize)
             if let messageSize = messageSize {
-                let actualWidth = min(messageSize.width, maxMessageSize.width)
                 let actualHeight = min(messageSize.height, maxMessageSize.height)
-                messageLabel?.frame = CGRect(x: 0.0, y: 0.0, width: actualWidth, height: actualHeight)
+                messageLabel?.frame = CGRect(x: 0.0, y: 0.0, width: maxMessageSize.width, height: actualHeight)
             }
         }
   
