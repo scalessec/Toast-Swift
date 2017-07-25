@@ -171,7 +171,7 @@ extension ViewController {
             // Centering a short label (as title or message) was not possible before, works correctly now.
             style.titleAlignment = .center
             style.messageAlignment = .center
-            self.navigationController?.view.makeToast("This is a piece of toast with a title", duration: 2.0, position: .top, title: "Toast Title", image: nil, style: style
+            self.navigationController?.view.makeToast("This is a piece of toast with a title", duration: 2.0, position: .top, title: "Toast Title", image: nil, style: style)
         case 3:
             // Make toast with an image
             self.navigationController?.view.makeToast("This is a piece of toast with an image", duration: 2.0, position: .center, title: nil, image: UIImage(named: "toast.png"))
