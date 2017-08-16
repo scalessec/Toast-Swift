@@ -258,7 +258,7 @@ public extension UIView {
         let style = ToastManager.shared.style
         
         let activityView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: style.activitySize.width, height: style.activitySize.height))
-        activityView.backgroundColor = style.backgroundColor
+        activityView.backgroundColor = style.activityBackgroundColor
         activityView.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin, .flexibleTopMargin, .flexibleBottomMargin]
         activityView.layer.cornerRadius = style.cornerRadius
         
@@ -272,6 +272,7 @@ public extension UIView {
         let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
         activityIndicatorView.center = CGPoint(x: activityView.bounds.size.width / 2.0, y: activityView.bounds.size.height / 2.0)
         activityView.addSubview(activityIndicatorView)
+        activityIndicatorView.color = style.activityIndicatorColor
         activityIndicatorView.startAnimating()
         
         return activityView
@@ -620,6 +621,16 @@ public struct ToastStyle {
      The fade in/out animation duration. Default is 0.2.
      */
     public var fadeDuration: TimeInterval = 0.2
+    
+    /**
+     Activity indicator color. Default is white.
+     */
+    public var activityIndicatorColor = UIColor.white
+    
+    /**
+     Activity background color. Default is `UIColor.blackColor()` at 80% opacity.
+     */
+    public var activityBackgroundColor = UIColor.black.withAlphaComponent(0.8)
     
 }
 
