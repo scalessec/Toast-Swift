@@ -198,7 +198,9 @@ public extension UIView {
      */
     public func makeToastActivity(_ position: ToastPosition) {
         // sanity
-        guard let _ = objc_getAssociatedObject(self, &ToastKeys.activityView) as? UIView else { return }
+        if let _ = objc_getAssociatedObject(self, &ToastKeys.activityView) as? UIView {
+            return
+        }
         
         let toast = createToastActivityView()
         let point = position.centerPoint(forToast: toast, inSuperview: self)
@@ -219,7 +221,9 @@ public extension UIView {
      */
     public func makeToastActivity(_ point: CGPoint) {
         // sanity
-        guard let _ = objc_getAssociatedObject(self, &ToastKeys.activityView) as? UIView else { return }
+        if let _ = objc_getAssociatedObject(self, &ToastKeys.activityView) as? UIView {
+            return
+        }
         
         let toast = createToastActivityView()
         makeToastActivity(toast, point: point)
@@ -330,14 +334,16 @@ public extension UIView {
     // MARK: - Events
     
     func handleToastTapped(_ recognizer: UITapGestureRecognizer) {
-        guard let toast = recognizer.view, let timer = objc_getAssociatedObject(toast, &ToastKeys.timer) as? Timer else { return }
-        timer.invalidate()
-        hideToast(toast, fromTap: true)
+        if let toast = recognizer.view, let timer = objc_getAssociatedObject(toast, &ToastKeys.timer) as? Timer {
+            timer.invalidate()
+            hideToast(toast, fromTap: true)
+        }
     }
     
     func toastTimerDidFinish(_ timer: Timer) {
-        guard let toast = timer.userInfo as? UIView else { return }
-        hideToast(toast)
+        if let toast = timer.userInfo as? UIView {
+            hideToast(toast)
+        }
     }
     
     // MARK: - Toast Construction
@@ -360,7 +366,7 @@ public extension UIView {
     */
     public func toastViewForMessage(_ message: String?, title: String?, image: UIImage?, style: ToastStyle) throws -> UIView {
         // sanity
-        guard message != nil || title != nil || image != nil else {
+        if message == nil && title == nil && image == nil {
             throw ToastError.insufficientData
         }
         
