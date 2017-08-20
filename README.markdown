@@ -17,6 +17,7 @@ Screenshots
 Basic Examples
 ---------
 ```swift
+import Toast_Swift
 // basic usage
 self.view.makeToast("This is a piece of toast")
 
