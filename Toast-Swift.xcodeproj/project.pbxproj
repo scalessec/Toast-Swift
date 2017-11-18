@@ -11,7 +11,7 @@
 		151796ED1BE68E4B004BA6E5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151796EC1BE68E4B004BA6E5 /* ViewController.swift */; };
 		151796F21BE68E4B004BA6E5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 151796F11BE68E4B004BA6E5 /* Assets.xcassets */; };
 		151797001BE69026004BA6E5 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151796FF1BE69026004BA6E5 /* Toast.swift */; };
-		158ED7801FC085FE00CA62DC /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 158ED77F1FC085FE00CA62DC /* Launch Screen.storyboard */; };
+		15FC18381FC0877300C57AFA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 15FC18371FC0877300C57AFA /* LaunchScreen.storyboard */; };
 		2A3743511CBFAF4B006A3BAB /* Toast-Swift-Framework.h in Headers */ = {isa = PBXBuildFile; fileRef = 2A3743501CBFAF4B006A3BAB /* Toast-Swift-Framework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2A3743561CBFAF94006A3BAB /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151796FF1BE69026004BA6E5 /* Toast.swift */; };
 /* End PBXBuildFile section */
@@ -23,7 +23,7 @@
 		151796F11BE68E4B004BA6E5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Demo/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		151796F61BE68E4B004BA6E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Demo/Info.plist; sourceTree = "<group>"; };
 		151796FF1BE69026004BA6E5 /* Toast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Toast.swift; path = Toast/Toast.swift; sourceTree = SOURCE_ROOT; };
-		158ED77F1FC085FE00CA62DC /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "Launch Screen.storyboard"; path = "Demo/Launch Screen.storyboard"; sourceTree = "<group>"; };
+		15FC18371FC0877300C57AFA /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Demo/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2A37434E1CBFAF4B006A3BAB /* ToastSwiftFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ToastSwiftFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A3743501CBFAF4B006A3BAB /* Toast-Swift-Framework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Toast-Swift-Framework.h"; sourceTree = "<group>"; };
 		2A3743521CBFAF4C006A3BAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -97,7 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				151796F11BE68E4B004BA6E5 /* Assets.xcassets */,
-				158ED77F1FC085FE00CA62DC /* Launch Screen.storyboard */,
+				15FC18371FC0877300C57AFA /* LaunchScreen.storyboard */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -205,8 +205,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				158ED7801FC085FE00CA62DC /* Launch Screen.storyboard in Resources */,
 				151796F21BE68E4B004BA6E5 /* Assets.xcassets in Resources */,
+				15FC18381FC0877300C57AFA /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
