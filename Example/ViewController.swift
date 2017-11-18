@@ -30,8 +30,8 @@ class ViewController: UITableViewController {
     fileprivate var showingActivity = false
     
     fileprivate struct ReuseIdentifiers {
-        static let switchCellId = "toastSwitchCell"
-        static let demoCellId = "toastDemoCell"
+        static let switchCellId = "switchCell"
+        static let exampleCellId = "exampleCell"
     }
     
     // MARK: - Constructors
@@ -49,7 +49,7 @@ class ViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: ReuseIdentifiers.demoCellId)
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: ReuseIdentifiers.exampleCellId)
     }
     
     // MARK: - Events
@@ -93,7 +93,7 @@ extension ViewController {
         if section == 0 {
             return "SETTINGS"
         } else {
-            return "DEMOS"
+            return "EXAMPLES"
         }
     }
     
@@ -132,7 +132,7 @@ extension ViewController {
             
         } else {
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifiers.demoCellId, for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifiers.exampleCellId, for: indexPath)
             cell.textLabel?.numberOfLines = 2
             cell.textLabel?.font = UIFont.systemFont(ofSize: 16.0)
             cell.accessoryType = .disclosureIndicator
