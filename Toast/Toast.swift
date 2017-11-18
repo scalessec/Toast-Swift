@@ -716,10 +716,10 @@ public class ToastManager {
      toast views will appear one after the other. When `false`, multiple toast
      views will appear at the same time (potentially overlapping depending
      on their positions). This has no effect on the toast activity view,
-     which operates independently of normal toast views. Default is `true`.
+     which operates independently of normal toast views. Default is `false`.
      
      */
-    public var isQueueEnabled = true
+    public var isQueueEnabled = false
     
     /**
      The default duration. Used for the `makeToast` and
