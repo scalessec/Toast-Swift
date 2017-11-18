@@ -65,7 +65,7 @@ public extension UIView {
     }
     
     private enum ToastError: Error {
-        case insufficientData
+        case missingParameters
     }
     
     private var queue: NSMutableArray {
@@ -98,7 +98,7 @@ public extension UIView {
         do {
             let toast = try toastViewForMessage(message, title: title, image: image, style: style)
             showToast(toast, duration: duration, position: position, completion: completion)
-        } catch ToastError.insufficientData {
+        } catch ToastError.missingParameters {
             print("Error: message, title, and image are all nil")
         } catch {}
     }
@@ -119,7 +119,7 @@ public extension UIView {
         do {
             let toast = try toastViewForMessage(message, title: title, image: image, style: style)
             showToast(toast, duration: duration, point: point, completion: completion)
-        } catch ToastError.insufficientData {
+        } catch ToastError.missingParameters {
             print("Error: message, title, and image cannot all be nil")
         } catch {}
     }
@@ -363,7 +363,7 @@ public extension UIView {
     public func toastViewForMessage(_ message: String?, title: String?, image: UIImage?, style: ToastStyle) throws -> UIView {
         // sanity
         guard message != nil || title != nil || image != nil else {
-            throw ToastError.insufficientData
+            throw ToastError.missingParameters
         }
         
         var messageLabel: UILabel?
