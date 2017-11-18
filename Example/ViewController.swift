@@ -26,7 +26,7 @@
 import UIKit
 
 class ViewController: UITableViewController {
-
+    
     fileprivate var showingActivity = false
     
     fileprivate struct ReuseIdentifiers {
@@ -40,7 +40,7 @@ class ViewController: UITableViewController {
         super.init(style: style)
         self.title = "Toast-Swift"
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("not used")
     }
@@ -99,7 +99,7 @@ extension ViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-
+            
             var cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifiers.switchCellId)
             
             if indexPath.row == 0 {
@@ -163,12 +163,10 @@ extension ViewController {
         switch indexPath.row {
         case 0:
             // Make Toast
-            //;.self.navigationController?.view.makeToast("This is a piece of toast")
-            self.navigationController?.view.hideAllToasts()
+            self.navigationController?.view.makeToast("This is a piece of toast")
         case 1:
-            self.navigationController?.view.makeToast("This is a piece of toast on the bottom for 1 second", duration: 10.0, position: .bottom)
-            self.navigationController?.view.makeToast("This is a piece of toast on the bottom for 1 second", duration: 10.0, position: .center)
-            self.navigationController?.view.makeToast("This is a piece of toast on the bottom for 1 second", duration: 10.0, position: .top)
+            // Make toast with a duration and position
+            self.navigationController?.view.makeToast("This is a piece of toast on top for 3 seconds", duration: 3.0, position: .top)
         case 2:
             // Make toast with a title
             self.navigationController?.view.makeToast("This is a piece of toast with a title", duration: 2.0, position: .top, title: "Toast Title", image: nil)
@@ -218,3 +216,4 @@ extension ViewController {
         }
     }
 }
+

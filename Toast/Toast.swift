@@ -181,6 +181,21 @@ public extension UIView {
     // MARK: - Hide Toast Methods
     
     /**
+     Hides the active toast. If there are mutiple toasts active in a view, this method
+     hides the oldest toast (the first of the three to have been presented).
+     
+     @see `hideAllToasts()` to remove all active toasts from a view.
+     
+     @warning This method has no effect on activity toasts. Use `hideToastActivity` to
+     hide activity toasts.
+     
+    */
+    public func hideToast() {
+        guard let activeToast = activeToasts.firstObject as? UIView else { return }
+        hideToast(activeToast)
+    }
+    
+    /**
      Hides all toast views and clears the queue.
      
      @param includeActivity If `true`, toast activity will also be hidden. Default is `false`.
