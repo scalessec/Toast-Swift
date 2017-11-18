@@ -46,7 +46,7 @@ public extension UIView {
         static var duration     = "com.toast-swift.duration"
         static var point        = "com.toast-swift.point"
         static var completion   = "com.toast-swift.completion"
-        static var activeToast  = "com.toast-swift.activeToast"
+        static var activeToasts = "com.toast-swift.activeToasts"
         static var activityView = "com.toast-swift.activityView"
         static var queue        = "com.toast-swift.queue"
     }
@@ -66,6 +66,18 @@ public extension UIView {
     
     private enum ToastError: Error {
         case missingParameters
+    }
+    
+    private var activeToasts: NSMutableArray {
+        get {
+            if let activeToasts = objc_getAssociatedObject(self, &ToastKeys.activeToasts) as? NSMutableArray {
+                return activeToasts
+            } else {
+                let activeToasts = NSMutableArray()
+                objc_setAssociatedObject(self, &ToastKeys.activeToasts, activeToasts, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                return activeToasts
+            }
+        }
     }
     
     private var queue: NSMutableArray {
@@ -156,7 +168,7 @@ public extension UIView {
     public func showToast(_ toast: UIView, duration: TimeInterval = ToastManager.shared.duration, point: CGPoint, completion: ((_ didTap: Bool) -> Void)? = nil) {
         objc_setAssociatedObject(toast, &ToastKeys.completion, ToastCompletionWrapper(completion), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         
-        if let _ = objc_getAssociatedObject(self, &ToastKeys.activeToast) as? UIView, ToastManager.shared.isQueueEnabled {
+        if ToastManager.shared.isQueueEnabled, activeToasts.count > 0 {
             objc_setAssociatedObject(toast, &ToastKeys.duration, NSNumber(value: duration), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
             objc_setAssociatedObject(toast, &ToastKeys.point, NSValue(cgPoint: point), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
             
@@ -171,15 +183,18 @@ public extension UIView {
     /**
      Hides all toast views and clears the queue.
      
-     // @TODO: FIXME: this doesn't work then there's more than 1 active toast in the view
-     
     */
     public func hideAllToasts() {
         queue.removeAllObjects()
         
-        if let activeToast = objc_getAssociatedObject(self, &ToastKeys.activeToast) as? UIView {
-            hideToast(activeToast)
-        }
+        // remove the queue association now that we're empty
+        objc_removeAssociatedObjects(ToastKeys.queue)
+        
+        activeToasts.flatMap { $0 as? UIView }
+                    .forEach { hideToast($0) }
+        
+        // remove the active toasts association now that we're empty
+        objc_removeAssociatedObjects(ToastKeys.activeToasts)
     }
     
     // MARK: - Activity Methods
@@ -291,8 +306,7 @@ public extension UIView {
             toast.isExclusiveTouch = true
         }
         
-        objc_setAssociatedObject(self, &ToastKeys.activeToast, toast, .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        
+        activeToasts.add(toast)
         self.addSubview(toast)
         
         UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.curveEaseOut, .allowUserInteraction], animations: {
@@ -314,15 +328,25 @@ public extension UIView {
             toast.alpha = 0.0
         }) { _ in
             toast.removeFromSuperview()
+            self.activeToasts.remove(toast)
             
-            objc_setAssociatedObject(self, &ToastKeys.activeToast, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            if self.activeToasts.count == 0 {
+                // remove the active toasts association now that we're empty
+                objc_removeAssociatedObjects(ToastKeys.activeToasts)
+            }
             
             if let wrapper = objc_getAssociatedObject(toast, &ToastKeys.completion) as? ToastCompletionWrapper, let completion = wrapper.completion {
                 completion(fromTap)
             }
             
             if let nextToast = self.queue.firstObject as? UIView, let duration = objc_getAssociatedObject(nextToast, &ToastKeys.duration) as? NSNumber, let point = objc_getAssociatedObject(nextToast, &ToastKeys.point) as? NSValue {
+                
                 self.queue.removeObject(at: 0)
+                if self.queue.count == 0 {
+                    // remove the queue association now that we're empty
+                    objc_removeAssociatedObjects(ToastKeys.queue)
+                }
+                
                 self.showToast(nextToast, duration: duration.doubleValue, point: point.cgPointValue)
             }
         }
