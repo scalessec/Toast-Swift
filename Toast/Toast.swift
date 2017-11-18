@@ -579,13 +579,15 @@ public struct ToastStyle {
      The spacing from the horizontal edge of the toast view to the content. When an image
      is present, this is also used as the padding between the image and the text.
      Default is 10.0.
+     
     */
     public var horizontalPadding: CGFloat = 10.0
     
     /**
      The spacing from the vertical edge of the toast view to the content. When a title
      is present, this is also used as the padding between the title and the message.
-     Default is 10.0.
+     Default is 10.0. On iOS11+, this value is added added to the `safeAreaInset.top`
+     and `safeAreaInsets.bottom`.
     */
     public var verticalPadding: CGFloat = 10.0
     
