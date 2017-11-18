@@ -541,19 +541,19 @@ public struct ToastStyle {
     public init() {}
     
     /**
-     The background color. Default is `UIColor.blackColor()` at 80% opacity.
+     The background color. Default is `.black` at 80% opacity.
     */
-    public var backgroundColor = UIColor.black.withAlphaComponent(0.8)
+    public var backgroundColor: UIColor = UIColor.black.withAlphaComponent(0.8)
     
     /**
      The title color. Default is `UIColor.whiteColor()`.
     */
-    public var titleColor = UIColor.white
+    public var titleColor: UIColor = .white
     
     /**
-     The message color. Default is `UIColor.whiteColor()`.
+     The message color. Default is `.white`.
     */
-    public var messageColor = UIColor.white
+    public var messageColor: UIColor = .white
     
     /**
      A percentage value from 0.0 to 1.0, representing the maximum width of the toast
@@ -595,24 +595,24 @@ public struct ToastStyle {
     public var cornerRadius: CGFloat = 10.0;
     
     /**
-     The title font. Default is `UIFont.boldSystemFontOfSize(16.0)`.
+     The title font. Default is `.boldSystemFont(16.0)`.
     */
-    public var titleFont = UIFont.boldSystemFont(ofSize: 16.0)
+    public var titleFont: UIFont = .boldSystemFont(ofSize: 16.0)
     
     /**
-     The message font. Default is `UIFont.systemFontOfSize(16.0)`.
+     The message font. Default is `.systemFont(ofSize: 16.0)`.
     */
-    public var messageFont = UIFont.systemFont(ofSize: 16.0)
+    public var messageFont: UIFont = .systemFont(ofSize: 16.0)
     
     /**
      The title text alignment. Default is `NSTextAlignment.Left`.
     */
-    public var titleAlignment = NSTextAlignment.left
+    public var titleAlignment: NSTextAlignment = .left
     
     /**
      The message text alignment. Default is `NSTextAlignment.Left`.
     */
-    public var messageAlignment = NSTextAlignment.left
+    public var messageAlignment: NSTextAlignment = .left
     
     /**
      The maximum number of lines for the title. The default is 0 (no limit).
@@ -630,9 +630,9 @@ public struct ToastStyle {
     public var displayShadow = false
     
     /**
-     The shadow color. Default is `UIColor.blackColor()`.
+     The shadow color. Default is `.black`.
      */
-    public var shadowColor = UIColor.black
+    public var shadowColor: UIColor = .black
     
     /**
      A value from 0.0 to 1.0, representing the opacity of the shadow.
@@ -671,14 +671,14 @@ public struct ToastStyle {
     public var fadeDuration: TimeInterval = 0.2
     
     /**
-     Activity indicator color. Default is white.
+     Activity indicator color. Default is `.white`.
      */
-    public var activityIndicatorColor = UIColor.white
+    public var activityIndicatorColor: UIColor = .white
     
     /**
-     Activity background color. Default is `UIColor.blackColor()` at 80% opacity.
+     Activity background color. Default is `.black` at 80% opacity.
      */
-    public var activityBackgroundColor = UIColor.black.withAlphaComponent(0.8)
+    public var activityBackgroundColor: UIColor = UIColor.black.withAlphaComponent(0.8)
     
 }
 
@@ -733,7 +733,7 @@ public class ToastManager {
      Default is `ToastPosition.Bottom`.
      
      */
-    public var position = ToastPosition.bottom
+    public var position: ToastPosition = .bottom
     
 }
 
