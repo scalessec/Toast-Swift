@@ -42,13 +42,14 @@ public extension UIView {
      Keys used for associated objects.
      */
     private struct ToastKeys {
-        static var timer        = "com.toast-swift.timer"
-        static var duration     = "com.toast-swift.duration"
-        static var point        = "com.toast-swift.point"
-        static var completion   = "com.toast-swift.completion"
-        static var activeToast  = "com.toast-swift.activeToast"
-        static var activityView = "com.toast-swift.activityView"
-        static var queue        = "com.toast-swift.queue"
+        static var timer          = "com.toast-swift.timer"
+        static var duration       = "com.toast-swift.duration"
+        static var point          = "com.toast-swift.point"
+        static var completion     = "com.toast-swift.completion"
+        static var activeToast    = "com.toast-swift.activeToast"
+        static var activityView   = "com.toast-swift.activityView"
+        static var queue          = "com.toast-swift.queue"
+        static var existingToasts = "com.toast-swift.existingToasts"
     }
     
     /**
@@ -78,6 +79,24 @@ public extension UIView {
                 return queue
             }
         }
+    }
+    
+    private func getExistingToasts() -> [UIView] {
+        return objc_getAssociatedObject(self, &ToastKeys.existingToasts) as? [UIView] ?? []
+    }
+    
+    private func addExistingToast(_ toast: UIView) {
+        var existingToasts = getExistingToasts()
+        
+        existingToasts.append(toast)
+        
+        objc_setAssociatedObject(self, &ToastKeys.existingToasts, existingToasts, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+    }
+    
+    private func removeExistingToast(_ toast: UIView) {
+        var existingToasts = getExistingToasts()
+        existingToasts = existingToasts.filter({$0 != toast})
+        objc_setAssociatedObject(self, &ToastKeys.existingToasts, existingToasts, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
     
     // MARK: - Make Toast Methods
@@ -171,8 +190,6 @@ public extension UIView {
     /**
      Hides all toast views and clears the queue.
      
-     // @TODO: FIXME: this doesn't work then there's more than 1 active toast in the view
-     
     */
     public func hideAllToasts() {
         queue.removeAllObjects()
@@ -180,6 +197,10 @@ public extension UIView {
         if let activeToast = objc_getAssociatedObject(self, &ToastKeys.activeToast) as? UIView {
             hideToast(activeToast)
         }
+        
+        getExistingToasts().forEach({ (toast) in
+            hideToast(toast)
+        })
     }
     
     // MARK: - Activity Methods
@@ -292,6 +313,7 @@ public extension UIView {
         }
         
         objc_setAssociatedObject(self, &ToastKeys.activeToast, toast, .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        addExistingToast(toast)
         
         self.addSubview(toast)
         
@@ -315,7 +337,9 @@ public extension UIView {
         }) { _ in
             toast.removeFromSuperview()
             
+            //@TODO: FIXME: the toast removed from view is not necessarily the "active" toast.
             objc_setAssociatedObject(self, &ToastKeys.activeToast, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            self.removeExistingToast(toast)
             
             if let wrapper = objc_getAssociatedObject(toast, &ToastKeys.completion) as? ToastCompletionWrapper, let completion = wrapper.completion {
                 completion(fromTap)
