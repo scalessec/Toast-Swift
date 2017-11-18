@@ -106,7 +106,7 @@ extension ViewController {
                 if cell == nil {
                     cell = UITableViewCell(style: .default, reuseIdentifier: ReuseIdentifiers.switchCellId)
                     let tapToDismissSwitch = UISwitch()
-                    tapToDismissSwitch.onTintColor = UIColor.blue
+                    tapToDismissSwitch.onTintColor = .darkBlue
                     tapToDismissSwitch.isOn = ToastManager.shared.isTapToDismissEnabled
                     tapToDismissSwitch.addTarget(self, action: #selector(ViewController.handleTapToDismissToggled), for: .valueChanged)
                     cell?.accessoryView = tapToDismissSwitch
@@ -118,7 +118,7 @@ extension ViewController {
                 if cell == nil {
                     cell = UITableViewCell(style: .default, reuseIdentifier: ReuseIdentifiers.switchCellId)
                     let queueSwitch = UISwitch()
-                    queueSwitch.onTintColor = UIColor.blue
+                    queueSwitch.onTintColor = .darkBlue
                     queueSwitch.isOn = ToastManager.shared.isQueueEnabled
                     queueSwitch.addTarget(self, action: #selector(ViewController.handleQueueToggled), for: .valueChanged)
                     cell?.accessoryView = queueSwitch
@@ -194,7 +194,7 @@ extension ViewController {
             // Show a custom view as toast
             let customView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 80.0, height: 400.0))
             customView.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin, .flexibleTopMargin, .flexibleBottomMargin]
-            customView.backgroundColor = UIColor.blue
+            customView.backgroundColor = .lightBlue
             self.navigationController?.view.showToast(customView, duration: 2.0, position: .center)
         case 7:
             // Show an image view as toast, on center at point (110,110)
