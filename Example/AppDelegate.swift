@@ -45,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 // MARK: - Theming
 
-internal extension UIColor {
+extension UIColor {
     
     static var lightBlue: UIColor {
         return UIColor(red: 76.0 / 255.0, green: 152.0 / 255.0, blue: 213.0 / 255.0, alpha: 1.0)
