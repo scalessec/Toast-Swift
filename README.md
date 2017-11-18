@@ -40,7 +40,7 @@ self.view.makeToastActivity(.center)
 // display any view as toast
 self.view.showToast(myView)
 
-// immediately hides all toast views currently in self.view
+// immediately hides all toast views in self.view
 self.view.hideAllToasts()
 ```
 
