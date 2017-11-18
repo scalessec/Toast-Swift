@@ -460,11 +460,13 @@ public extension UIView {
         wrapperView.frame = CGRect(x: 0.0, y: 0.0, width: wrapperWidth, height: wrapperHeight)
         
         if let titleLabel = titleLabel {
+            titleRect.size.width = longerWidth
             titleLabel.frame = titleRect
             wrapperView.addSubview(titleLabel)
         }
         
         if let messageLabel = messageLabel {
+            messageRect.size.width = longerWidth
             messageLabel.frame = messageRect
             wrapperView.addSubview(messageLabel)
         }
