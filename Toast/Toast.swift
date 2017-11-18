@@ -198,7 +198,7 @@ public extension UIView {
      */
     public func makeToastActivity(_ position: ToastPosition) {
         // sanity
-        guard nil == objc_getAssociatedObject(self, &ToastKeys.activityView) as? UIView else { return }
+        guard objc_getAssociatedObject(self, &ToastKeys.activityView) as? UIView == nil else { return }
         
         let toast = createToastActivityView()
         let point = position.centerPoint(forToast: toast, inSuperview: self)
@@ -219,7 +219,7 @@ public extension UIView {
      */
     public func makeToastActivity(_ point: CGPoint) {
         // sanity
-        guard nil == objc_getAssociatedObject(self, &ToastKeys.activityView) as? UIView else { return }
+        guard objc_getAssociatedObject(self, &ToastKeys.activityView) as? UIView == nil else { return }
         
         let toast = createToastActivityView()
         makeToastActivity(toast, point: point)
