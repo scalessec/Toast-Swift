@@ -77,7 +77,7 @@ extension ViewController {
         if section == 0 {
             return 2
         } else {
-            return 9
+            return 11
         }
     }
     
@@ -147,6 +147,8 @@ extension ViewController {
             case 6: cell.textLabel?.text = "Show a custom view as toast"
             case 7: cell.textLabel?.text = "Show an image as toast at point\n(110, 110)"
             case 8: cell.textLabel?.text = showingActivity ? "Hide toast activity" : "Show toast activity"
+            case 9: cell.textLabel?.text = "Hide toast"
+            case 10: cell.textLabel?.text = "Hide all toasts"
             default: cell.textLabel?.text = nil
             }
             
@@ -211,6 +213,12 @@ extension ViewController {
             showingActivity = !showingActivity
             
             tableView.reloadData()
+        case 9:
+            // Hide toast
+            self.navigationController?.view.hideToast()
+        case 10:
+            // Hide all toasts
+            self.navigationController?.view.hideAllToasts()
         default:
             break
         }
