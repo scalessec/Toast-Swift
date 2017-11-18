@@ -163,10 +163,12 @@ extension ViewController {
         switch indexPath.row {
         case 0:
             // Make Toast
-            self.navigationController?.view.makeToast("This is a piece of toast")
+            //;.self.navigationController?.view.makeToast("This is a piece of toast")
+            self.navigationController?.view.hideAllToasts()
         case 1:
-            // Make toast with a duration and position
-            self.navigationController?.view.makeToast("This is a piece of toast on top for 3 seconds", duration: 3.0, position: .top)
+            self.navigationController?.view.makeToast("This is a piece of toast on the bottom for 1 second", duration: 10.0, position: .bottom)
+            self.navigationController?.view.makeToast("This is a piece of toast on the bottom for 1 second", duration: 10.0, position: .center)
+            self.navigationController?.view.makeToast("This is a piece of toast on the bottom for 1 second", duration: 10.0, position: .top)
         case 2:
             // Make toast with a title
             self.navigationController?.view.makeToast("This is a piece of toast with a title", duration: 2.0, position: .top, title: "Toast Title", image: nil)

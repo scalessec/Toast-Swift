@@ -183,8 +183,9 @@ public extension UIView {
     /**
      Hides all toast views and clears the queue.
      
+     @param includeActivity If `true`, toast activity will also be hidden. Default is `false`.
     */
-    public func hideAllToasts() {
+    public func hideAllToasts(includeActivity: Bool = false) {
         queue.removeAllObjects()
         
         // remove the queue association now that we're empty
@@ -195,6 +196,10 @@ public extension UIView {
         
         // remove the active toasts association now that we're empty
         objc_removeAssociatedObjects(ToastKeys.activeToasts)
+        
+        if includeActivity {
+            hideToastActivity()
+        }
     }
     
     // MARK: - Activity Methods
