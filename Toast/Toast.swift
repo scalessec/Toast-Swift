@@ -182,7 +182,7 @@ public extension UIView {
     
     /**
      Hides the active toast. If there are mutiple toasts active in a view, this method
-     hides the oldest toast (the first of the three to have been presented).
+     hides the oldest toast (the first of toasts to have been presented).
      
      @see `hideAllToasts()` to remove all active toasts from a view.
      
