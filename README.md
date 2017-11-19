@@ -17,8 +17,6 @@ Screenshots
 Basic Examples
 ---------
 ```swift
-import Toast_Swift
-
 // basic usage
 self.view.makeToast("This is a piece of toast")
 
@@ -113,7 +111,7 @@ Compatibility
  
 MIT License
 -----------
-    Copyright (c) 2017 Charles Scalesse.
+    Copyright (c) 2015-2017 Charles Scalesse.
 
     Permission is hereby granted, free of charge, to any person obtaining a
     copy of this software and associated documentation files (the
