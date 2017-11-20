@@ -354,6 +354,9 @@ public extension UIView {
     }
     
     private func hideToast(_ toast: UIView, fromTap: Bool) {
+        if let timer = objc_getAssociatedObject(toast, &ToastKeys.timer) as? Timer {
+            timer.invalidate()
+        }
         
         UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: {
             toast.alpha = 0.0
