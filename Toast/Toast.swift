@@ -209,12 +209,15 @@ public extension UIView {
     }
     
     /**
-     Hides all toast views and clears the queue.
+     Hides all toast views.
      
      @param includeActivity If `true`, toast activity will also be hidden. Default is `false`.
+     @param clearQueue If `true`, removes all toast views from the queue. Default is `true`.
     */
-    public func hideAllToasts(includeActivity: Bool = false) {
-        clearQueue()
+    public func hideAllToasts(includeActivity: Bool = false, clearQueue: Bool = true) {
+        if clearQueue {
+            self.clearQueue()
+        }
         
         activeToasts.flatMap { $0 as? UIView }
                     .forEach { hideToast($0) }
