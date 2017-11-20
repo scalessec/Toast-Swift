@@ -229,7 +229,8 @@ public extension UIView {
     
     /**
      Removes all toast views from the queue. This has no effect on toast views that are
-     active. Use `hideAllToasts` to hide the active toasts views and clear the queue.
+     active. Use `hideAllToasts(clearQueue:)` to hide the active toasts views and clear
+     the queue.
      */
     public func clearQueue() {
         queue.removeAllObjects()
