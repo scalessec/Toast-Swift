@@ -196,12 +196,25 @@ public extension UIView {
     }
     
     /**
+     Hides an active toast.
+     
+     @param toast The active toast view to dismiss. Any toast that is currently being displayed
+     on the screen is considered active.
+     
+     @warning this does not clear a toast view that is currently waiting in the queue.
+     */
+    public func hideToast(_ toast: UIView) {
+        guard activeToasts.contains(toast) else { return }
+        hideToast(toast, fromTap: false)
+    }
+    
+    /**
      Hides all toast views and clears the queue.
      
      @param includeActivity If `true`, toast activity will also be hidden. Default is `false`.
     */
     public func hideAllToasts(includeActivity: Bool = false) {
-        queue.removeAllObjects()
+        clearQueue()
         
         activeToasts.flatMap { $0 as? UIView }
                     .forEach { hideToast($0) }
@@ -209,6 +222,14 @@ public extension UIView {
         if includeActivity {
             hideToastActivity()
         }
+    }
+    
+    /**
+     Removes all toast views from the queue. This has no effect on toast views that are
+     active. Use `hideAllToasts` to hide the active toasts views and clear the queue.
+     */
+    public func clearQueue() {
+        queue.removeAllObjects()
     }
     
     // MARK: - Activity Methods
@@ -330,10 +351,6 @@ public extension UIView {
             RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
             objc_setAssociatedObject(toast, &ToastKeys.timer, timer, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
-    }
-    
-    private func hideToast(_ toast: UIView) {
-        hideToast(toast, fromTap: false)
     }
     
     private func hideToast(_ toast: UIView, fromTap: Bool) {
