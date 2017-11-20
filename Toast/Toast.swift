@@ -203,14 +203,8 @@ public extension UIView {
     public func hideAllToasts(includeActivity: Bool = false) {
         queue.removeAllObjects()
         
-        // remove the queue association now that we're empty
-        objc_removeAssociatedObjects(ToastKeys.queue)
-        
         activeToasts.flatMap { $0 as? UIView }
                     .forEach { hideToast($0) }
-        
-        // remove the active toasts association now that we're empty
-        objc_removeAssociatedObjects(ToastKeys.activeToasts)
         
         if includeActivity {
             hideToastActivity()
@@ -350,23 +344,12 @@ public extension UIView {
             toast.removeFromSuperview()
             self.activeToasts.remove(toast)
             
-            if self.activeToasts.count == 0 {
-                // remove the active toasts association now that we're empty
-                objc_removeAssociatedObjects(ToastKeys.activeToasts)
-            }
-            
             if let wrapper = objc_getAssociatedObject(toast, &ToastKeys.completion) as? ToastCompletionWrapper, let completion = wrapper.completion {
                 completion(fromTap)
             }
             
             if let nextToast = self.queue.firstObject as? UIView, let duration = objc_getAssociatedObject(nextToast, &ToastKeys.duration) as? NSNumber, let point = objc_getAssociatedObject(nextToast, &ToastKeys.point) as? NSValue {
-                
                 self.queue.removeObject(at: 0)
-                if self.queue.count == 0 {
-                    // remove the queue association now that we're empty
-                    objc_removeAssociatedObjects(ToastKeys.queue)
-                }
-                
                 self.showToast(nextToast, duration: duration.doubleValue, point: point.cgPointValue)
             }
         }
