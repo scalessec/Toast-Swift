@@ -383,8 +383,7 @@ public extension UIView {
     
     @objc
     private func handleToastTapped(_ recognizer: UITapGestureRecognizer) {
-        guard let toast = recognizer.view, let timer = objc_getAssociatedObject(toast, &ToastKeys.timer) as? Timer else { return }
-        timer.invalidate()
+        guard let toast = recognizer.view else { return }
         hideToast(toast, fromTap: true)
     }
     
