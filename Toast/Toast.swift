@@ -403,13 +403,13 @@ public extension UIView {
      methods must be used to present the resulting view.
     
      @warning if message, title, and image are all nil, this method will throw
-     `ToastError.InsufficientData`
+     `ToastError.missingParameters`
     
      @param message The message to be displayed
      @param title The title
      @param image The image
      @param style The style. The shared style will be used when nil
-     @throws `ToastError.InsufficientData` when message, title, and image are all nil
+     @throws `ToastError.missingParameters` when message, title, and image are all nil
      @return The newly created toast view
     */
     public func toastViewForMessage(_ message: String?, title: String?, image: UIImage?, style: ToastStyle) throws -> UIView {
