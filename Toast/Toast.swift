@@ -181,7 +181,7 @@ public extension UIView {
     // MARK: - Hide Toast Methods
     
     /**
-     Hides the active toast. If there are mutiple toasts active in a view, this method
+     Hides the active toast. If there are multiple toasts active in a view, this method
      hides the oldest toast (the first of toasts to have been presented).
      
      @see `hideAllToasts()` to remove all active toasts from a view.
