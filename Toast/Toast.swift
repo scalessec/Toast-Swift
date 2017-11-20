@@ -57,7 +57,7 @@ public extension UIView {
      class that can be used with associated objects.
      */
     private class ToastCompletionWrapper {
-        var completion: ((Bool) -> Void)?
+        let completion: ((Bool) -> Void)?
         
         init(_ completion: ((Bool) -> Void)?) {
             self.completion = completion
