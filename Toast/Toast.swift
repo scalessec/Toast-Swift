@@ -216,7 +216,7 @@ public extension UIView {
     */
     public func hideAllToasts(includeActivity: Bool = false, clearQueue: Bool = true) {
         if clearQueue {
-            self.clearQueue()
+            clearToastQueue()
         }
         
         activeToasts.flatMap { $0 as? UIView }
@@ -232,7 +232,7 @@ public extension UIView {
      active. Use `hideAllToasts(clearQueue:)` to hide the active toasts views and clear
      the queue.
      */
-    public func clearQueue() {
+    public func clearToastQueue() {
         queue.removeAllObjects()
     }
     
