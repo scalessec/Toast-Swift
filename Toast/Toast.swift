@@ -42,13 +42,16 @@ public extension UIView {
      Keys used for associated objects.
      */
     private struct ToastKeys {
-        static var timer        = "com.toast-swift.timer"
-        static var duration     = "com.toast-swift.duration"
-        static var point        = "com.toast-swift.point"
-        static var completion   = "com.toast-swift.completion"
-        static var activeToasts = "com.toast-swift.activeToasts"
-        static var activityView = "com.toast-swift.activityView"
-        static var queue        = "com.toast-swift.queue"
+        static var timer            = "com.toast-swift.timer"
+        static var duration         = "com.toast-swift.duration"
+        static var point            = "com.toast-swift.point"
+        static var completion       = "com.toast-swift.completion"
+        static var preShowAnimation = "com.toast-swift.preShowAnimation"
+        static var showAnimation    = "com.toast-swift.showAnimation"
+        static var hideAnimation    = "com.toast-swift.hideAnimation"
+        static var activeToasts     = "com.toast-swift.activeToasts"
+        static var activityView     = "com.toast-swift.activityView"
+        static var queue            = "com.toast-swift.queue"
     }
     
     /**
@@ -61,6 +64,14 @@ public extension UIView {
         
         init(_ completion: ((Bool) -> Void)?) {
             self.completion = completion
+        }
+    }
+    
+    private class ToastAnimationWrapper {
+        let animation: ((UIView?) -> Void)?
+        
+        init(_ animation: ((UIView?) -> Void)?) {
+            self.animation = animation
         }
     }
     
@@ -176,6 +187,15 @@ public extension UIView {
         } else {
             showToast(toast, duration: duration, point: point)
         }
+    }
+    
+    public func showToast(_ toast: UIView, duration: TimeInterval = ToastManager.shared.duration, position: ToastPosition = ToastManager.shared.position, preShowAnimation: ((_ view: UIView?) -> Void)?, showAnimation: ((_ view: UIView?) -> Void)?, hideAnimation: ((_ view: UIView?) -> Void)?, completion: ((_ didTap: Bool) -> Void)? = nil) {
+        objc_setAssociatedObject(toast, &ToastKeys.preShowAnimation, ToastAnimationWrapper(preShowAnimation), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        objc_setAssociatedObject(toast, &ToastKeys.showAnimation, ToastAnimationWrapper(showAnimation), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        objc_setAssociatedObject(toast, &ToastKeys.hideAnimation, ToastAnimationWrapper(hideAnimation), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        
+        let point = position.centerPoint(forToast: toast, inSuperview: self)
+        showToast(toast, duration: duration, point: point, completion: completion)
     }
     
     // MARK: - Hide Toast Methods
@@ -336,7 +356,6 @@ public extension UIView {
     
     private func showToast(_ toast: UIView, duration: TimeInterval, point: CGPoint) {
         toast.center = point
-        toast.alpha = 0.0
         
         if ToastManager.shared.isTapToDismissEnabled {
             let recognizer = UITapGestureRecognizer(target: self, action: #selector(UIView.handleToastTapped(_:)))
@@ -348,9 +367,20 @@ public extension UIView {
         activeToasts.add(toast)
         self.addSubview(toast)
         
-        UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.curveEaseOut, .allowUserInteraction], animations: {
-            toast.alpha = 1.0
-        }) { _ in
+        if let wrapper = objc_getAssociatedObject(toast, &ToastKeys.preShowAnimation) as? ToastAnimationWrapper, let animation = wrapper.animation {
+            animation(toast)
+        } else {
+            toast.alpha = 0.0
+        }
+        
+        var showAnimation = { toast.alpha = 1.0 }
+        if let wrapper = objc_getAssociatedObject(toast, &ToastKeys.showAnimation) as? ToastAnimationWrapper, let animation = wrapper.animation {
+            showAnimation = {
+                animation(toast)
+            }
+        }
+        
+        UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.curveEaseOut, .allowUserInteraction], animations: showAnimation) { _ in
             let timer = Timer(timeInterval: duration, target: self, selector: #selector(UIView.toastTimerDidFinish(_:)), userInfo: toast, repeats: false)
             RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
             objc_setAssociatedObject(toast, &ToastKeys.timer, timer, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
@@ -361,10 +391,14 @@ public extension UIView {
         if let timer = objc_getAssociatedObject(toast, &ToastKeys.timer) as? Timer {
             timer.invalidate()
         }
+        var hideAnimation = { toast.alpha = 0.0 }
+        if let wrapper = objc_getAssociatedObject(toast, &ToastKeys.hideAnimation) as? ToastAnimationWrapper, let animation = wrapper.animation {
+            hideAnimation = {
+                animation(toast)
+            }
+        }
         
-        UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: {
-            toast.alpha = 0.0
-        }) { _ in
+        UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: hideAnimation) { _ in
             toast.removeFromSuperview()
             self.activeToasts.remove(toast)
             
