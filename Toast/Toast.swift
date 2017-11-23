@@ -189,6 +189,22 @@ public extension UIView {
         }
     }
     
+    /**
+     Displays any view as toast at a provided position and duration. The completion closure
+     executes when the toast view completes. `didTap` will be `true` if the toast view was
+     dismissed from a tap. Optional show and hide animation blocks can define a custom
+     animation when showing and hiding the toast. If not set, the default animation with
+     changing alpha channel will be used.
+     
+     @param toast The view to be displayed as toast
+     @param duration The notification duration
+     @param position The toast's position
+     @param preShowAnimation Block in which the state of the toast can be changed prior to execute the show animation
+     @param showAnimation Custom animation block which will occur to the toast when being displayed
+     @param hideAnimation Custom animation block which will occur to the toast when being hidden
+     @param completion The completion block, executed after the toast view disappears.
+     didTap will be `true` if the toast view was dismissed from a tap.
+     */
     public func showToast(_ toast: UIView, duration: TimeInterval = ToastManager.shared.duration, position: ToastPosition = ToastManager.shared.position, preShowAnimation: ((_ view: UIView?) -> Void)?, showAnimation: ((_ view: UIView?) -> Void)?, hideAnimation: ((_ view: UIView?) -> Void)?, completion: ((_ didTap: Bool) -> Void)? = nil) {
         objc_setAssociatedObject(toast, &ToastKeys.preShowAnimation, ToastAnimationWrapper(preShowAnimation), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         objc_setAssociatedObject(toast, &ToastKeys.showAnimation, ToastAnimationWrapper(showAnimation), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
@@ -367,12 +383,14 @@ public extension UIView {
         activeToasts.add(toast)
         self.addSubview(toast)
         
+        // execute the preShowAnimation if set, else set the toast's alpha to 0
         if let wrapper = objc_getAssociatedObject(toast, &ToastKeys.preShowAnimation) as? ToastAnimationWrapper, let animation = wrapper.animation {
             animation(toast)
         } else {
             toast.alpha = 0.0
         }
         
+        // if a custom showAnimation is set, use it for the UIView animation below. Else use the default animation by changing alpha channel.
         var showAnimation = { toast.alpha = 1.0 }
         if let wrapper = objc_getAssociatedObject(toast, &ToastKeys.showAnimation) as? ToastAnimationWrapper, let animation = wrapper.animation {
             showAnimation = {
@@ -391,6 +409,7 @@ public extension UIView {
         if let timer = objc_getAssociatedObject(toast, &ToastKeys.timer) as? Timer {
             timer.invalidate()
         }
+        // Execute custom hideAnimation if set, else reset the toast's alpha
         var hideAnimation = { toast.alpha = 0.0 }
         if let wrapper = objc_getAssociatedObject(toast, &ToastKeys.hideAnimation) as? ToastAnimationWrapper, let animation = wrapper.animation {
             hideAnimation = {
