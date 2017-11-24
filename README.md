@@ -60,10 +60,10 @@ ToastManager.shared.style = style
 self.view.makeToast("This is a piece of toast") // now uses the shared style
 
 // toggle "tap to dismiss" functionality
-ToastManager.shared.tapToDismissEnabled = true
+ToastManager.shared.isTapToDismissEnabled = true
 
 // toggle queueing behavior
-ToastManager.shared.queueEnabled = true
+ToastManager.shared.isQueueEnabled = true
 ```
 
 See the demo project for more examples.
