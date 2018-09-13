@@ -219,7 +219,7 @@ public extension UIView {
             clearToastQueue()
         }
         
-        activeToasts.flatMap { $0 as? UIView }
+        activeToasts.compactMap { $0 as? UIView }
                     .forEach { hideToast($0) }
         
         if includeActivity {
