@@ -30,14 +30,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow? = UIWindow(frame: UIScreen.main.bounds)
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         let viewController = ViewController(style: .plain)
         let navigationController = UINavigationController(rootViewController: viewController)
         self.window?.rootViewController = navigationController
         self.window?.makeKeyAndVisible()
         
         UINavigationBar.appearance().barTintColor = .lightBlue
-        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey(rawValue: NSAttributedStringKey.foregroundColor.rawValue): UIColor.white]
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         
         return true
     }

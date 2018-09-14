@@ -323,7 +323,7 @@ public extension UIView {
             activityView.layer.shadowOffset = style.shadowOffset
         }
         
-        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        let activityIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
         activityIndicatorView.center = CGPoint(x: activityView.bounds.size.width / 2.0, y: activityView.bounds.size.height / 2.0)
         activityView.addSubview(activityIndicatorView)
         activityIndicatorView.color = style.activityIndicatorColor
@@ -352,7 +352,7 @@ public extension UIView {
             toast.alpha = 1.0
         }) { _ in
             let timer = Timer(timeInterval: duration, target: self, selector: #selector(UIView.toastTimerDidFinish(_:)), userInfo: toast, repeats: false)
-            RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
+            RunLoop.main.add(timer, forMode: .common)
             objc_setAssociatedObject(toast, &ToastKeys.timer, timer, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }

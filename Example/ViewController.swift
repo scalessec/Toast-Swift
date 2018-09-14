@@ -36,7 +36,7 @@ class ViewController: UITableViewController {
     
     // MARK: - Constructors
     
-    override init(style: UITableViewStyle) {
+    override init(style: UITableView.Style) {
         super.init(style: style)
         self.title = "Toast-Swift"
     }
