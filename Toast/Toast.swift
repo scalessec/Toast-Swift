@@ -427,7 +427,7 @@ public extension UIView {
         wrapperView.layer.cornerRadius = style.cornerRadius
         
         if style.displayShadow {
-            wrapperView.layer.shadowColor = UIColor.black.cgColor
+            wrapperView.layer.shadowColor = style.shadowColor.cgColor
             wrapperView.layer.shadowOpacity = style.shadowOpacity
             wrapperView.layer.shadowRadius = style.shadowRadius
             wrapperView.layer.shadowOffset = style.shadowOffset
