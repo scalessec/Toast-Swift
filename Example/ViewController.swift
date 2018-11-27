@@ -165,7 +165,9 @@ extension ViewController {
         switch indexPath.row {
         case 0:
             // Make Toast
-            self.navigationController?.view.makeToast("This is a piece of toast")
+            // self.navigationController?.view.makeToast("This is a piece of toast")
+            let testController = TestController()
+            self.navigationController?.present(testController, animated: true)
         case 1:
             // Make toast with a duration and position
             self.navigationController?.view.makeToast("This is a piece of toast on top for 3 seconds", duration: 3.0, position: .top)
@@ -225,3 +227,44 @@ extension ViewController {
     }
 }
 
+class TestView: UIView {
+    deinit {
+        print("view deinit")
+    }
+}
+
+class TestController: UIViewController {
+    deinit {
+        print("view controller deinit")
+    }
+    
+    override func loadView() {
+        let test = TestView()
+        test.backgroundColor = .blue
+        self.view = test
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let closeButton = UIButton(frame: CGRect(x: 50.0, y: 200.0, width: 100.0, height: 44.0))
+        closeButton.setTitle("CLOSE", for: .normal)
+        closeButton.addTarget(self, action: #selector(handleClose), for: .touchUpInside)
+        self.view.addSubview(closeButton)
+        
+        let showButton = UIButton(frame: CGRect(x: 50.0, y: 300.0, width: 100.0, height: 44.0))
+        showButton.setTitle("SHOW", for: .normal)
+        showButton.addTarget(self, action: #selector(handleShow), for: .touchUpInside)
+        self.view.addSubview(showButton)
+    }
+    
+    @objc
+    private func handleClose() {
+        self.dismiss(animated: true)
+    }
+    
+    @objc
+    private func handleShow() {
+        self.view.makeToast("hello world", duration: 3.0)
+    }
+}
