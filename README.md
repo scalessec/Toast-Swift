@@ -64,6 +64,9 @@ ToastManager.shared.isTapToDismissEnabled = true
 
 // toggle queueing behavior
 ToastManager.shared.isQueueEnabled = true
+
+// Show toast for indefinite duration
+self.view.makeToast("This is a piece of toast", duration: ToastManager.shared.indefiniteDurarion, position: .bottom, style: style)
 ```
 
 See the demo project for more examples.
