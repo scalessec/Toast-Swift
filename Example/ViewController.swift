@@ -77,7 +77,7 @@ extension ViewController {
         if section == 0 {
             return 2
         } else {
-            return 11
+            return 12
         }
     }
     
@@ -149,6 +149,7 @@ extension ViewController {
             case 8: cell.textLabel?.text = showingActivity ? "Hide toast activity" : "Show toast activity"
             case 9: cell.textLabel?.text = "Hide toast"
             case 10: cell.textLabel?.text = "Hide all toasts"
+            case 11: cell.textLabel?.text = "Make toast for indefinite duration"
             default: cell.textLabel?.text = nil
             }
             
@@ -221,6 +222,9 @@ extension ViewController {
         case 10:
             // Hide all toasts
             self.navigationController?.view.hideAllToasts()
+        case 11:
+            // Make toast with indefinite duration and position
+            self.navigationController?.view.makeToast("This is a piece of toast for indefinite duration", duration: ToastManager.shared.indefiniteDurarion, position: .top)
         default:
             break
         }
