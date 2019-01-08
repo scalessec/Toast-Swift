@@ -743,8 +743,16 @@ public class ToastManager {
      */
     public var position: ToastPosition = .bottom
 
+    /**
+     Sets the top offset when making a toast on top.
+     `makeToast` or `showToast` with position set to `ToastPosition.top`.
+    */
     public var topOffset: CGFloat = 0
 
+    /**
+     Sets the bottom offset when making a toast on bottom.
+     `makeToast` or `showToast` with position set to `ToastPosition.bottom`.
+     */
     public var bottomOffset: CGFloat = 0
 }
 
