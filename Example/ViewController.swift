@@ -58,6 +58,18 @@ class ViewController: UITableViewController {
     private func handleTapToDismissToggled() {
         ToastManager.shared.isTapToDismissEnabled = !ToastManager.shared.isTapToDismissEnabled
     }
+
+    @objc
+    private func handleOffsetToggled() {
+        if ToastManager.shared.bottomOffset != 0 && ToastManager.shared.topOffset != 0 {
+            ToastManager.shared.bottomOffset = 0
+            ToastManager.shared.topOffset = 0
+            return
+        }
+
+        ToastManager.shared.bottomOffset = 100
+        ToastManager.shared.topOffset = 100
+    }
     
     @objc
     private func handleQueueToggled() {
@@ -75,7 +87,7 @@ extension ViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return 2
+            return 3
         } else {
             return 11
         }
@@ -114,6 +126,18 @@ extension ViewController {
                     cell?.textLabel?.font = UIFont.systemFont(ofSize: 16.0)
                 }
                 cell?.textLabel?.text = "Tap to dismiss"
+            } else if indexPath.row == 1 {
+                if cell == nil {
+                    cell = UITableViewCell(style: .default, reuseIdentifier: ReuseIdentifiers.switchCellId)
+                    let offsetSwitch = UISwitch()
+                    offsetSwitch.onTintColor = .darkBlue
+                    offsetSwitch.isOn = ToastManager.shared.bottomOffset != 0 && ToastManager.shared.topOffset != 0
+                    offsetSwitch.addTarget(self, action: #selector(handleOffsetToggled), for: .valueChanged)
+                    cell?.accessoryView = offsetSwitch
+                    cell?.selectionStyle = .none
+                    cell?.textLabel?.font = UIFont.systemFont(ofSize: 16.0)
+                }
+                cell?.textLabel?.text = "Top/Bottom offset 100"
             } else {
                 if cell == nil {
                     cell = UITableViewCell(style: .default, reuseIdentifier: ReuseIdentifiers.switchCellId)
