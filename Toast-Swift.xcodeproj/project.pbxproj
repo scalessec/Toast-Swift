@@ -150,6 +150,7 @@
 				2A37434A1CBFAF4B006A3BAB /* Frameworks */,
 				2A37434B1CBFAF4B006A3BAB /* Headers */,
 				2A37434C1CBFAF4B006A3BAB /* Resources */,
+				3AE8C80E221312F3007B1E6B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -172,7 +173,6 @@
 				TargetAttributes = {
 					151796E61BE68E4B004BA6E5 = {
 						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = JF7AWS3M92;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
@@ -218,6 +218,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3AE8C80E221312F3007B1E6B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ditto ${BUILT_PRODUCTS_DIR}/ToastSwiftFramework.framework ${SRCROOT}/../../ONECore/ONECore/Frameworks/${PLATFORM_NAME}/ToastSwiftFramework.framework\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		151796E31BE68E4B004BA6E5 /* Sources */ = {
@@ -352,7 +372,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JF7AWS3M92;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Example/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -370,7 +390,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JF7AWS3M92;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Example/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
