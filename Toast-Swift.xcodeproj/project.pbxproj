@@ -183,7 +183,7 @@
 			};
 			buildConfigurationList = 151796E21BE68E4B004BA6E5 /* Build configuration list for PBXProject "Toast-Swift" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
