@@ -210,7 +210,7 @@ extension ViewController {
                 self.navigationController?.view.hideToastActivity()
             }
             
-            showingActivity = !showingActivity
+            showingActivity.toggle()
             
             tableView.reloadData()
         case 9:

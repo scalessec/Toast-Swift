@@ -767,7 +767,9 @@ public enum ToastPosition {
     }
 }
 
-fileprivate extension UIView {
+// MARK: - Private UIView Extensions
+
+private extension UIView {
     
     var csSafeAreaInsets: UIEdgeInsets {
         if #available(iOS 11.0, *) {
