@@ -2,7 +2,7 @@
 //  Toast.swift
 //  Toast-Swift
 //
-//  Copyright (c) 2015-2017 Charles Scalesse.
+//  Copyright (c) 2015-2019 Charles Scalesse.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the
@@ -820,7 +820,9 @@ public enum ToastPosition {
     }
 }
 
-fileprivate extension UIView {
+// MARK: - Private UIView Extensions
+
+private extension UIView {
     
     var csSafeAreaInsets: UIEdgeInsets {
         if #available(iOS 11.0, *) {
