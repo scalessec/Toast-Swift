@@ -508,7 +508,8 @@ public extension UIView {
         let wrapperHeight = max((messageRect.origin.y + messageRect.size.height + style.verticalPadding), (imageRect.size.height + (style.verticalPadding * 2.0)))
         
         wrapperView.frame = CGRect(x: 0.0, y: 0.0, width: wrapperWidth, height: wrapperHeight)
-        
+        wrapperView.transform = CGAffineTransform(rotationAngle: style.rotationAngle)   
+     
         if let titleLabel = titleLabel {
             titleRect.size.width = longerWidth
             titleLabel.frame = titleRect
@@ -688,6 +689,10 @@ public struct ToastStyle {
      */
     public var activityBackgroundColor: UIColor = UIColor.black.withAlphaComponent(0.8)
     
+    /**
+     Rotation angle to tranform the toast view with, in radians. Default is 0
+     */
+    public var rotationAngle: CGFloat = 0.0
 }
 
 // MARK: - Toast Manager
