@@ -1,4 +1,4 @@
 language: objective-c
-osx_image: xcode9
+osx_image: xcode10.2
 script:
  - xcodebuild -scheme Toast-Swift -sdk iphonesimulator build

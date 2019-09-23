@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  Toast-Swift
 //
-//  Copyright (c) 2017 Charles Scalesse.
+//  Copyright (c) 2015-2019 Charles Scalesse.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the
@@ -36,7 +36,7 @@ class ViewController: UITableViewController {
     
     // MARK: - Constructors
     
-    override init(style: UITableViewStyle) {
+    override init(style: UITableView.Style) {
         super.init(style: style)
         self.title = "Toast-Swift"
     }
@@ -165,7 +165,7 @@ extension ViewController {
         switch indexPath.row {
         case 0:
             // Make Toast
-            self.navigationController?.view.makeToast("This is a piece of toast")
+             self.navigationController?.view.makeToast("This is a piece of toast")
         case 1:
             // Make toast with a duration and position
             self.navigationController?.view.makeToast("This is a piece of toast on top for 3 seconds", duration: 3.0, position: .top)
@@ -210,7 +210,7 @@ extension ViewController {
                 self.navigationController?.view.hideToastActivity()
             }
             
-            showingActivity = !showingActivity
+            showingActivity.toggle()
             
             tableView.reloadData()
         case 9:
@@ -224,4 +224,3 @@ extension ViewController {
         }
     }
 }
-
