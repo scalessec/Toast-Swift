@@ -96,6 +96,11 @@ Run `carthage update` to build the framework and drag the built `ToastSwiftFrame
 
 and in your code add `import ToastSwiftFramework`.
 
+SPM
+------------------
+
+When using Xcode 11 you can install `Toast` by going to your Project settings > `Swift Packages` and add the repository by providing the GitHub URL. Or go to `File` > `Swift Packages` > `Add Package Dependencies...`
+
 Manually
 ------------------
 
