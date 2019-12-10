@@ -434,7 +434,12 @@ public extension UIView {
         }
         
         if let image = image {
-            imageView = UIImageView(image: image)
+            if let imageTint = style.tintColor {
+                imageView = UIImageView(image: image.withRenderingMode(.alwaysTemplate))
+                imageView?.tintColor = imageTint
+            } else {
+                imageView = UIImageView(image: image)
+            }
             imageView?.contentMode = .scaleAspectFit
             imageView?.frame = CGRect(x: style.horizontalPadding, y: style.verticalPadding, width: style.imageSize.width, height: style.imageSize.height)
         }
@@ -682,6 +687,11 @@ public struct ToastStyle {
      Activity indicator color. Default is `.white`.
      */
     public var activityIndicatorColor: UIColor = .white
+    
+    /**
+     Image tint color. Default is `nil`. If set, sets the imageView's renderingMode to `.alwaysTemplate`.
+     */
+    public var tintColor: UIColor? = nil
     
     /**
      Activity background color. Default is `.black` at 80% opacity.

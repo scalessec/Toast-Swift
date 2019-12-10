@@ -77,7 +77,7 @@ extension ViewController {
         if section == 0 {
             return 2
         } else {
-            return 11
+            return 12
         }
     }
     
@@ -144,11 +144,12 @@ extension ViewController {
             case 3: cell.textLabel?.text = "Make toast with an image"
             case 4: cell.textLabel?.text = "Make toast with a title, image, and completion closure"
             case 5: cell.textLabel?.text = "Make toast with a custom style"
-            case 6: cell.textLabel?.text = "Show a custom view as toast"
-            case 7: cell.textLabel?.text = "Show an image as toast at point\n(110, 110)"
-            case 8: cell.textLabel?.text = showingActivity ? "Hide toast activity" : "Show toast activity"
-            case 9: cell.textLabel?.text = "Hide toast"
-            case 10: cell.textLabel?.text = "Hide all toasts"
+            case 6: cell.textLabel?.text = "Make toast with an image and a tint"
+            case 7: cell.textLabel?.text = "Show a custom view as toast"
+            case 8: cell.textLabel?.text = "Show an image as toast at point\n(110, 110)"
+            case 9: cell.textLabel?.text = showingActivity ? "Hide toast activity" : "Show toast activity"
+            case 10: cell.textLabel?.text = "Hide toast"
+            case 11: cell.textLabel?.text = "Hide all toasts"
             default: cell.textLabel?.text = nil
             }
             
@@ -193,16 +194,21 @@ extension ViewController {
             style.backgroundColor = UIColor.yellow
             self.navigationController?.view.makeToast("This is a piece of toast with a custom style", duration: 3.0, position: .bottom, style: style)
         case 6:
+            // Make toast with an image and a tintColor
+            var style = ToastStyle()
+            style.tintColor = UIColor.green
+            self.navigationController?.view.makeToast("This is a piece of toast with an image and a tint", duration: 3.0, position: .center, image: UIImage(named: "toast.png"), style: style)
+        case 7:
             // Show a custom view as toast
             let customView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 80.0, height: 400.0))
             customView.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin, .flexibleTopMargin, .flexibleBottomMargin]
             customView.backgroundColor = .lightBlue
             self.navigationController?.view.showToast(customView, duration: 2.0, position: .center)
-        case 7:
+        case 8:
             // Show an image view as toast, on center at point (110,110)
             let toastView = UIImageView(image: UIImage(named: "toast.png"))
             self.navigationController?.view.showToast(toastView, duration: 2.0, point: CGPoint(x: 110.0, y: 110.0))
-        case 8:
+        case 9:
             // Make toast activity
             if !showingActivity {
                 self.navigationController?.view.makeToastActivity(.center)
@@ -213,10 +219,10 @@ extension ViewController {
             showingActivity.toggle()
             
             tableView.reloadData()
-        case 9:
+        case 10:
             // Hide toast
             self.navigationController?.view.hideToast()
-        case 10:
+        case 11:
             // Hide all toasts
             self.navigationController?.view.hideAllToasts()
         default:
