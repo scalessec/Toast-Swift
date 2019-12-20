@@ -742,7 +742,18 @@ public class ToastManager {
      
      */
     public var position: ToastPosition = .bottom
-    
+
+    /**
+     Sets the top offset when making a toast on top.
+     `makeToast` or `showToast` with position set to `ToastPosition.top`.
+    */
+    public var topOffset: CGFloat = 0
+
+    /**
+     Sets the bottom offset when making a toast on bottom.
+     `makeToast` or `showToast` with position set to `ToastPosition.bottom`.
+     */
+    public var bottomOffset: CGFloat = 0
 }
 
 // MARK: - ToastPosition
@@ -758,11 +769,11 @@ public enum ToastPosition {
         
         switch self {
         case .top:
-            return CGPoint(x: superview.bounds.size.width / 2.0, y: (toast.frame.size.height / 2.0) + topPadding)
+            return CGPoint(x: superview.bounds.size.width / 2.0, y: (toast.frame.size.height / 2.0) + topPadding + ToastManager.shared.topOffset)
         case .center:
             return CGPoint(x: superview.bounds.size.width / 2.0, y: superview.bounds.size.height / 2.0)
         case .bottom:
-            return CGPoint(x: superview.bounds.size.width / 2.0, y: (superview.bounds.size.height - (toast.frame.size.height / 2.0)) - bottomPadding)
+            return CGPoint(x: superview.bounds.size.width / 2.0, y: (superview.bounds.size.height - (toast.frame.size.height / 2.0)) - bottomPadding - ToastManager.shared.bottomOffset)
         }
     }
 }
