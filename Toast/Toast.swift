@@ -351,9 +351,11 @@ public extension UIView {
         UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.curveEaseOut, .allowUserInteraction], animations: {
             toast.alpha = 1.0
         }) { _ in
-            let timer = Timer(timeInterval: duration, target: self, selector: #selector(UIView.toastTimerDidFinish(_:)), userInfo: toast, repeats: false)
-            RunLoop.main.add(timer, forMode: .common)
-            objc_setAssociatedObject(toast, &ToastKeys.timer, timer, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            if duration != ToastManager.shared.indefiniteDurarion {
+                let timer = Timer(timeInterval: duration, target: self, selector: #selector(UIView.toastTimerDidFinish(_:)), userInfo: toast, repeats: false)
+                RunLoop.main.add(timer, forMode: .common)
+                objc_setAssociatedObject(toast, &ToastKeys.timer, timer, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            }
         }
     }
     
@@ -734,6 +736,8 @@ public class ToastManager {
      
      */
     public var duration: TimeInterval = 3.0
+    
+    public var indefiniteDurarion: TimeInterval = TimeInterval.greatestFiniteMagnitude
     
     /**
      Sets the default position. Used for the `makeToast` and
