@@ -804,6 +804,7 @@ public enum ToastPosition {
     case top
     case center
     case bottom
+    case bottomAboveKeyboard
     
     fileprivate func centerPoint(forToast toast: UIView, inSuperview superview: UIView) -> CGPoint {
         let topPadding: CGFloat = ToastManager.shared.style.verticalPadding + superview.csSafeAreaInsets.top
@@ -815,6 +816,11 @@ public enum ToastPosition {
         case .center:
             return CGPoint(x: superview.bounds.size.width / 2.0, y: superview.bounds.size.height / 2.0)
         case .bottom:
+            return CGPoint(x: superview.bounds.size.width / 2.0, y: (superview.bounds.size.height - (toast.frame.size.height / 2.0)) - bottomPadding)
+        case .bottomAboveKeyboard:
+            if let keyboardSize = UIApplication.shared.keyboardSize {
+                return CGPoint(x: superview.bounds.size.width / 2.0, y: (superview.bounds.size.height - keyboardSize.height - (toast.frame.size.height / 2.0)) - bottomPadding)
+            }
             return CGPoint(x: superview.bounds.size.width / 2.0, y: (superview.bounds.size.height - (toast.frame.size.height / 2.0)) - bottomPadding)
         }
     }
@@ -832,4 +838,21 @@ private extension UIView {
         }
     }
     
+}
+
+// MARK: - Private UIApplication Extensions
+
+private extension UIApplication {
+    var keyboardSize: CGSize? {
+        guard
+            let keyboardWindowClass = NSClassFromString("UIRemoteKeyboardWindow"),
+            let keyboardWindow = windows.first(where: { $0.isKind(of: keyboardWindowClass) }),
+            let containerViewClass = NSClassFromString("UIInputSetContainerView"),
+            let containerView = keyboardWindow.subviews.first(where: { $0.isKind(of: containerViewClass)}),
+            let hostViewClass = NSClassFromString("UIInputSetHostView"),
+            let hostView = containerView.subviews.first(where: { $0.isKind(of: hostViewClass)}) else {
+                return nil
+        }
+        return hostView.frame.size
+    }
 }
