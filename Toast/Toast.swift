@@ -152,6 +152,7 @@ public extension UIView {
     func showToast(_ toast: UIView, duration: TimeInterval = ToastManager.shared.duration, position: ToastPosition = ToastManager.shared.position, completion: ((_ didTap: Bool) -> Void)? = nil) {
         let point = position.centerPoint(forToast: toast, inSuperview: self)
         showToast(toast, duration: duration, point: point, completion: completion)
+        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, toast)
     }
     
     /**
