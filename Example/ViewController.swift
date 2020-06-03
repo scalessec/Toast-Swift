@@ -77,7 +77,7 @@ extension ViewController {
         if section == 0 {
             return 2
         } else {
-            return 11
+            return 14
         }
     }
     
@@ -149,6 +149,9 @@ extension ViewController {
             case 8: cell.textLabel?.text = showingActivity ? "Hide toast activity" : "Show toast activity"
             case 9: cell.textLabel?.text = "Hide toast"
             case 10: cell.textLabel?.text = "Hide all toasts"
+            case 11: cell.textLabel?.text = "Make vertically centered toast with small image"
+            case 12: cell.textLabel?.text = "Make vertically centered toast with large image"
+            case 13: cell.textLabel?.text = "Make vertically centered toast with large image and title"
             default: cell.textLabel?.text = nil
             }
             
@@ -219,6 +222,24 @@ extension ViewController {
         case 10:
             // Hide all toasts
             self.navigationController?.view.hideAllToasts()
+        case 11:
+            // Make vertically centered toast with small image
+            var style = ToastStyle()
+            style.imageSize = CGSize(width: 20, height: 20)
+            style.imageVerticalAlignment = .centerY
+            self.navigationController?.view.makeToast("This is a vertically centered message toast with small image", duration: 3.0, position: .bottom, image: UIImage(named: "toast.png"), style: style)
+        case 12:
+            // Make vertically centered toast with large image
+            var style = ToastStyle()
+            style.imageSize = CGSize(width: 120, height: 120)
+            style.textVerticalAlignment = .centerY
+            self.navigationController?.view.makeToast("This is a vertically centered message toast with large image", duration: 3.0, position: .center, image: UIImage(named: "toast.png"), style: style)
+        case 13:
+            // Make vertically centered toast with large image and title
+            var style = ToastStyle()
+            style.imageSize = CGSize(width: 120, height: 120)
+            style.textVerticalAlignment = .centerY
+            self.navigationController?.view.makeToast("This is a message", duration: 3.0, position: .top, title: "This is a title", image: UIImage(named: "toast.png"), style: style)
         default:
             break
         }
