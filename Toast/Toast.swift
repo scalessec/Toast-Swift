@@ -236,6 +236,38 @@ public extension UIView {
         queue.removeAllObjects()
     }
     
+    /**
+     Hides all toast views from the pushed view controllers which are on navigation stack.
+     This method can be useful to hide  if there is toast views attached to view controllers which are on the navigation stack.
+    */
+    func hideToastsFromAllPushedVCs(){
+        self.getTopController()?.view.hideAllToasts()
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        if let controller = appDelegate.window?.rootViewController?.presentedViewController{
+            //viewcontroller even after presented
+            controller.view.hideAllToasts()
+        } else if let controllers = appDelegate.window?.rootViewController?.children {
+            // Array of all viewcontroller after push
+            for vc in controllers{
+                vc.view.hideAllToasts()
+            }
+        }
+    }
+    
+    func getTopController() -> UIViewController?{
+        let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+        
+        if var topController = keyWindow?.rootViewController {
+            while let presentedViewController = topController.presentedViewController {
+                topController = presentedViewController
+            }
+            // topController should now be your topmost view controller
+            return topController
+        }else{
+            return nil
+        }
+    }
+    
     // MARK: - Activity Methods
     
     /**
