@@ -77,7 +77,7 @@ extension ViewController {
         if section == 0 {
             return 2
         } else {
-            return 11
+            return 12
         }
     }
     
@@ -149,6 +149,7 @@ extension ViewController {
             case 8: cell.textLabel?.text = showingActivity ? "Hide toast activity" : "Show toast activity"
             case 9: cell.textLabel?.text = "Hide toast"
             case 10: cell.textLabel?.text = "Hide all toasts"
+            case 11: cell.textLabel?.text = "Hide toasts from all pushed view controllers test"
             default: cell.textLabel?.text = nil
             }
             
@@ -219,8 +220,33 @@ extension ViewController {
         case 10:
             // Hide all toasts
             self.navigationController?.view.hideAllToasts()
+        case 11:
+            // Display a toast view on TableView View Controller
+            self.navigationController?.view.makeToast("Toast on TableView View Controller", duration: .infinity, position: .top)
+            
+            // Push another View Controller after 3 seconds
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0, execute: {
+                self.navigationController?.pushViewController(ViewControllerToPush(), animated: true)
+            })
+            
         default:
             break
         }
     }
+}
+
+class ViewControllerToPush : UIViewController{
+    
+       // MARK: - View Lifecycle
+
+       override func viewDidLoad() {
+           super.viewDidLoad()
+            // Display a toast view on ViewControllerToPush
+           self.navigationController?.view.makeToast("Toast on Pushed View Controller", duration: .infinity, position: .bottom)
+        
+            // Hide all toasts from pushed view conrollers which are on navigation stack after 3 seconds
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0, execute: {
+                self.navigationController?.view.hideToastsFromAllPushedVCs()
+            })
+       }
 }
