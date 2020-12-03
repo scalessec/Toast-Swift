@@ -417,27 +417,9 @@ public extension UIView {
             throw ToastError.missingParameters
         }
         
-        var messageLabel: UILabel?
-        var titleLabel: UILabel?
-        var imageView: UIImageView?
+        let wrapperView = createWrapperView(withStyle: style)
         
-        let wrapperView = UIView()
-        wrapperView.backgroundColor = style.backgroundColor
-        wrapperView.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin, .flexibleTopMargin, .flexibleBottomMargin]
-        wrapperView.layer.cornerRadius = style.cornerRadius
-        
-        if style.displayShadow {
-            wrapperView.layer.shadowColor = UIColor.black.cgColor
-            wrapperView.layer.shadowOpacity = style.shadowOpacity
-            wrapperView.layer.shadowRadius = style.shadowRadius
-            wrapperView.layer.shadowOffset = style.shadowOffset
-        }
-        
-        if let image = image {
-            imageView = UIImageView(image: image)
-            imageView?.contentMode = .scaleAspectFit
-            imageView?.frame = CGRect(x: style.horizontalPadding, y: style.verticalPadding, width: style.imageSize.width, height: style.imageSize.height)
-        }
+        let imageView = createImageView(withImage: image, style: style)
         
         var imageRect = CGRect.zero
         
@@ -447,43 +429,15 @@ public extension UIView {
             imageRect.size.width = imageView.bounds.size.width
             imageRect.size.height = imageView.bounds.size.height
         }
-
-        if let title = title {
-            titleLabel = UILabel()
-            titleLabel?.numberOfLines = style.titleNumberOfLines
-            titleLabel?.font = style.titleFont
-            titleLabel?.textAlignment = style.titleAlignment
-            titleLabel?.lineBreakMode = .byTruncatingTail
-            titleLabel?.textColor = style.titleColor
-            titleLabel?.backgroundColor = UIColor.clear
-            titleLabel?.text = title;
-            
-            let maxTitleSize = CGSize(width: (self.bounds.size.width * style.maxWidthPercentage) - imageRect.size.width, height: self.bounds.size.height * style.maxHeightPercentage)
-            let titleSize = titleLabel?.sizeThatFits(maxTitleSize)
-            if let titleSize = titleSize {
-                titleLabel?.frame = CGRect(x: 0.0, y: 0.0, width: titleSize.width, height: titleSize.height)
-            }
-        }
         
-        if let message = message {
-            messageLabel = UILabel()
-            messageLabel?.text = message
-            messageLabel?.numberOfLines = style.messageNumberOfLines
-            messageLabel?.font = style.messageFont
-            messageLabel?.textAlignment = style.messageAlignment
-            messageLabel?.lineBreakMode = .byTruncatingTail;
-            messageLabel?.textColor = style.messageColor
-            messageLabel?.backgroundColor = UIColor.clear
-            
-            let maxMessageSize = CGSize(width: (self.bounds.size.width * style.maxWidthPercentage) - imageRect.size.width, height: self.bounds.size.height * style.maxHeightPercentage)
-            let messageSize = messageLabel?.sizeThatFits(maxMessageSize)
-            if let messageSize = messageSize {
-                let actualWidth = min(messageSize.width, maxMessageSize.width)
-                let actualHeight = min(messageSize.height, maxMessageSize.height)
-                messageLabel?.frame = CGRect(x: 0.0, y: 0.0, width: actualWidth, height: actualHeight)
-            }
-        }
-  
+        let maxTitleMessageSize = CGSize(
+            width: (self.bounds.size.width * style.maxWidthPercentage) - imageRect.size.width,
+            height: self.bounds.size.height * style.maxHeightPercentage
+        )
+        
+        let titleLabel = createTitleLabel(title, maxSize: maxTitleMessageSize, style: style)
+        let messageLabel = createMessageLabel(message, maxSize: maxTitleMessageSize, style: style)
+      
         var titleRect = CGRect.zero
         
         if let titleLabel = titleLabel {
@@ -528,6 +482,69 @@ public extension UIView {
         return wrapperView
     }
     
+    private func createWrapperView(withStyle style: ToastStyle) -> UIView {
+        let wrapperView = UIView()
+        wrapperView.backgroundColor = style.backgroundColor
+        wrapperView.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin, .flexibleTopMargin, .flexibleBottomMargin]
+        wrapperView.layer.cornerRadius = style.cornerRadius
+        
+        if style.displayShadow {
+            wrapperView.layer.shadowColor = UIColor.black.cgColor
+            wrapperView.layer.shadowOpacity = style.shadowOpacity
+            wrapperView.layer.shadowRadius = style.shadowRadius
+            wrapperView.layer.shadowOffset = style.shadowOffset
+        }
+        
+        return wrapperView
+    }
+    
+    private func createImageView(withImage image: UIImage?, style: ToastStyle) -> UIImageView? {
+        guard let image = image else { return nil }
+        
+        let imageView = UIImageView(image: image)
+        imageView.contentMode = .scaleAspectFit
+        imageView.frame = CGRect(x: style.horizontalPadding, y: style.verticalPadding, width: style.imageSize.width, height: style.imageSize.height)
+        
+        return imageView
+    }
+    
+    private func createTitleLabel(_ title: String?, maxSize: CGSize, style: ToastStyle) -> UILabel? {
+        guard let title = title else { return nil }
+        
+        let titleLabel = UILabel()
+        titleLabel.numberOfLines = style.titleNumberOfLines
+        titleLabel.font = style.titleFont
+        titleLabel.textAlignment = style.titleAlignment
+        titleLabel.lineBreakMode = .byTruncatingTail
+        titleLabel.textColor = style.titleColor
+        titleLabel.backgroundColor = UIColor.clear
+        titleLabel.text = title;
+        
+        let titleSize = titleLabel.sizeThatFits(maxSize)
+        titleLabel.frame = CGRect(x: 0.0, y: 0.0, width: titleSize.width, height: titleSize.height)
+        
+        return titleLabel
+    }
+    
+    private func createMessageLabel(_ message: String?, maxSize: CGSize, style: ToastStyle) -> UILabel? {
+        guard let message = message else { return nil }
+        
+        let messageLabel = UILabel()
+        messageLabel.text = message
+        messageLabel.numberOfLines = style.messageNumberOfLines
+        messageLabel.font = style.messageFont
+        messageLabel.textAlignment = style.messageAlignment
+        messageLabel.lineBreakMode = .byTruncatingTail;
+        messageLabel.textColor = style.messageColor
+        messageLabel.backgroundColor = UIColor.clear
+        
+        let messageSize = messageLabel.sizeThatFits(maxSize)
+        let actualWidth = min(messageSize.width, maxSize.width)
+        let actualHeight = min(messageSize.height, maxSize.height)
+        messageLabel.frame = CGRect(x: 0.0, y: 0.0, width: actualWidth, height: actualHeight)
+        
+        return messageLabel
+    }
 }
 
 // MARK: - Toast Style
