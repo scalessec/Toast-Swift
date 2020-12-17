@@ -191,6 +191,8 @@ extension ViewController {
             style.messageColor = UIColor.red
             style.messageAlignment = .center
             style.backgroundColor = UIColor.yellow
+            style.borderWidth = 1
+            style.borderColor = UIColor.red
             self.navigationController?.view.makeToast("This is a piece of toast with a custom style", duration: 3.0, position: .bottom, style: style)
         case 6:
             // Show a custom view as toast
