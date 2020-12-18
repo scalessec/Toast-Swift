@@ -423,6 +423,8 @@ public extension UIView {
         
         let wrapperView = UIView()
         wrapperView.backgroundColor = style.backgroundColor
+        wrapperView.layer.borderColor = style.borderColor.cgColor
+        wrapperView.layer.borderWidth = style.borderWidth
         wrapperView.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin, .flexibleTopMargin, .flexibleBottomMargin]
         wrapperView.layer.cornerRadius = style.cornerRadius
         
@@ -560,6 +562,16 @@ public struct ToastStyle {
      The message color. Default is `.white`.
     */
     public var messageColor: UIColor = .white
+    
+    /**
+     The border color. Default is `.clear`.
+    */
+    public var borderColor: UIColor = .clear
+    
+    /**
+     The border width. Default is `1`.
+    */
+    public var borderWidth: CGFloat = 1
     
     /**
      A percentage value from 0.0 to 1.0, representing the maximum width of the toast
