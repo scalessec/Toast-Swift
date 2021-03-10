@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-  s.name         = "Toast-Swift"
+  s.name         = "Toast"
   s.version      = "5.0.1"
   s.summary      = "A Swift extension that adds toast notifications to the UIView object class."
   s.homepage     = "https://github.com/scalessec/Toast-Swift"
