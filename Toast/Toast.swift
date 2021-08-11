@@ -284,7 +284,7 @@ public extension UIView {
      */
     func hideToastActivity() {
         if let toast = objc_getAssociatedObject(self, &ToastKeys.activityView) as? UIView {
-            UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: {
+            UIView.animate(withDuration: ToastManager.shared.style.animationDuration, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: {
                 toast.alpha = 0.0
             }) { _ in
                 toast.removeFromSuperview()
@@ -303,7 +303,7 @@ public extension UIView {
         
         self.addSubview(toast)
         
-        UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: ToastManager.shared.style.animationDuration, delay: 0.0, options: .curveEaseOut, animations: {
             toast.alpha = 1.0
         })
     }
@@ -348,8 +348,10 @@ public extension UIView {
         activeToasts.add(toast)
         self.addSubview(toast)
         
-        UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.curveEaseOut, .allowUserInteraction], animations: {
+        toast.layer.transform = CATransform3DMakeTranslation(0, animationTranslation(for: toast), 0)
+        UIView.animate(withDuration: ToastManager.shared.style.animationDuration, delay: 0.0, options: [.curveEaseOut, .allowUserInteraction], animations: {
             toast.alpha = 1.0
+            toast.layer.transform = CATransform3DIdentity
         }) { _ in
             let timer = Timer(timeInterval: duration, target: self, selector: #selector(UIView.toastTimerDidFinish(_:)), userInfo: toast, repeats: false)
             RunLoop.main.add(timer, forMode: .common)
@@ -362,8 +364,9 @@ public extension UIView {
             timer.invalidate()
         }
         
-        UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: {
+        UIView.animate(withDuration: ToastManager.shared.style.animationDuration, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: {
             toast.alpha = 0.0
+            toast.layer.transform = CATransform3DMakeTranslation(0, self.animationTranslation(for: toast), 0)
         }) { _ in
             toast.removeFromSuperview()
             self.activeToasts.remove(toast)
@@ -391,6 +394,19 @@ public extension UIView {
     private func toastTimerDidFinish(_ timer: Timer) {
         guard let toast = timer.userInfo as? UIView else { return }
         hideToast(toast)
+    }
+    
+    private func animationTranslation(for toast: UIView) -> CGFloat {
+        let topPoint = ToastPosition.top.centerPoint(forToast: toast, inSuperview: self)
+        let bottomPoint = ToastPosition.bottom.centerPoint(forToast: toast, inSuperview: self)
+        
+        var translation: CGFloat = 0
+        if toast.center.y == topPoint.y {
+            translation = -toast.frame.maxY
+        } else if toast.center.y == bottomPoint.y {
+            translation = toast.frame.height + ToastManager.shared.style.verticalPadding + csSafeAreaInsets.bottom
+        }
+        return translation
     }
     
     // MARK: - Toast Construction
@@ -503,8 +519,8 @@ public extension UIView {
         }
         
         let longerWidth = max(titleRect.size.width, messageRect.size.width)
-        let longerX = max(titleRect.origin.x, messageRect.origin.x)
-        let wrapperWidth = max((imageRect.size.width + (style.horizontalPadding * 2.0)), (longerX + longerWidth + style.horizontalPadding))
+        //let longerX = max(titleRect.origin.x, messageRect.origin.x)
+        let wrapperWidth = UIScreen.main.bounds.width - 40 //max((imageRect.size.width + (style.horizontalPadding * 2.0)), (longerX + longerWidth + style.horizontalPadding))
         let wrapperHeight = max((messageRect.origin.y + messageRect.size.height + style.verticalPadding), (imageRect.size.height + (style.verticalPadding * 2.0)))
         
         wrapperView.frame = CGRect(x: 0.0, y: 0.0, width: wrapperWidth, height: wrapperHeight)
@@ -682,7 +698,7 @@ public struct ToastStyle {
     /**
      The fade in/out animation duration. Default is 0.2.
      */
-    public var fadeDuration: TimeInterval = 0.2
+    public var animationDuration: TimeInterval = 0.2
     
     /**
      Activity indicator color. Default is `.white`.
