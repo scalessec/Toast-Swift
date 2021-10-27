@@ -501,7 +501,8 @@ public extension UIView {
             titleLabel?.backgroundColor = UIColor.clear
             titleLabel?.text = title;
             
-            let maxTitleSize = CGSize(width: (self.bounds.size.width * style.maxWidthPercentage) - imageRect.size.width - closeButtonRect.size.width, height: self.bounds.size.height * style.maxHeightPercentage)
+            let maxTitleSizeWidth = min((self.bounds.size.width * style.maxWidthPercentage) - imageRect.size.width - closeButtonRect.size.width, (420 - (imageRect.width + (2 * style.horizontalPadding) +  (1.5 * closeButtonRect.width))))
+            let maxTitleSize = CGSize(width: maxTitleSizeWidth, height: self.bounds.size.height * style.maxHeightPercentage)
             let titleSize = titleLabel?.sizeThatFits(maxTitleSize)
             if let titleSize = titleSize {
                 titleLabel?.frame = CGRect(x: 0.0, y: 0.0, width: titleSize.width, height: titleSize.height)
@@ -518,7 +519,8 @@ public extension UIView {
             messageLabel?.textColor = style.messageColor
             messageLabel?.backgroundColor = UIColor.clear
   
-            let maxMessageSize = CGSize(width: (self.bounds.size.width * style.maxWidthPercentage) - imageRect.size.width - closeButtonRect.size.width, height: self.bounds.size.height * style.maxHeightPercentage)
+            let maxMessageWidth: CGFloat = min((self.bounds.size.width * style.maxWidthPercentage) - imageRect.size.width - closeButtonRect.size.width, (420 - (imageRect.width + (2 * style.horizontalPadding) + closeButtonRect.width)))
+            let maxMessageSize = CGSize(width: maxMessageWidth, height: self.bounds.size.height * style.maxHeightPercentage)
             let messageSize = messageLabel?.sizeThatFits(maxMessageSize)
             if let messageSize = messageSize {
                 let actualWidth = min(messageSize.width, maxMessageSize.width)
@@ -545,21 +547,21 @@ public extension UIView {
             messageRect.size.height = messageLabel.bounds.size.height
         }
         
-        let longerWidth = max(titleRect.size.width, messageRect.size.width)
+//        let longerWidth = max(titleRect.size.width, messageRect.size.width)
         //let longerX = max(titleRect.origin.x, messageRect.origin.x)
-        let wrapperWidth = UIScreen.main.bounds.width - 40 //max((imageRect.size.width + (style.horizontalPadding * 2.0)), (longerX + longerWidth + style.horizontalPadding))
+        let wrapperWidth = min(UIScreen.main.bounds.width - 40, 420) //max((imageRect.size.width + (style.horizontalPadding * 2.0)), (longerX + longerWidth + style.horizontalPadding))
         let wrapperHeight = max((messageRect.origin.y + messageRect.size.height + style.verticalPadding), (imageRect.size.height + (style.verticalPadding * 2.0)))
         
         wrapperView.frame = CGRect(x: 0.0, y: 0.0, width: wrapperWidth, height: wrapperHeight)
         
         if let titleLabel = titleLabel {
-            titleRect.size.width = longerWidth
+//            titleRect.size.width = longerWidth
             titleLabel.frame = titleRect
             wrapperView.addSubview(titleLabel)
         }
         
         if let messageLabel = messageLabel {
-            messageRect.size.width = longerWidth
+//            messageRect.size.width = longerWidth
             messageLabel.frame = messageRect
             wrapperView.addSubview(messageLabel)
         }
