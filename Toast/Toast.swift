@@ -526,7 +526,6 @@ public extension UIView {
             
             if let countDown = countDown {
                 let secondsRemaing = countDown.timeIntervalSince(Date())
-                print("secondsRemaing #1",secondsRemaing)
                 let minutes = max(0, Int((secondsRemaing.truncatingRemainder(dividingBy: 3600)/60).rounded(.down)))
                 let seconds = max(0, Int((secondsRemaing.truncatingRemainder(dividingBy: 60)).rounded(.down)))
                 titleLabel?.text = title + "\(minutes < 10 ? "0\(minutes)" : "\(minutes)"):\(seconds < 10 ? "0\(seconds)" : "\(seconds)")"
@@ -545,7 +544,6 @@ public extension UIView {
         if let countDown = countDown {
             Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { callingTimer in
                 let secondsRemaing = countDown.timeIntervalSince(Date())
-                print("secondsRemaing #2",secondsRemaing)
                 if secondsRemaing > 0 {
                     let minutes = max(0, Int((secondsRemaing.truncatingRemainder(dividingBy: 3600)/60).rounded(.down)))
                     let seconds = max(0, Int((secondsRemaing.truncatingRemainder(dividingBy: 60)).rounded(.down)))
