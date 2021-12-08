@@ -496,7 +496,7 @@ public extension UIView {
         var messageRect = CGRect.zero
         
         if let messageLabel = messageLabel {
-            messageRect.origin.x = imageRect.origin.x + imageRect.size.width + style.horizontalPadding
+            messageRect.origin.x = imageRect.origin.x + imageRect.size.width + style.messageHorizontalPadding
             messageRect.origin.y = titleRect.origin.y + titleRect.size.height + style.verticalPadding
             messageRect.size.width = messageLabel.bounds.size.width
             messageRect.size.height = messageLabel.bounds.size.height
@@ -504,12 +504,13 @@ public extension UIView {
         
         let longerWidth = max(titleRect.size.width, messageRect.size.width)
         let longerX = max(titleRect.origin.x, messageRect.origin.x)
-        let wrapperWidth = max((imageRect.size.width + (style.horizontalPadding * 2.0)), (longerX + longerWidth + style.horizontalPadding))
+        let wrapperWidth = max((imageRect.size.width + (style.horizontalPadding + style.messageHorizontalPadding)), (longerX + longerWidth + style.horizontalPadding))
         let wrapperHeight = max((messageRect.origin.y + messageRect.size.height + style.verticalPadding), (imageRect.size.height + (style.verticalPadding * 2.0)))
         
         if let imageView = imageView {
             imageView.frame.origin.y = (wrapperHeight - imageView.frame.height) / 2
         }
+        
         wrapperView.frame = CGRect(x: 0.0, y: 0.0, width: wrapperWidth, height: wrapperHeight)
         
         if let titleLabel = titleLabel {
@@ -599,6 +600,12 @@ public struct ToastStyle {
      and `safeAreaInsets.bottom`.
     */
     public var verticalPadding: CGFloat = 10.0
+   
+    /// The spacing from the image view and text content
+    public var messageHorizontalPadding: CGFloat = 10.0
+   
+    /// The padding from the toast view to the top / bottom of super view
+    public var toastVeticalPadding: CGFloat = 10.0
     
     /**
      The corner radius. Default is 10.0.
@@ -756,8 +763,8 @@ public enum ToastPosition {
     case bottom
     
     fileprivate func centerPoint(forToast toast: UIView, inSuperview superview: UIView) -> CGPoint {
-        let topPadding: CGFloat = ToastManager.shared.style.verticalPadding + superview.csSafeAreaInsets.top
-        let bottomPadding: CGFloat = ToastManager.shared.style.verticalPadding + superview.csSafeAreaInsets.bottom
+        let topPadding: CGFloat = ToastManager.shared.style.toastVeticalPadding + superview.csSafeAreaInsets.top
+        let bottomPadding: CGFloat = ToastManager.shared.style.toastVeticalPadding + superview.csSafeAreaInsets.bottom
         
         switch self {
         case .top:
