@@ -172,7 +172,7 @@
 				TargetAttributes = {
 					151796E61BE68E4B004BA6E5 = {
 						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = JF7AWS3M92;
+						DevelopmentTeam = RFFXCDTZYN;
 						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
@@ -356,7 +356,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JF7AWS3M92;
+				DEVELOPMENT_TEAM = RFFXCDTZYN;
 				INFOPLIST_FILE = Example/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
