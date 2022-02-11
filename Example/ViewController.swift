@@ -153,7 +153,6 @@ extension ViewController {
             }
             
             return cell
-            
         }
     }
     
@@ -174,10 +173,14 @@ extension ViewController {
             self.navigationController?.view.makeToast("This is a piece of toast with a title", duration: 2.0, position: .top(), title: "Toast Title", image: nil)
         case 3:
             // Make toast with an image
-            self.navigationController?.view.makeToast("This is a piece of toast with an image", duration: 2.0, position: .center, title: nil, image: UIImage(named: "toast.png"))
+            var style = ToastStyle()
+            style.spacing = 5
+            self.navigationController?.view.makeToast("This is a piece of toast with an image", duration: 2.0, position: .center, title: nil, image: UIImage(named: "toast.png"), style: style)
         case 4:
+            var style = ToastStyle()
+            style.spacing = 5
             // Make toast with an image, title, and completion closure
-            self.navigationController?.view.makeToast("This is a piece of toast with a title, image, and completion closure", duration: 2.0, position: .bottom(), title: "Toast Title", image: UIImage(named: "toast.png")) { didTap in
+            self.navigationController?.view.makeToast("This is a piece of toast with a title, image, and completion closure", duration: 2.0, position: .bottom(), title: "Toast Title", image: UIImage(named: "toast.png"), style: style) { didTap in
                 if didTap {
                     print("completion from tap")
                 } else {
@@ -191,6 +194,7 @@ extension ViewController {
             style.messageColor = UIColor.red
             style.messageAlignment = .center
             style.backgroundColor = UIColor.yellow
+            style.spacing = 5
             self.navigationController?.view.makeToast("This is a piece of toast with a custom style", duration: 3.0, position: .bottom(), style: style)
         case 6:
             // Show a custom view as toast
