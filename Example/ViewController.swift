@@ -168,16 +168,16 @@ extension ViewController {
              self.navigationController?.view.makeToast("This is a piece of toast")
         case 1:
             // Make toast with a duration and position
-            self.navigationController?.view.makeToast("This is a piece of toast on top for 3 seconds", duration: 3.0, position: .top)
+            self.navigationController?.view.makeToast("This is a piece of toast on top for 3 seconds", duration: 3.0, position: .top())
         case 2:
             // Make toast with a title
-            self.navigationController?.view.makeToast("This is a piece of toast with a title", duration: 2.0, position: .top, title: "Toast Title", image: nil)
+            self.navigationController?.view.makeToast("This is a piece of toast with a title", duration: 2.0, position: .top(), title: "Toast Title", image: nil)
         case 3:
             // Make toast with an image
             self.navigationController?.view.makeToast("This is a piece of toast with an image", duration: 2.0, position: .center, title: nil, image: UIImage(named: "toast.png"))
         case 4:
             // Make toast with an image, title, and completion closure
-            self.navigationController?.view.makeToast("This is a piece of toast with a title, image, and completion closure", duration: 2.0, position: .bottom, title: "Toast Title", image: UIImage(named: "toast.png")) { didTap in
+            self.navigationController?.view.makeToast("This is a piece of toast with a title, image, and completion closure", duration: 2.0, position: .bottom(), title: "Toast Title", image: UIImage(named: "toast.png")) { didTap in
                 if didTap {
                     print("completion from tap")
                 } else {
@@ -191,7 +191,7 @@ extension ViewController {
             style.messageColor = UIColor.red
             style.messageAlignment = .center
             style.backgroundColor = UIColor.yellow
-            self.navigationController?.view.makeToast("This is a piece of toast with a custom style", duration: 3.0, position: .bottom, style: style)
+            self.navigationController?.view.makeToast("This is a piece of toast with a custom style", duration: 3.0, position: .bottom(), style: style)
         case 6:
             // Show a custom view as toast
             let customView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 80.0, height: 400.0))
