@@ -433,6 +433,9 @@ public extension UIView {
             wrapperView.layer.shadowOffset = style.shadowOffset
         }
         
+        let maxWrapperWidth = self.bounds.size.width * style.maxWidthPercentage
+        let maxWrapperHeight = self.bounds.size.height * style.maxHeightPercentage
+        
         if let image = image {
             imageView = UIImageView(image: image)
             imageView?.contentMode = .scaleAspectFit
@@ -440,8 +443,6 @@ public extension UIView {
         }
         
         var imageRect = CGRect.zero
-        let maxWrapperWidth = self.bounds.size.width * style.maxWidthPercentage
-        let maxWrapperHeight = self.bounds.size.height * style.maxHeightPercentage
         
         if let imageView = imageView {
             imageRect.origin.x = style.horizontalPadding
@@ -449,7 +450,9 @@ public extension UIView {
             imageRect.size.width = imageView.bounds.size.width
             imageRect.size.height = imageView.bounds.size.height
         }
-
+        
+        let maxTextSize = CGSize(width: maxWrapperWidth - (imageRect.origin.x + imageRect.size.width) - (style.horizontalPadding * 2), height: maxWrapperHeight)
+        
         if let title = title {
             titleLabel = UILabel()
             titleLabel?.numberOfLines = style.titleNumberOfLines
@@ -460,8 +463,7 @@ public extension UIView {
             titleLabel?.backgroundColor = UIColor.clear
             titleLabel?.text = title;
             
-            let maxTitleSize = CGSize(width: maxWrapperWidth - imageRect.size.width, height: maxWrapperHeight)
-            let titleSize = titleLabel?.sizeThatFits(maxTitleSize)
+            let titleSize = titleLabel?.sizeThatFits(maxTextSize)
             if let titleSize = titleSize {
                 titleLabel?.frame = CGRect(x: 0.0, y: 0.0, width: titleSize.width, height: titleSize.height)
             }
@@ -477,21 +479,18 @@ public extension UIView {
             messageLabel?.textColor = style.messageColor
             messageLabel?.backgroundColor = UIColor.clear
             
-            let maxMessageSize = CGSize(width: maxWrapperWidth - imageRect.size.width, height: maxWrapperHeight)
-            let messageSize = messageLabel?.sizeThatFits(maxMessageSize)
+            let messageSize = messageLabel?.sizeThatFits(maxTextSize)
             if let messageSize = messageSize {
-                let actualWidth = min(messageSize.width, maxMessageSize.width)
-                let actualHeight = min(messageSize.height, maxMessageSize.height)
-                messageLabel?.frame = CGRect(x: 0.0, y: 0.0, width: actualWidth, height: actualHeight)
+                messageLabel?.frame = CGRect(x: 0.0, y: 0.0, width: messageSize.width, height: messageSize.height)
             }
         }
-  
+        
         var titleRect = CGRect.zero
         
         if let titleLabel = titleLabel {
             titleRect.origin.x = imageRect.origin.x + imageRect.size.width + style.horizontalPadding
             titleRect.origin.y = style.verticalPadding
-            titleRect.size.width = titleLabel.bounds.size.width
+            titleRect.size.width = style.alwaysOnMaxWidth ? maxTextSize.width : titleLabel.bounds.size.width
             titleRect.size.height = titleLabel.bounds.size.height
         }
         
@@ -500,16 +499,14 @@ public extension UIView {
         if let messageLabel = messageLabel {
             messageRect.origin.x = imageRect.origin.x + imageRect.size.width + style.horizontalPadding
             messageRect.origin.y = titleRect.origin.y + titleRect.size.height + style.verticalPadding
-            messageRect.size.width = messageLabel.bounds.size.width
+            messageRect.size.width = style.alwaysOnMaxWidth ? maxTextSize.width : messageLabel.bounds.size.width
             messageRect.size.height = messageLabel.bounds.size.height
         }
         
         let longerWidth = max(titleRect.size.width, messageRect.size.width)
         let longerX = max(titleRect.origin.x, messageRect.origin.x)
         
-        let wrapperWidth = style.alwaysOnMaxWidth
-            ? maxWrapperWidth
-            : max((imageRect.size.width + (style.horizontalPadding * 2.0)), (longerX + longerWidth + style.horizontalPadding))
+        let wrapperWidth = max((imageRect.size.width + (style.horizontalPadding * 2.0)), (longerX + longerWidth + style.horizontalPadding))
         let wrapperHeight = max((messageRect.origin.y + messageRect.size.height + style.verticalPadding), (imageRect.size.height + (style.verticalPadding * 2.0)))
         
         wrapperView.frame = CGRect(x: 0.0, y: 0.0, width: wrapperWidth, height: wrapperHeight)
@@ -590,7 +587,7 @@ public struct ToastStyle {
      Use fixed width to the toast view, which is always based on
      superview's width and `maxWidthPercentage`. Default is `false`.
     */
-    public var alwaysOnMaxWidth: Bool = false
+    public var alwaysOnMaxWidth: Bool = true
     
     /**
      The spacing from the horizontal edge of the toast view to the content. When an image
