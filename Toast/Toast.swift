@@ -496,8 +496,13 @@ public extension UIView {
         var messageRect = CGRect.zero
         
         if let messageLabel = messageLabel {
-            messageRect.origin.x = imageRect.origin.x + imageRect.size.width + style.horizontalPadding
-            messageRect.origin.y = titleRect.origin.y + titleRect.size.height + style.verticalPadding
+            messageRect.origin.x = imageRect.origin.x + imageRect.size.width + (style.horizontalPadding/2)
+            
+            if messageLabel.calculateMaxLines(actualWidth: messageLabel.bounds.size.width) == 1{
+                messageRect.origin.y = titleRect.origin.y + titleRect.size.height  + (style.imageSize.height/2) + (style.verticalPadding/2)
+            }else{
+                messageRect.origin.y = titleRect.origin.y + titleRect.size.height  + style.verticalPadding
+            }
             messageRect.size.width = messageLabel.bounds.size.width
             messageRect.size.height = messageLabel.bounds.size.height
         }
@@ -754,7 +759,7 @@ public enum ToastPosition {
     
     fileprivate func centerPoint(forToast toast: UIView, inSuperview superview: UIView) -> CGPoint {
         let topPadding: CGFloat = ToastManager.shared.style.verticalPadding + superview.csSafeAreaInsets.top
-        let bottomPadding: CGFloat = ToastManager.shared.style.verticalPadding + superview.csSafeAreaInsets.bottom
+        let bottomPadding: CGFloat = (ToastManager.shared.style.verticalPadding * 3) + superview.csSafeAreaInsets.bottom
         
         switch self {
         case .top:
@@ -779,4 +784,20 @@ private extension UIView {
         }
     }
     
+}
+
+extension UILabel {
+
+    func calculateMaxLines(actualWidth: CGFloat?) -> Int {
+        var width = frame.size.width
+        if let actualWidth = actualWidth {
+            width = actualWidth
+        }
+        let maxSize = CGSize(width: width, height: CGFloat(Float.infinity))
+        let charSize = font.lineHeight
+        let text = (self.text ?? "") as NSString
+        let textSize = text.boundingRect(with: maxSize, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: self.font!], context: nil)
+        let linesRoundedUp = Int(ceil(textSize.height/charSize))
+        return linesRoundedUp
+    }
 }
