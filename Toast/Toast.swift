@@ -322,8 +322,11 @@ public extension UIView {
             activityView.layer.shadowRadius = style.shadowRadius
             activityView.layer.shadowOffset = style.shadowOffset
         }
-        
+        #if os(visionOS)
+        let activityIndicatorView = UIActivityIndicatorView(style: .large)
+        #else
         let activityIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
+        #endif
         activityIndicatorView.center = CGPoint(x: activityView.bounds.size.width / 2.0, y: activityView.bounds.size.height / 2.0)
         activityView.addSubview(activityIndicatorView)
         activityIndicatorView.color = style.activityIndicatorColor
