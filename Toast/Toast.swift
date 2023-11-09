@@ -188,13 +188,13 @@ public extension UIView {
     }
   
     /**
-     Displays any view as toast at a provided position and duration. The completion closure
+     Displays any view as toast at a provided constraintsBlock and duration. The completion closure
      executes when the toast view completes. `didTap` will be `true` if the toast view was
      dismissed from a tap.
    
      @param toast The view to be displayed as toast
      @param duration The notification duration
-     @param constarintsBlock The constraints block, executed after the toast view added
+     @param constarints The constraints block, executed after the toast view added
      @param completion The completion block, executed after the toast view disappears.
      didTap will be `true` if the toast view was dismissed from a tap.
     */
