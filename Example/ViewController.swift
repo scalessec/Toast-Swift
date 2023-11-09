@@ -77,7 +77,7 @@ extension ViewController {
         if section == 0 {
             return 2
         } else {
-            return 11
+            return 12
         }
     }
     
@@ -149,6 +149,7 @@ extension ViewController {
             case 8: cell.textLabel?.text = showingActivity ? "Hide toast activity" : "Show toast activity"
             case 9: cell.textLabel?.text = "Hide toast"
             case 10: cell.textLabel?.text = "Hide all toasts"
+            case 11: cell.textLabel?.text = "Make toast with autolayout"
             default: cell.textLabel?.text = nil
             }
             
@@ -219,8 +220,48 @@ extension ViewController {
         case 10:
             // Hide all toasts
             self.navigationController?.view.hideAllToasts()
+          
+        case 11:
+          self.navigationController?.view.showToast(CustomToast(), constraints: { container, toast in
+            toast.translatesAutoresizingMaskIntoConstraints = false
+            toast.leftAnchor.constraint(equalTo: container.leftAnchor, constant: 20).isActive = true
+            toast.rightAnchor.constraint(equalTo: container.rightAnchor, constant: -20).isActive = true
+            toast.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -40).isActive = true
+            container.layoutIfNeeded()
+          })
         default:
             break
         }
     }
+}
+
+
+class CustomToast: UIView {
+  
+  let titleLabel = {
+    let lb = UILabel()
+    lb.text = "Hello World"
+    return lb
+  }()
+  
+  override var intrinsicContentSize: CGSize {
+    return .init(width: UIView.noIntrinsicMetric, height: 60)
+  }
+  
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    self.setup()
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  private func setup() {
+    self.backgroundColor = .red
+    self.addSubview(self.titleLabel)
+    self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
+    self.titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+    self.titleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+  }
 }

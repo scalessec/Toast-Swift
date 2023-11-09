@@ -28,7 +28,7 @@ import ObjectiveC
 
 /**
  Toast is a Swift extension that adds toast notifications to the `UIView` object class.
- It is intended to be simple, lightweight, and easy to use. Most toast notifications 
+ It is intended to be simple, lightweight, and easy to use. Most toast notifications
  can be triggered with a single line of code.
  
  The `makeToast` methods create a new view and then display it as toast.
@@ -46,6 +46,7 @@ public extension UIView {
         static var duration     = "com.toast-swift.duration"
         static var point        = "com.toast-swift.point"
         static var completion   = "com.toast-swift.completion"
+        static var constraints  = "com.toast-swift.constraints"
         static var activeToasts = "com.toast-swift.activeToasts"
         static var activityView = "com.toast-swift.activityView"
         static var queue        = "com.toast-swift.queue"
@@ -62,6 +63,14 @@ public extension UIView {
         init(_ completion: ((Bool) -> Void)?) {
             self.completion = completion
         }
+    }
+    
+    private class ToastConstraintsWrapper {
+      let constraints: ((_ container: UIView, _ toast: UIView) -> Void)?
+      
+      init(_ constraints: ((_ container: UIView, _ toast: UIView) -> Void)?) {
+        self.constraints = constraints
+      }
     }
     
     private enum ToastError: Error {
@@ -176,6 +185,31 @@ public extension UIView {
         } else {
             showToast(toast, duration: duration, point: point)
         }
+    }
+  
+    /**
+     Displays any view as toast at a provided constraintsBlock and duration. The completion closure
+     executes when the toast view completes. `didTap` will be `true` if the toast view was
+     dismissed from a tap.
+   
+     @param toast The view to be displayed as toast
+     @param duration The notification duration
+     @param constarints The constraints block, executed after the toast view added
+     @param completion The completion block, executed after the toast view disappears.
+     didTap will be `true` if the toast view was dismissed from a tap.
+    */
+    func showToast(_ toast: UIView, duration: TimeInterval = ToastManager.shared.duration, constraints: @escaping (_ container: UIView, _ toast: UIView) -> Void, completion: ((_ didTap: Bool) -> Void)? = nil) {
+    
+      objc_setAssociatedObject(toast, &ToastKeys.completion, ToastCompletionWrapper(completion), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+      
+      if ToastManager.shared.isQueueEnabled, activeToasts.count > 0 {
+        objc_setAssociatedObject(toast, &ToastKeys.duration, NSNumber(value: duration), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(toast, &ToastKeys.constraints, ToastConstraintsWrapper(constraints), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+      
+        queue.add(toast)
+      } else {
+        showToast(toast, duration: duration, constraints: constraints)
+      }
     }
     
     // MARK: - Hide Toast Methods
@@ -334,20 +368,44 @@ public extension UIView {
     
     // MARK: - Private Show/Hide Methods
     
+    
+    private func showToast(_ toast: UIView, duration: TimeInterval, constraints: (_ container: UIView, _ toast: UIView) -> Void) {
+      toast.alpha = 0.0
+      
+      if ToastManager.shared.isTapToDismissEnabled {
+          let recognizer = UITapGestureRecognizer(target: self, action: #selector(UIView.handleToastTapped(_:)))
+          toast.addGestureRecognizer(recognizer)
+          toast.isUserInteractionEnabled = true
+          toast.isExclusiveTouch = true
+      }
+      activeToasts.add(toast)
+      self.addSubview(toast)
+      
+      constraints(self, toast)
+      
+      UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.curveEaseOut, .allowUserInteraction], animations: {
+          toast.alpha = 1.0
+      }) { _ in
+          let timer = Timer(timeInterval: duration, target: self, selector: #selector(UIView.toastTimerDidFinish(_:)), userInfo: toast, repeats: false)
+          RunLoop.main.add(timer, forMode: .common)
+          objc_setAssociatedObject(toast, &ToastKeys.timer, timer, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+      }
+    }
+    
     private func showToast(_ toast: UIView, duration: TimeInterval, point: CGPoint) {
         toast.center = point
         toast.alpha = 0.0
-        
+      
         if ToastManager.shared.isTapToDismissEnabled {
             let recognizer = UITapGestureRecognizer(target: self, action: #selector(UIView.handleToastTapped(_:)))
             toast.addGestureRecognizer(recognizer)
             toast.isUserInteractionEnabled = true
             toast.isExclusiveTouch = true
         }
-        
+      
         activeToasts.add(toast)
         self.addSubview(toast)
-        
+      
         UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.curveEaseOut, .allowUserInteraction], animations: {
             toast.alpha = 1.0
         }) { _ in
@@ -375,6 +433,13 @@ public extension UIView {
             if let nextToast = self.queue.firstObject as? UIView, let duration = objc_getAssociatedObject(nextToast, &ToastKeys.duration) as? NSNumber, let point = objc_getAssociatedObject(nextToast, &ToastKeys.point) as? NSValue {
                 self.queue.removeObject(at: 0)
                 self.showToast(nextToast, duration: duration.doubleValue, point: point.cgPointValue)
+                return
+            }
+            
+            if let nextToast = self.queue.firstObject as? UIView, let duration = objc_getAssociatedObject(nextToast, &ToastKeys.duration) as? NSNumber, let wrapper = objc_getAssociatedObject(toast, &ToastKeys.constraints) as? ToastConstraintsWrapper, let constraints = wrapper.constraints {
+                self.queue.removeObject(at: 0)
+                self.showToast(nextToast, duration: duration.doubleValue, constraints: constraints)
+                return
             }
         }
     }
