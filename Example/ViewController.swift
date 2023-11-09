@@ -149,7 +149,7 @@ extension ViewController {
             case 8: cell.textLabel?.text = showingActivity ? "Hide toast activity" : "Show toast activity"
             case 9: cell.textLabel?.text = "Hide toast"
             case 10: cell.textLabel?.text = "Hide all toasts"
-            case 11: cell.textLabel?.text = "Make toast autolayout"
+            case 11: cell.textLabel?.text = "Make toast with autolayout"
             default: cell.textLabel?.text = nil
             }
             
