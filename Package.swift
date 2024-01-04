@@ -16,7 +16,10 @@ let package = Package(
         .target(
             name: "Toast",
             dependencies: [],
-            path: "Toast"),
+            path: "Toast",
+            resources: [
+                .copy("Toast/Resources/PrivacyInfo.xcprivacy")
+            ]),
     ],
     swiftLanguageVersions: [.v5]
 )

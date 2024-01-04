@@ -14,6 +14,8 @@
 		15FC18381FC0877300C57AFA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 15FC18371FC0877300C57AFA /* LaunchScreen.storyboard */; };
 		2A3743511CBFAF4B006A3BAB /* Toast-Swift-Framework.h in Headers */ = {isa = PBXBuildFile; fileRef = 2A3743501CBFAF4B006A3BAB /* Toast-Swift-Framework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2A3743561CBFAF94006A3BAB /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151796FF1BE69026004BA6E5 /* Toast.swift */; };
+		56DDDCB32B465EF000AD99CD /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = 56DDDCB22B465EF000AD99CD /* Resources */; };
+		56DDDCB42B465EF000AD99CD /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = 56DDDCB22B465EF000AD99CD /* Resources */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +29,7 @@
 		2A37434E1CBFAF4B006A3BAB /* ToastSwiftFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ToastSwiftFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A3743501CBFAF4B006A3BAB /* Toast-Swift-Framework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Toast-Swift-Framework.h"; sourceTree = "<group>"; };
 		2A3743521CBFAF4C006A3BAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		56DDDCB22B465EF000AD99CD /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Resources; path = Toast/Resources; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				151796FF1BE69026004BA6E5 /* Toast.swift */,
+				56DDDCB22B465EF000AD99CD /* Resources */,
 			);
 			name = Toast;
 			sourceTree = "<group>";
@@ -208,6 +212,7 @@
 			files = (
 				151796F21BE68E4B004BA6E5 /* Assets.xcassets in Resources */,
 				15FC18381FC0877300C57AFA /* LaunchScreen.storyboard in Resources */,
+				56DDDCB32B465EF000AD99CD /* Resources in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,6 +220,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56DDDCB42B465EF000AD99CD /* Resources in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

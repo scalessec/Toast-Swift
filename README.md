@@ -114,10 +114,14 @@ Compatibility
 * Version `2.x.x` requires Swift 3 and Xcode 8.
 * Version `1.4.x` requires Swift 2.2 and Xcode 7.3. 
 * Version `1.0.0` can be used with Swift 2.1 and earlier versions of Xcode.
+
+Privacy
+-----------
+`Toast-Swift` does not collect any data. A [privacy manifest](Toast/Resources/PrivacyInfo.xcprivacy) is provided with the library. See [Apple's documentation](https://developer.apple.com/documentation/bundleresources/privacy_manifest_files) for related details.
  
 MIT License
 -----------
-    Copyright (c) 2015-2019 Charles Scalesse.
+    Copyright (c) 2015-2024 Charles Scalesse.
 
     Permission is hereby granted, free of charge, to any person obtaining a
     copy of this software and associated documentation files (the
