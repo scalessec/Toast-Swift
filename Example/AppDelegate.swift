@@ -36,10 +36,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.rootViewController = navigationController
         self.window?.makeKeyAndVisible()
         
-        UINavigationBar.appearance().barTintColor = .lightBlue
-        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        configureAppearance()
         
         return true
+    }
+    
+    private func configureAppearance() {
+        let navigationBarColor: UIColor = .lightBlue
+        let titleTextAttributes: [NSAttributedString.Key : Any] = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        
+        let appearance = UINavigationBar.appearance()
+        if #available(iOS 15, *) {
+            let barAppearance = UINavigationBarAppearance()
+            barAppearance.backgroundColor =  navigationBarColor
+            barAppearance.titleTextAttributes = titleTextAttributes
+            appearance.standardAppearance = barAppearance
+            appearance.scrollEdgeAppearance = barAppearance
+        } else {
+            appearance.barTintColor = navigationBarColor
+            appearance.titleTextAttributes = titleTextAttributes
+        }
     }
 }
 
