@@ -10,7 +10,7 @@ Toast-Swift is a Swift extension that adds toast notifications to the `UIView` o
 
 Screenshots
 ---------
-![Toast-Swift Screenshots](Resources/toast_swift_screenshot.jpg)
+![Toast-Swift Screenshots](toast_swift_screenshot.jpg)
 
 
 Basic Examples
