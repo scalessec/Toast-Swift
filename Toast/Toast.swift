@@ -510,7 +510,9 @@ public extension UIView {
         let longerWidth = max(titleRect.size.width, messageRect.size.width)
         let longerX = max(titleRect.origin.x, messageRect.origin.x)
         let wrapperWidth = max((imageRect.size.width + (style.horizontalPadding * 2.0)), (longerX + longerWidth + style.horizontalPadding))
-        let wrapperHeight = max((messageRect.origin.y + messageRect.size.height + style.verticalPadding), (imageRect.size.height + (style.verticalPadding * 2.0)))
+        
+        let textMaxY = messageRect.size.height <= 0.0 && titleRect.size.height > 0.0 ? titleRect.maxY : messageRect.maxY
+        let wrapperHeight = max((textMaxY + style.verticalPadding), (imageRect.size.height + (style.verticalPadding * 2.0)))
         
         wrapperView.frame = CGRect(x: 0.0, y: 0.0, width: wrapperWidth, height: wrapperHeight)
         
