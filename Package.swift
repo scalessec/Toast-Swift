@@ -19,7 +19,7 @@ let package = Package(
             path: "Toast",
             resources: [
                 .copy("Toast/Resources/PrivacyInfo.xcprivacy")
-            ]),
+            ])
     ],
     swiftLanguageVersions: [.v5]
 )
