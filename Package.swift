@@ -17,6 +17,9 @@ let package = Package(
             name: "Toast",
             dependencies: [],
             path: "Toast",
+            exclude: [
+                "../README.md"
+            ],
             resources: [
                 .copy("Resources/PrivacyInfo.xcprivacy")
             ])
