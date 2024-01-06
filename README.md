@@ -108,7 +108,7 @@ Manually
 
 Compatibility
 ------------------
-* Version `5.x.x` requires Swift 5 and Xcode 10.2 (or newer versions of Xcode).
+* Version `5.x.x` requires Swift 5 and Xcode 10.2 or later.
 * Version `4.x.x` requires Swift 4.2 and Xcode 10.
 * Version `3.x.x` requires Swift 4 and Xcode 9.
 * Version `2.x.x` requires Swift 3 and Xcode 8.
@@ -117,7 +117,7 @@ Compatibility
 
 Privacy
 -----------
-`Toast-Swift` does not collect any data. A [privacy manifest](Toast/Resources/PrivacyInfo.xcprivacy) is provided with the library. See [Apple's documentation](https://developer.apple.com/documentation/bundleresources/privacy_manifest_files) for related details.
+Toast-Swift does not collect any data. A [privacy manifest](Toast/Resources/PrivacyInfo.xcprivacy) is provided with the library. See [Apple's documentation](https://developer.apple.com/documentation/bundleresources/privacy_manifest_files) for related details.
  
 MIT License
 -----------
