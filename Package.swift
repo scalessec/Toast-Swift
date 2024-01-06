@@ -1,10 +1,10 @@
-// swift-tools-version:5.0
+// swift-tools-version:5.9
 import PackageDescription
 
 let package = Package(
     name: "Toast",
     platforms: [
-        .iOS(.v10),
+        .iOS(.v12),
     ],
     products: [
         .library(
@@ -18,7 +18,7 @@ let package = Package(
             dependencies: [],
             path: "Toast",
             resources: [
-                .copy("Toast/Resources/PrivacyInfo.xcprivacy")
+                .copy("Resources/PrivacyInfo.xcprivacy")
             ])
     ],
     swiftLanguageVersions: [.v5]
