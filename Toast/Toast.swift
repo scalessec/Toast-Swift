@@ -359,7 +359,7 @@ public extension UIView {
             }
         }
         
-        UIAccessibility.post(notification: .layoutChanged, argument: toast)
+        UIAccessibility.post(notification: .screenChanged, argument: toast)
     }
     
     private func hideToast(_ toast: UIView, fromTap: Bool) {
