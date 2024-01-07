@@ -354,9 +354,8 @@ public extension UIView {
         UIView.animate(withDuration: ToastManager.shared.style.fadeDuration, delay: 0.0, options: [.curveEaseOut, .allowUserInteraction], animations: {
             toast.alpha = 1.0
         }) { _ in
-            if let timer = objc_getAssociatedObject(toast, &ToastKeys.timer) as? Timer {
-              RunLoop.main.add(timer, forMode: .common)
-            }
+            guard let timer = objc_getAssociatedObject(toast, &ToastKeys.timer) as? Timer else { return }
+            RunLoop.main.add(timer, forMode: .common)
         }
         
         UIAccessibility.post(notification: .screenChanged, argument: toast)
