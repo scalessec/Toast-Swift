@@ -293,6 +293,15 @@ public extension UIView {
         }
     }
     
+    // MARK: - Helper Methods
+    
+    /**
+     Returns `true` if a toast view or toast activity view is actively being displayed.
+     */
+    func isShowingToast() -> Bool {
+        return activeToasts.count > 0 || objc_getAssociatedObject(self, &ToastKeys.activityView) != nil
+    }
+    
     // MARK: - Private Activity Methods
     
     private func makeToastActivity(_ toast: UIView, point: CGPoint) {
