@@ -533,6 +533,9 @@ public extension UIView {
         if let messageLabel = messageLabel {
             messageRect.size.width = longerWidth
             messageLabel.frame = messageRect
+            if titleLabel == nil {
+                messageLabel.center.y = wrapperView.center.y
+            }
             wrapperView.addSubview(messageLabel)
         }
         
