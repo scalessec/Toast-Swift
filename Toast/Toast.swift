@@ -447,9 +447,12 @@ public extension UIView {
         }
         
         if let image = image {
-            imageView = UIImageView(image: image)
+            imageView = UIImageView(image: style.imageTint == .clear ? image : image.withRenderingMode(.alwaysTemplate))
             imageView?.contentMode = .scaleAspectFit
             imageView?.frame = CGRect(x: style.horizontalPadding, y: style.verticalPadding, width: style.imageSize.width, height: style.imageSize.height)
+            if style.imageTint != .clear {
+                imageView?.tintColor = style.imageTint
+            }
         }
         
         var imageRect = CGRect.zero
@@ -681,6 +684,11 @@ public struct ToastStyle {
      The image size. The default is 80 x 80.
     */
     public var imageSize = CGSize(width: 80.0, height: 80.0)
+    
+    /**
+     The image tint color. If not .clear then image will be rendered as template and tint will be applied. Default is .clear.
+    */
+    public var imageTint = UIColor.clear
     
     /**
      The size of the toast activity view when `makeToastActivity(position:)` is called.
