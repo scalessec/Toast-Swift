@@ -1,7 +1,6 @@
 Toast-Swift
 =============
 
-[![Build Status](https://travis-ci.org/scalessec/Toast-Swift.svg?branch=master)](https://travis-ci.org/scalessec/Toast-Swift)
 [![CocoaPods Version](https://img.shields.io/cocoapods/v/Toast-Swift.svg)](http://cocoadocs.org/docsets/Toast-Swift)
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
@@ -78,7 +77,7 @@ Setup Instructions
 To integrate Toast-Swift into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
-pod 'Toast-Swift', '~> 5.0.1'
+pod 'Toast-Swift', '~> 5.1.0'
 ```
 
 and in your code add `import Toast_Swift`.
@@ -89,7 +88,7 @@ and in your code add `import Toast_Swift`.
 To integrate Toast-Swift into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "scalessec/Toast-Swift" ~> 5.0.1
+github "scalessec/Toast-Swift" ~> 5.1.0
 ```
 
 Run `carthage update` to build the framework and drag the built `ToastSwiftFramework.framework` into your Xcode project.
@@ -109,16 +108,20 @@ Manually
 
 Compatibility
 ------------------
-* Version `5.x.x` requires Swift 5 and Xcode 10.2 (or newer versions of Xcode).
+* Version `5.x.x` requires Swift 5 and Xcode 10.2 or later.
 * Version `4.x.x` requires Swift 4.2 and Xcode 10.
 * Version `3.x.x` requires Swift 4 and Xcode 9.
 * Version `2.x.x` requires Swift 3 and Xcode 8.
 * Version `1.4.x` requires Swift 2.2 and Xcode 7.3. 
 * Version `1.0.0` can be used with Swift 2.1 and earlier versions of Xcode.
+
+Privacy
+-----------
+Toast-Swift does not collect any data. A [privacy manifest](Toast/Resources/PrivacyInfo.xcprivacy) is provided with the library. See [Apple's documentation](https://developer.apple.com/documentation/bundleresources/privacy_manifest_files) for related details.
  
 MIT License
 -----------
-    Copyright (c) 2015-2019 Charles Scalesse.
+    Copyright (c) 2015-2024 Charles Scalesse.
 
     Permission is hereby granted, free of charge, to any person obtaining a
     copy of this software and associated documentation files (the

@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  Toast-Swift
 //
-//  Copyright (c) 2015-2019 Charles Scalesse.
+//  Copyright (c) 2015-2024 Charles Scalesse.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a
 //  copy of this software and associated documentation files (the
@@ -28,7 +28,7 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var window: UIWindow? = UIWindow(frame: UIScreen.main.bounds)
+    lazy var window: UIWindow? = UIWindow(frame: UIScreen.main.bounds)
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         let viewController = ViewController(style: .plain)
@@ -36,10 +36,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.rootViewController = navigationController
         self.window?.makeKeyAndVisible()
         
-        UINavigationBar.appearance().barTintColor = .lightBlue
-        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        configureAppearance()
         
         return true
+    }
+    
+    private func configureAppearance() {
+        let navigationBarColor: UIColor = .lightBlue
+        let titleTextAttributes: [NSAttributedString.Key : Any] = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        
+        let appearance = UINavigationBar.appearance()
+        if #available(iOS 15, *) {
+            let barAppearance = UINavigationBarAppearance()
+            barAppearance.backgroundColor =  navigationBarColor
+            barAppearance.titleTextAttributes = titleTextAttributes
+            appearance.standardAppearance = barAppearance
+            appearance.scrollEdgeAppearance = barAppearance
+        } else {
+            appearance.barTintColor = navigationBarColor
+            appearance.titleTextAttributes = titleTextAttributes
+        }
     }
 }
 
